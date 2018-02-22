@@ -5,7 +5,7 @@
 <h1>ISFiT 2019</h1>
 <h2>Applicant information</h2>
 
-<form action="{% url 'job:apply' %}" method="post">
+<form action="{% url 'signup' %}" method="post">
     First name:<br>
     <input type="text" name="firstname"><br>
     Last name:<br>
@@ -17,7 +17,7 @@
     {% csrf_token %}
     <input type="submit" value="Apply for a job"><br>
 </form>
-<form action="{% url 'job:cant_apply' %}" method="post">
+<form action="#" method="post">
     <input type="radio" value="No" name="no"><br>
     {% csrf_token %}
     <input type="submit" value="You cannot apply">

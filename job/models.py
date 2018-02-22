@@ -1,36 +1,25 @@
 from django.db import models
+from django.contrib.auth.models import User
 
+class Gang(models.Model):
+    name = models.CharField(max_length=50)
+    leader = models.OneToOneField(User, on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return self.name
 
 class Job(models.Model):
-    job_title = models.CharField(max_length=100)
-    gang = models.CharField(max_length=100)
+    title = models.CharField(max_length=50)
+    gang = models.ForeignKey(Gang, on_delete=models.CASCADE)
+    description = models.CharField(max_length=2000)
 
     def __str__(self):
-        return str(self.job_title) + ', ' + str(self.gang)
-
-class Job_Detail(models.Model):
-    job = models.ForeignKey(Job, on_delete=models.CASCADE)
-    head_of_gang = models.CharField(max_length=100)
-    description = models.CharField(max_length=5000)
-
-    def __str__(self):
-        return self.description
-
-class Applicant(models.Model):
-    first_name = models.CharField(default='', max_length=100)
-    last_name = models.CharField(default='', max_length=100)
-    phone_number = models.IntegerField(default=0)
-    email = models.EmailField(max_length=100)
-    lives_in_trondheim = models.BooleanField(default=False)
-
-    def __str__(self):
-        return str(self.last_name) + ', ' + str(self.first_name)
+        return str(self.title) + ', ' + str(self.gang)
 
 class Application(models.Model):
-    applicant = models.ManyToManyField(Applicant)
-    applying_for = models.ManyToManyField(Job)
-    application_text = models.CharField(max_length=2000)
+    job = models.ForeignKey(Job, on_delete=models.CASCADE)
+    applicant = models.ForeignKey(User, on_delete=models.CASCADE)
+    text = models.CharField(max_length=2000)
 
     def __str__(self):
-        return str(self.applicant)+': '+str(self.applying_for)
-
+        return str(self.applicant)
