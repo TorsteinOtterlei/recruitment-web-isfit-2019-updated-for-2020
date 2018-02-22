@@ -1,0 +1,20 @@
+{% extends 'job/base.html' %}
+{% block title %}Register{% endblock %}
+{% block body %}
+
+
+<h1>ISFiT 2019</h1>
+<h2>Create account</h2>
+
+<form action="{% url 'job:register' %}" method="post">
+    Username:<br>
+    <input type="text" name="username"><br>
+    Password:<br>
+    <input type="password" name="password"><br>
+    Email address:<br>
+    <input type="email" name="email"><br>
+    {% csrf_token %}
+    <input type="submit" value="Create User"><br>
+</form>
+
+{% endblock %}

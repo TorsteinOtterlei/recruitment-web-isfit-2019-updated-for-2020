@@ -1,0 +1,26 @@
+{% extends 'job/base.html' %}
+{% block title %}Welcome{% endblock %}
+{% block body %}
+
+<h1>ISFiT 2019</h1>
+<h2>Applicant information</h2>
+
+<form action="{% url 'job:apply' %}" method="post">
+    First name:<br>
+    <input type="text" name="firstname"><br>
+    Last name:<br>
+    <input type="text" name="lastname"><br>
+    Phone number (+47):<br>
+    <input type="number" name="phonenumber"><br>
+    Do you currently live in Trondheim?<br>
+    <input type="radio" value="Yes" name="yes"><br>
+    {% csrf_token %}
+    <input type="submit" value="Apply for a job"><br>
+</form>
+<form action="{% url 'job:cant_apply' %}" method="post">
+    <input type="radio" value="No" name="no"><br>
+    {% csrf_token %}
+    <input type="submit" value="You cannot apply">
+</form>
+
+{% endblock %}
