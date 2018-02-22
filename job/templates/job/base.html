@@ -15,35 +15,16 @@
     </head>
     <body>
 
+        <div id="wrapper">
+            {%include 'job/navbar.html'%}
 
+            <div id="page-content-wrapper">
+                {% block body %}
+                {% endblock %}
 
-    <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
-            <!--Logo-->
-            <div class="navbar-header">
-                <a class="navbar-brand" href="{% url 'index' %}">isfit 2019</a>
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#topNavBar">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-            </div>
-
-            <div class="collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <li class="">
-                        <a href="{% url 'index' %}">
-                            <span class="glyphicon glyphicon-cd" aria-hidden="false"></span>&nbsp;
-                            Stillinger
-                        </a>
-                    </li>
-                </ul>
             </div>
         </div>
-    </nav>
 
-    {% block body %}
-    {% endblock %}
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
