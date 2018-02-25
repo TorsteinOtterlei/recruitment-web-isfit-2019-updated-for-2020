@@ -16,10 +16,13 @@ Including another URLconf
 from django.urls import include, path
 from django.contrib import admin
 from job import views
+from django.contrib.auth.views import login
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('job/', include('job.urls')),
     path('', views.index, name='index'),
-    path('signup/', views.signup, name='signup')
+    path('accounts/profile/', views.index, name='profile'),
+    path('signup/', views.signup, name='signup'),
+    path('login/', login, {'template_name':'job/login.html'}, name='login')
 ]
