@@ -1,0 +1,30 @@
+{% extends 'job/base.html' %}
+
+{% block body %}
+<div id="main-page" class="container">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="media">
+                 <div class="col-md-12">
+                            <p class="center">Log in /  create new user</p>
+								<form method="post">
+									{% csrf_token %}
+									{{ form.as_p }}
+									<div class="form-group">
+									 	<button type="submit" class="btn btn-primary btn-block">Log in</button>
+									</div>
+								</form>
+
+
+
+							</div>
+							<form action="{% url 'signup' %}" method="post">
+    							{% csrf_token %}
+								<input type="submit" value="Create account here"><br>
+							</form>
+					 </div>
+            </div>
+        </div>
+</div>
+
+{% endblock %}
