@@ -20,6 +20,8 @@ class Application(models.Model):
     job = models.ForeignKey(Job, on_delete=models.CASCADE)
     applicant = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.CharField(max_length=2000)
+    phone_number = models.IntegerField()
+    #interview_time = models.DateTimeField(auto_now=False, auto_now_add=False)
 
     def __str__(self):
         return str(self.applicant)

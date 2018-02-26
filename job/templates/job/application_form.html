@@ -1,0 +1,36 @@
+{% extends 'job/base.html' %}
+
+{% block body %}
+
+<div class="container">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="media">
+<h1>ISFiT 2019</h1>
+<h2>Application form</h2>
+
+<<h2>Apply</h2>
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+        <p>
+            {{ field.label_tag }}<br>
+            {{ field }}
+            {% if field.help_text %}
+            <small style="color: grey">{{ field.help_text }}</small>
+            {% endif %}
+            {% for error in field.errors %}
+                <p style="color: red">{{ error }}</p>
+            {% endfor %}
+        </p>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary" style="width:100%">Sign up</button>
+
+    </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

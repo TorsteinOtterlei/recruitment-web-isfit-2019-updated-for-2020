@@ -1,8 +1,24 @@
+{% extends 'job/base.html' %}
+
+
+{% block body %}
 <h1>ISFiT 2019</h1>
-<h2>Job Application</h2>
 
 <h2>Welcome {{ applicant.full_name }}!</h2>
+<h2>Select jobs you would like to apply for</h2>
 
-<form>
+<ul>
+{% for jobs in all_jobs %}
+    <form>
+         <div>
+             <li><a href="{% url 'application_form' job.id %}"></a></li>
+         </div>
 
-</form>
+    </form>
+{% endfor %}
+</ul>
+<div>
+    <button type="submit">Apply</button>
+</div>
+
+{% endblock %}

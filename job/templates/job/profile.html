@@ -1,0 +1,24 @@
+{% extends 'job/base.html' %}
+
+{% block body %}
+{% block title %}Welcome{% endblock %}
+<h1>{{user.first_name}} {{ user.last_name }} :)</h1>
+
+<h2>You have applied for these jobs:</h2>
+<ul>
+{% for application in all_applications %}
+    {% if application.applicant == user %}
+        <li><a href="{% url 'job_detail' %}">{{ application.job.title }}</a></li>
+    {% endif %}
+{% endfor %}
+</ul>
+<form action="{% url 'logout' %}" method="get">
+    {% csrf_token %}
+    <input type="submit" value="Logout"><br>
+</form>
+<form action="{% url 'apply' %}" method="get">
+    {% csrf_token %}
+    <input type="submit" value="Apply for a job"><br>
+</form>
+
+{% endblock %}

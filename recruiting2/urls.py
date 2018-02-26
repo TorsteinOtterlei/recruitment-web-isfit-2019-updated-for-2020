@@ -16,13 +16,18 @@ Including another URLconf
 from django.urls import include, path
 from django.contrib import admin
 from job import views
-from django.contrib.auth.views import login
+from django.contrib.auth.views import login, logout
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('job/', include('job.urls')),
     path('', views.index, name='index'),
-    path('accounts/profile/', views.index, name='profile'),
     path('signup/', views.signup, name='signup'),
-    path('login/', login, {'template_name':'job/login.html'}, name='login')
+    path('login/', login, {'template_name':'job/login.html'}, name='login'),
+    path('profile/', views.Profile.as_view(), name='profile'),
+    path('job_detail/', views.Job_Detail.as_view(), name='job_detail'),
+    path('logout/', logout, {'template_name':'job/logout.html'}, name='logout'),
+    path('apply/', views.Apply.as_view(), name='apply'),
+    path('application_form/', views.application_form, name='apply'),
+    #path('application_form/<int:job_id>/', views.JobDetailView.as_view(), name='job_details'),
 ]

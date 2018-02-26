@@ -3,11 +3,14 @@
 {% block body %}
 
 <h1>ISFiT 2019</h1>
-<h2>Applicant information</h2>
 
 <form action="{% url 'signup' %}" method="post">
     {% csrf_token %}
-    <input type="submit" value="Apply for a job"><br>
+    <input type="submit" value="Create User"><br>
+</form>
+<form action="{% url 'login' %}" method="post">
+    {% csrf_token %}
+    <input type="submit" value="Login"><br>
 </form>
 
 {% endblock %}
