@@ -53,8 +53,27 @@ class Apply(generic.ListView):
     template_name = 'job/apply.html'
     context_object_name = 'all_jobs'
 
+
     def get_queryset(self):
         return Job.objects.all()
+
+@login_required
+def apply(request):
+    form = ApplicationForm
+    if 'selectJob' in request.POST:
+        return render(request, 'job/application_form.html',
+                      {'job': Job.objects.all().filter(pk=request.POST.get('selectJob')).first(), 'form': form})
+    if request.method == 'POST':
+        form = ApplicationForm(request.POST)
+        if form.is_valid():
+            application = form.save(commit=False)
+            application.applicant = request.user
+            application.phone_number = form.data['phone_number']
+            application.job = Job.objects.filter(pk=request.POST.get('submitForm')).first()
+            application.save()
+            return redirect('index')
+    return render(request, 'job/apply.html', {'all_jobs': Job.objects.all()})
+
 
 
 def signup(request):
@@ -77,15 +96,3 @@ def logout_view(request):
     logout(request)
     # Redirect to a success page.
     render(request, 'job/logout.html')
-
-@login_required
-def application_form(request):
-    if request.method == 'POST':
-        form = ApplicationForm(request.POST)
-        if form.is_valid():
-            application = form.save(commit=False)
-            application.applicant = request.user
-            application.phone_number = form.phone_number
-            application.save()
-            return redirect('index')
-

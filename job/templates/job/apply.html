@@ -8,17 +8,14 @@
 <h2>Select jobs you would like to apply for</h2>
 
 <ul>
-{% for jobs in all_jobs %}
-    <form>
+{% for job in all_jobs %}
+    <form method="POST" class="post-form">{% csrf_token %}
          <div>
-             <li><a href="{% url 'application_form' job.id %}"></a></li>
+             <button name="selectJob" type="submit" value="{{ job.pk }}">{{ job.title }}</button>
          </div>
 
     </form>
 {% endfor %}
 </ul>
-<div>
-    <button type="submit">Apply</button>
-</div>
 
 {% endblock %}

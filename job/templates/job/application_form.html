@@ -7,7 +7,7 @@
         <div class="panel-body">
             <div class="media">
 <h1>ISFiT 2019</h1>
-<h2>Application form</h2>
+<h2>Application for {{ job.title }}</h2>
 
 <<h2>Apply</h2>
     <form method="post">
@@ -24,7 +24,7 @@
             {% endfor %}
         </p>
         {% endfor %}
-        <button type="submit" class="btn btn-primary" style="width:100%">Sign up</button>
+        <button name="submitForm" value="{{ job.pk }}" type="submit" class="btn btn-primary" style="width:100%">Sign up</button>
 
     </form>
             </div>

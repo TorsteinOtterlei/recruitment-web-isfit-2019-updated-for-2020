@@ -27,7 +27,6 @@ urlpatterns = [
     path('profile/', views.Profile.as_view(), name='profile'),
     path('job_detail/', views.Job_Detail.as_view(), name='job_detail'),
     path('logout/', logout, {'template_name':'job/logout.html'}, name='logout'),
-    path('apply/', views.Apply.as_view(), name='apply'),
-    path('application_form/', views.application_form, name='apply'),
+    path('apply/', views.apply, name='apply'),
     #path('application_form/<int:job_id>/', views.JobDetailView.as_view(), name='job_details'),
 ]
