@@ -14,11 +14,11 @@
 </ul>
 <form action="{% url 'logout' %}" method="get">
     {% csrf_token %}
-    <input type="submit" value="Logout"><br>
+    <input class="input-button" type="submit" value="Logout"><br>
 </form>
 <form action="{% url 'apply' %}" method="get">
     {% csrf_token %}
-    <input type="submit" value="Apply for a job"><br>
+    <input class="input-button" type="submit" value="Apply for a job"><br>
 </form>
 
 {% endblock %}

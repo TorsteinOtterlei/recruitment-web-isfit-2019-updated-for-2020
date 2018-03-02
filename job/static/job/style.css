@@ -1,7 +1,137 @@
-body{
-    background: white url('images/background.jpg');
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
+@font-face {
+  font-family: "MyriadPro";
+  src: url("fonts/MyriadPro-Regular.otf") format("truetype"), local("abc");
+}
+
+body {
+  /*background: white url("images/background.jpg");*/
+  font-family: MyriadPro !important;
+  background-color: black;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  color: white;
+}
+
+a {
+  color: white;
+}
+
+.dropdown-menu {
+  background-color: black;
+}
+
+.media {
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  color: black;
+}
+
+button {
+  display: flex;
+  height: auto;
+}
+
+#page-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.input-button {
+  background-color: #007bff;
+  border-color: #007bff;
+  margin: 5px;
+  color: white;
+}
+
+.input-button:hover {
+  background-color: #0069d9;
+  border-color: #0062cc;
+}
+
+.navbar {
+  padding-top: 20px;
+}
+
+.navbar-header {
+  display: flex;
+}
+
+.navbar-brand {
+  margin: 0;
+}
+
+.navbar-toggle {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  height: 30px;
+  width: 40px;
+  padding: 5px;
+  align-items: center;
+  justify-content: space-around;
+  border-radius: 15%;
+  background-color: black;
+}
+
+.navbar-toggle:focus {
+  outline: none;
+}
+
+.navbar-header .icon-bar {
+  width: 100px;
+  height: 5px;
+}
+
+#footprint-1 {
+  background: url("images/footprints-06.png");
+}
+#footprint-2 {
+  background: url("images/footprints-07.png");
+}
+#footprint-3 {
+  background: url("images/footprints-08.png");
+}
+#footprint-4 {
+  background: url("images/footprints-09.png");
+}
+
+.footprint {
+  width: 100px;
+  height: 80px;
+  -ms-transform: rotate(20deg);
+  -webkit-transform: rotate(20deg);
+  transform: rotate(90deg);
+}
+
+#main-logo {
+  background: url("images/isfit_logo72-22.png");
+  width: 200px;
+  height: 80px;
+}
+
+#main-logo,
+#footprint-1,
+#footprint-2,
+#footprint-3,
+#footprint-4 {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  margin: 0;
+}
+
+.main-logo-footprints {
+  display: flex;
+  justify-content: space-between;
+}
+
+.navbar-default .navbar-toggle .icon-bar {
+  background-color: white;
+  width: 25px;
+  height: 2px;
 }

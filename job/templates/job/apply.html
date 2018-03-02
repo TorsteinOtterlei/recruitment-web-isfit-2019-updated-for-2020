@@ -11,7 +11,7 @@
 {% for job in all_jobs %}
     <form method="POST" class="post-form">{% csrf_token %}
          <div>
-             <button name="selectJob" type="submit" value="{{ job.pk }}">{{ job.title }}</button>
+             <button class="input-button" name="selectJob" type="submit" value="{{ job.pk }}">{{ job.title }}</button>
          </div>
 
     </form>
