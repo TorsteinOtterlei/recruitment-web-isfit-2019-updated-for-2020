@@ -1,5 +1,11 @@
+@font-face {
+  font-family: "MyriadPro";
+  src: url("fonts/MyriadPro-Regular.otf") format("truetype"), local("abc");
+}
+
 body {
   /*background: white url("images/background.jpg");*/
+  font-family: MyriadPro !important;
   background-color: black;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -37,6 +43,8 @@ button {
 
 .input-button {
   background-color: dodgerblue;
+  border-color: #1265b5;
+  margin: 5px;
 }
 
 .navbar {
