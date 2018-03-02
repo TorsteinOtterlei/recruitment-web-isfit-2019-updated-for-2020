@@ -42,9 +42,15 @@ button {
 }
 
 .input-button {
-  background-color: dodgerblue;
-  border-color: #1265b5;
+  background-color: #007bff;
+  border-color: #007bff;
   margin: 5px;
+  color: white;
+}
+
+.input-button:hover {
+  background-color: #0069d9;
+  border-color: #0062cc;
 }
 
 .navbar {
