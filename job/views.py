@@ -8,6 +8,7 @@ from .models import Gang, Application, Job
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
+
 class JobView(generic.ListView):
     template_name = 'job/jobs.html'
     context_object_name = 'all_jobs'
@@ -16,65 +17,64 @@ class JobView(generic.ListView):
         self.description = get_object_or_404(Job, name=self.kwargs['description'])
         return Job.objects.filter(description=self.description)
 
-'''class JobDetailView(generic.DetailView):
-    model = Job
-    template_name = 'job/job_details.html'
-    context_object_name = 'description'
-    queryset = Job.objects.all()
 
-    def get_context_data(self, **kwargs):
-        context = JobView.get_context_data(**kwargs)
-        context['description'] = self.description
-        return context
-
-def job_detail(request):
-    return render(request, 'job/job_details.html')
-'''
-
-class Job_Detail(generic.ListView):
+class JobDetail(generic.ListView):
     template_name = 'job/job_details.html'
     context_object_name = 'all_jobs'
 
     def get_queryset(self):
         return Application.objects.all()
 
-class Profile(generic.ListView):
-    template_name = 'job/profile.html'
-    context_object_name = 'all_applications'
 
-    def get_queryset(self):
-        return Application.objects.all()
+def profile(request):
+    jobs = None
+    if Application.objects.filter(applicant=request.user).first():
+        user_application = Application.objects.filter(applicant=request.user).first()
+        jobs= user_application.jobs.all()
+
+    return render(request, 'job/profile.html', {
+        'jobs':jobs
+    })
 
 
 def index(request):
     return render(request, 'job/index.html')
 
-class Apply(generic.ListView):
-    template_name = 'job/apply.html'
-    context_object_name = 'all_jobs'
+
+def applications(request):
+    return render(request, 'job/applications.html', {
+        'gangs':Gang.objects.all(),
 
 
-    def get_queryset(self):
-        return Job.objects.all()
+    })
+
 
 @login_required
 def apply(request):
-    form = ApplicationForm
-    if 'selectJob' in request.POST:
-        return render(request, 'job/application_form.html',
-                      {'job': Job.objects.all().filter(pk=request.POST.get('selectJob')).first(), 'form': form})
+    form = ApplicationForm(request.POST)
     if request.method == 'POST':
-        form = ApplicationForm(request.POST)
         if form.is_valid():
             application = form.save(commit=False)
             application.applicant = request.user
-            application.phone_number = form.data['phone_number']
-            application.job = Job.objects.filter(pk=request.POST.get('submitForm')).first()
             application.save()
-            return redirect('index')
-    return render(request, 'job/apply.html', {'all_jobs': Job.objects.all()})
+            form.save_m2m()
+            return redirect('profile')
+    return render(request, 'job/application_form.html', {'jobs': Job.objects.all(), 'form':form})
 
 
+def application_edit(request):
+    application = Application.objects.filter(applicant=request.user).first()
+    if request.method == 'POST':
+        form = ApplicationForm(request.POST, instance=application)
+        if form.is_valid():
+            application = form.save(commit=False)
+            application.applicant = request.user
+            application.save()
+            form.save_m2m()
+            return(redirect('profile'))
+    else:
+        form = ApplicationForm(instance=application)
+    return render(request, "job/application_form.html", {'jobs': Job.objects.all(), 'form':form})
 
 def signup(request):
     if request.method == 'POST':
@@ -89,7 +89,6 @@ def signup(request):
         else:
             form = SignUpForm()
         return render(request, 'job/registration_form.html', {'form':form})
-
 
 
 def logout_view(request):

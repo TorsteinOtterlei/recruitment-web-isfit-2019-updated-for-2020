@@ -24,9 +24,12 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('signup/', views.signup, name='signup'),
     path('login/', login, {'template_name':'job/login.html'}, name='login'),
-    path('profile/', views.Profile.as_view(), name='profile'),
-    path('job_detail/', views.Job_Detail.as_view(), name='job_detail'),
+    path('profile/', views.profile, name='profile'),
+    path('job_detail/', views.JobDetail.as_view(), name='job_detail'),
     path('logout/', logout, {'template_name':'job/logout.html'}, name='logout'),
     path('apply/', views.apply, name='apply'),
+    path('apply/edit', views.application_edit, name='apply_edit'),
+    path('applications/', views.applications, name='applications'),
+
     #path('application_form/<int:job_id>/', views.JobDetailView.as_view(), name='job_details'),
 ]

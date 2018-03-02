@@ -1,0 +1,9 @@
+{% extends 'job/base.html' %}
+
+
+{% block body %}
+    <h1>Gangs</h1>
+    {% for gang in gangs %}
+        <p>{{ gang.name }}</p>
+    {% endfor %}
+{% endblock %}
