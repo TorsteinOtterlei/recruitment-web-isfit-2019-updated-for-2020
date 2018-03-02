@@ -3,6 +3,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from job.models import Application
 from .models import Job
+from django.forms.widgets import CheckboxSelectMultiple
+from django.forms.models import ModelMultipleChoiceField
 
 
 class SignUpForm(UserCreationForm):
@@ -17,7 +19,16 @@ class SignUpForm(UserCreationForm):
         fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')
 
 
+class CustomSelectMultiple(ModelMultipleChoiceField):
+    def label_from_instance(self, obj):
+        return "%s" %(obj.title)
+
+
 class ApplicationForm(forms.ModelForm):
+    jobs = CustomSelectMultiple(widget=forms.CheckboxSelectMultiple, queryset=Job.objects.all())
     class Meta:
         model = Application
+        widgets = {'jobs':CheckboxSelectMultiple}
         exclude = ['applicant', 'weight']
+        fields = ('text', 'phone_number', 'trondheim', 'jobs')
+
