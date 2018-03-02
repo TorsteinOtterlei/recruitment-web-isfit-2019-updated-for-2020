@@ -2,18 +2,12 @@
 {% block title %}Job details{% endblock %}
 {% block body %}
 
-
-
 <ul>
-{% for application in all_jobs %}
-    {% if application.applicant == user %}
-        <h2>{{ application.job.title }} {{ application.job.id }}</h2>
-        <h3>{{ application.job.description }}</h3>
-        ---
-    {% endif %}
-{% endfor %}
+    {% for application in all_jobs %}
+        {% if application.applicant == user %}
+            {{ application.jobs }}
+        {% endif %}
+    {% endfor %}
 </ul>
-
-
 
 {% endblock %}
