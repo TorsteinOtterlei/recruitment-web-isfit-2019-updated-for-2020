@@ -1,7 +1,71 @@
-body{
-    background: white url('images/background.jpg');
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
+body {
+  /*background: white url("images/background.jpg");*/
+  background-color: black;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  color: white;
+}
+
+a {
+  color: white;
+}
+
+.dropdown-menu {
+  background-color: black;
+}
+
+.media {
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  color: black;
+}
+
+button {
+  display: flex;
+  height: auto;
+}
+
+.navbar-header {
+  display: flex;
+}
+
+.navbar-toggle {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  height: 30px;
+  width: 40px;
+  padding: 5px;
+  align-items: center;
+  justify-content: space-around;
+  border-radius: 15%;
+  background-color: black;
+}
+
+.navbar-toggle:focus {
+  outline: none;
+}
+
+.navbar-header .icon-bar {
+  width: 100px;
+  height: 5px;
+}
+
+#main-logo {
+  background: url("images/isfit_logo72-22.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 200px;
+  height: 80px;
+  margin: 0;
+}
+
+.navbar-default .navbar-toggle .icon-bar {
+  background-color: white;
+  width: 25px;
+  height: 2px;
 }
