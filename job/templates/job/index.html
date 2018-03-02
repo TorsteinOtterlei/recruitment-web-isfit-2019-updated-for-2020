@@ -2,15 +2,17 @@
 {% block title %}Welcome{% endblock %}
 {% block body %}
 
-<h1>ISFiT 2019</h1>
+<div class="text-area" id="intro-text">
+  <h1>We are now recruiting!</h1>
+</div>
 
 <form action="{% url 'signup' %}" method="post">
     {% csrf_token %}
-    <input type="submit" value="Create User"><br>
+    <input class="input-button" type="submit" value="Create User"><br>
 </form>
 <form action="{% url 'login' %}" method="post">
     {% csrf_token %}
-    <input type="submit" value="Login"><br>
+    <input class="input-button" type="submit" value="Login"><br>
 </form>
 
 {% endblock %}
