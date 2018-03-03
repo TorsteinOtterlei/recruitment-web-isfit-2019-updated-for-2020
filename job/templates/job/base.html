@@ -10,9 +10,12 @@
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <link rel="stylesheet" type="text/css" href="{% static 'job/style.css' %}"/>
+        <link rel="stylesheet" type="text/css" href="{% static 'job/application.css' %}"/>
+
         {% block link %}{% endblock %}
         {% block script %}{% endblock %}
         <title>{% block title %}ISFiT 2019!{% endblock %}</title>
+        <link rel="icon" type="image/ico" href="{% static "favicon.ico" %}">
     </head>
     <body>
 
@@ -20,7 +23,7 @@
             {%include 'job/navbar.html'%}
 
             <div id="page-content-wrapper">
-              
+
                 {% block body %}
                 {% endblock %}
 

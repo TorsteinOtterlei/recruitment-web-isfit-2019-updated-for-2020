@@ -14,12 +14,9 @@ body {
   color: white;
 }
 
-a {
+.navbar-nav > a,
+.navbar-nav > li a {
   color: white;
-}
-
-.dropdown-menu {
-  background-color: black;
 }
 
 .media {
@@ -27,6 +24,8 @@ a {
   align-items: center;
   background-color: white;
   color: black;
+  margin: 10px;
+  padding: 25px;
 }
 
 button {

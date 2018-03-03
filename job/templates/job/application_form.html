@@ -25,19 +25,38 @@
         {% endfor %}
         <!-- Lists available jobs for each section/gang -->
         {% for section in sections %}
-            <h1>{{ section.name }}</h1>
+            <h1> <a data-toggle="collapse" href="#{{ section.name }}"
+              role="button" aria-expanded="false" aria-controls="collapseExample">
+              {{ section.name }}</a></h1>
+            <div class="gangs-div collapse" id="{{ section.name }}">
             {% for gang in gangs %}
                 {% if gang.section == section %}
-                    <h5>{{ gang.name }}</h5>
+
+                    <h5>
+                      <a data-toggle="collapse" href="#{{ gang.name }}"
+                        role="button" aria-expanded="false" aria-controls="collapseExample">
+                        {{ gang.name }}
+                      </a>
+                    </h5>
+
+                    <div class="positions-div collapse" id="{{ gang.name }}">
                     {% for job in jobs %}
                         {% if job.gang == gang %}
                             <input name="jobs" id="{{ job.pk }}" type="checkbox" value="{{ job.pk }}">
-                            <label for="{{ job.pk }}">{{ job.title }}</label>
-                            <br>
+                            <a class="" data-toggle="collapse" href="#{{ job.title }}"
+                              role="button" aria-expanded="false" aria-controls="collapseExample"
+                              for="{{ job.pk }}">{{ job.title }}
+                            </a>
+                            <div class="collapse" id="{{ job.title }}">
+                              <p class="dropdown-item">{{ job.description }}</p>
+                            </div>
                         {% endif %}
                     {% endfor %}
+                    </div>
+                      
                 {% endif %}
             {% endfor %}
+            </div>
         {% endfor %}
         <button name="submitForm" type="submit" class="btn btn-primary" style="width:100%">Sign up</button>
 
