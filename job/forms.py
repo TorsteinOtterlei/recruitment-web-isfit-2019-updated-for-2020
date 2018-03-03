@@ -19,14 +19,16 @@ class SignUpForm(UserCreationForm):
         fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')
 
 
-class CustomSelectMultiple(ModelMultipleChoiceField):
-    def label_from_instance(self, obj):
-        return "%s" %(obj.title)
-
-
 class ApplicationForm(forms.ModelForm):
+    text = forms.CharField(max_length=2000, required=True, widget=forms.Textarea(), help_text='Write your application here!' )
+
     class Meta:
         model = Application
         exclude = ['applicant', 'weight']
         fields = ('text', 'phone_number', 'trondheim')
 
+    def __init__(self, *args, **kwargs):
+        super(ApplicationForm, self).__init__(*args, **kwargs)
+        self.fields['text'].widget.attrs.update({'class': 'form-control'})
+        self.fields['phone_number'].widget.attrs.update({'class': 'form-control'})
+        self.fields['trondheim'].widget.attrs.update({'class': 'form-control'})

@@ -2,46 +2,44 @@
 
 {% block body %}
 
-<div class="container">
-    <div class="panel panel-default">
-        <div class="panel-body">
-            <div class="media">
-<h1>ISFiT 2019</h1>
+    <div class="container" style="color: black">
+        <div class="row space-below">
+            <div class="col-xl-12 space-above">
+                <div class="white-box" id="text-box">
+                    <h2>Apply</h2>
+                    <form method="post">
+                        {% csrf_token %}
+                        {% for field in form %}
+                        <p>
+                            {{ field.label_tag }}<br>
+                            {{ field }}
+                            {% if field.help_text %}
+                                <small class="form-text text-muted">{{ field.help_text }}</small>
+                            {% endif %}
+                            {% for error in field.errors %}
+                                <p style="color: red">{{ error }}</p>
+                            {% endfor %}
+                        </p>
+                        {% endfor %}
+                        <!-- Lists available jobs for each section/gang -->
+                        {% for section in sections %}
+                            <h1>{{ section.name }}</h1>
+                            {% for gang in gangs %}
+                                {% if gang.section == section %}
+                                    <h5>{{ gang.name }}</h5>
+                                    {% for job in jobs %}
+                                        {% if job.gang == gang %}
+                                            <input name="jobs" id="{{ job.pk }}" type="checkbox" value="{{ job.pk }}">
+                                            <label for="{{ job.pk }}">{{ job.title }}</label>
+                                            <br>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                        <button name="submitForm" type="submit" class="btn btn-primary" style="width:100%">Sign up</button>
 
-<h2>Apply</h2>
-    <form method="post">
-        {% csrf_token %}
-        {% for field in form %}
-        <p>
-            {{ field.label_tag }}<br>
-            {{ field }}
-            {% if field.help_text %}
-            <small style="color: grey">{{ field.help_text }}</small>
-            {% endif %}
-            {% for error in field.errors %}
-                <p style="color: red">{{ error }}</p>
-            {% endfor %}
-        </p>
-        {% endfor %}
-        <!-- Lists available jobs for each section/gang -->
-        {% for section in sections %}
-            <h1>{{ section.name }}</h1>
-            {% for gang in gangs %}
-                {% if gang.section == section %}
-                    <h5>{{ gang.name }}</h5>
-                    {% for job in jobs %}
-                        {% if job.gang == gang %}
-                            <input name="jobs" id="{{ job.pk }}" type="checkbox" value="{{ job.pk }}">
-                            <label for="{{ job.pk }}">{{ job.title }}</label>
-                            <br>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-            {% endfor %}
-        {% endfor %}
-        <button name="submitForm" type="submit" class="btn btn-primary" style="width:100%">Sign up</button>
-
-    </form>
+                    </form>
             </div>
         </div>
     </div>
