@@ -23,7 +23,23 @@
             {% endfor %}
         </p>
         {% endfor %}
-        <button name="submitForm" value="{{ job.pk }}" type="submit" class="btn btn-primary" style="width:100%">Sign up</button>
+        <!-- Lists available jobs for each section/gang -->
+        {% for section in sections %}
+            <h1>{{ section.name }}</h1>
+            {% for gang in gangs %}
+                {% if gang.section == section %}
+                    <h5>{{ gang.name }}</h5>
+                    {% for job in jobs %}
+                        {% if job.gang == gang %}
+                            <input name="jobs" id="{{ job.pk }}" type="checkbox" value="{{ job.pk }}">
+                            <label for="{{ job.pk }}">{{ job.title }}</label>
+                            <br>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+        <button name="submitForm" type="submit" class="btn btn-primary" style="width:100%">Sign up</button>
 
     </form>
             </div>

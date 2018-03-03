@@ -13,7 +13,7 @@
                 <li><a href="{% url 'job_detail' %}">{{ job.title }}</a></li>
             {% endfor %}
         </ul>
-        <form action="{% url 'apply_edit' %}" method="get">
+        <form action="{% url 'apply' %}" method="get">
             {% csrf_token %}
             <input class="input-button" type="submit" value="Edit application"><br>
         </form>

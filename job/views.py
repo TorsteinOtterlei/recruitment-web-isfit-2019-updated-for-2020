@@ -4,7 +4,7 @@ from django.views.generic import View
 from django.contrib.auth.forms import UserCreationForm
 from .forms import SignUpForm, ApplicationForm
 from django.views import generic
-from .models import Gang, Application, Job
+from .models import Gang, Application, Job, Section
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
@@ -51,30 +51,48 @@ def applications(request):
 
 @login_required
 def apply(request):
-    form = ApplicationForm(request.POST)
-    if request.method == 'POST':
-        if form.is_valid():
-            application = form.save(commit=False)
-            application.applicant = request.user
-            application.save()
-            form.save_m2m()
-            return redirect('profile')
-    return render(request, 'job/application_form.html', {'jobs': Job.objects.all(), 'form':form})
-
-
-def application_edit(request):
     application = Application.objects.filter(applicant=request.user).first()
-    if request.method == 'POST':
-        form = ApplicationForm(request.POST, instance=application)
-        if form.is_valid():
-            application = form.save(commit=False)
-            application.applicant = request.user
-            application.save()
-            form.save_m2m()
-            return(redirect('profile'))
-    else:
+    print(application)
+    if application is not None:
         form = ApplicationForm(instance=application)
-    return render(request, "job/application_form.html", {'jobs': Job.objects.all(), 'form':form})
+    else:
+        form = ApplicationForm(request.POST, instance=application)
+    if request.method == 'POST':
+        jobs = request.POST.getlist('jobs', None)
+        print(jobs)
+        print(not jobs)
+        form = ApplicationForm(request.POST, instance=application)
+        if jobs: # if any jobs were selected
+            if application is not None: # if user already has an application
+                if form.is_valid():
+                    application = form.save(commit=False)
+                    application.applicant = request.user
+                    application.jobs.clear()
+                    application.save()
+                    for job in jobs:
+                        application.jobs.add(job)
+                    application.save()
+                    return (redirect('profile'))
+            else:  # create new application
+                if form.is_valid():
+                    application = form.save(commit=False)
+                    application.applicant = request.user
+                    application.save()
+                    for job in jobs:
+                        application.jobs.add(job)
+                    application.save()
+                    return redirect('profile')
+        else:
+            pass  # can't make am application to no jobs :S
+
+    return render(request, 'job/application_form.html', {
+        'jobs': Job.objects.all(),
+        'form':form,
+        'sections': Section.objects.all(),
+        'gangs': Gang.objects.all(),
+
+    })
+
 
 def signup(request):
     if request.method == 'POST':

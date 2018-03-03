@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from job.models import Application
-from .models import Job
+from .models import Job, Gang, Section
 from django.forms.widgets import CheckboxSelectMultiple
 from django.forms.models import ModelMultipleChoiceField
 
@@ -25,10 +25,8 @@ class CustomSelectMultiple(ModelMultipleChoiceField):
 
 
 class ApplicationForm(forms.ModelForm):
-    jobs = CustomSelectMultiple(widget=forms.CheckboxSelectMultiple, queryset=Job.objects.all())
     class Meta:
         model = Application
-        widgets = {'jobs':CheckboxSelectMultiple}
         exclude = ['applicant', 'weight']
-        fields = ('text', 'phone_number', 'trondheim', 'jobs')
+        fields = ('text', 'phone_number', 'trondheim')
 
