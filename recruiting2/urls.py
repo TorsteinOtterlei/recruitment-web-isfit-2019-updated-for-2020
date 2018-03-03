@@ -28,7 +28,6 @@ urlpatterns = [
     path('job_detail/', views.JobDetail.as_view(), name='job_detail'),
     path('logout/', logout, {'template_name':'job/logout.html'}, name='logout'),
     path('apply/', views.apply, name='apply'),
-    path('apply/edit', views.application_edit, name='apply_edit'),
     path('applications/', views.applications, name='applications'),
 
     #path('application_form/<int:job_id>/', views.JobDetailView.as_view(), name='job_details'),
