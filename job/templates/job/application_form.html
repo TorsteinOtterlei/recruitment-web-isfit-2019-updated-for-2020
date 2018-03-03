@@ -29,9 +29,15 @@
                                     <h5>{{ gang.name }}</h5>
                                     {% for job in jobs %}
                                         {% if job.gang == gang %}
-                                            <input name="jobs" id="{{ job.pk }}" type="checkbox" value="{{ job.pk }}">
+                                            {% if job in applied_to %}
+                                                <input name="jobs" id="{{ job.pk }}" checked type="checkbox" value="{{ job.pk }}">
+                                            {% else %}
+                                                <input name="jobs" id="{{ job.pk }}"  type="checkbox" value="{{ job.pk }}">
+                                            {% endif %}
                                             <label for="{{ job.pk }}">{{ job.title }}</label>
                                             <br>
+
+
                                         {% endif %}
                                     {% endfor %}
                                 {% endif %}
