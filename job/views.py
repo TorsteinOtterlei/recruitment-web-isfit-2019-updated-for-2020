@@ -25,7 +25,7 @@ class JobDetail(generic.ListView):
     def get_queryset(self):
         return Application.objects.all()
 
-
+@login_required
 def profile(request):
     jobs = None
     if Application.objects.filter(applicant=request.user).first():
@@ -60,8 +60,6 @@ def apply(request):
         form = ApplicationForm(request.POST, instance=application)
     if request.method == 'POST':
         jobs = request.POST.getlist('jobs', None)
-        print(jobs)
-        print(not jobs)
         form = ApplicationForm(request.POST, instance=application)
         if jobs: # if any jobs were selected
             if application is not None: # if user already has an application
