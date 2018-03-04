@@ -10,6 +10,8 @@ name = "pypi"
 django = "*"
 awsebcli = "*"
 "psycopg2" = "*"
+"boto3" = "*"
+django-storages = "*"
 
 
 [dev-packages]
