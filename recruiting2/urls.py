@@ -20,15 +20,15 @@ from django.contrib.auth.views import login, logout
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('job/', include('job.urls')),
+    path('position/', include('job.urls')),
     path('', views.index, name='index'),
     path('signup/', views.signup, name='signup'),
     path('login/', login, {'template_name':'registration/login.html'}, name='login'),
     path('profile/', views.profile, name='profile'),
-    path('job_detail/', views.JobDetail.as_view(), name='job_detail'),
+    path('position_detail/', views.PositionDetail.as_view(), name='position_detail'),
     path('logout/', logout, {'template_name':'registration/logout.html'}, name='logout'),
     path('apply/', views.apply, name='apply'),
     path('applications/', views.applications, name='applications'),
 
-    #path('application_form/<int:job_id>/', views.JobDetailView.as_view(), name='job_details'),
+    #path('application_form/<int:position_id>/', views.PositionDetailView.as_view(), name='position_details'),
 ]

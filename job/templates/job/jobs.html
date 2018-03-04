@@ -1,9 +1,0 @@
-{% extends 'job/base.html' %}
-{% block title %}Jobs{% endblock %}
-{% block body %}
-<ul>
-    {% for job in all_jobs %}
-    <li><a href="{% url 'job:job_details' job.id %}">{{ job.job_title }}</a></li>
-    {% endfor %}
-</ul>
-{% endblock %}

@@ -4,13 +4,13 @@
 
     {% block title %}Welcome{% endblock %}
 
-    <h1>{{user.first_name}} {{ user.last_name }} :)</h1>
+    <h1>{{user.first_name}} {{ user.last_name }}</h1>
 
-    {% if jobs %}
-        <h2>You have applied for these jobs:</h2>
+    {% if positions %}
+        <h2>You have applied for these positions:</h2>
         <ul>
-            {% for job in jobs %}
-                <li><a href="{% url 'job_detail' %}">{{ job.title }}</a></li>
+            {% for position in positions %}
+                <li><a href="{% url 'position_detail' %}">{{ position.title }}</a></li>
             {% endfor %}
         </ul>
         <form action="{% url 'apply' %}" method="get">
@@ -18,17 +18,17 @@
             <input class="input-button" type="submit" value="Edit application"><br>
         </form>
     {% else %}
-            <h2>You have not applied for any jobs:</h2>
+            <h2>You have not yet applied for any positions.</h2>
             <form action="{% url 'apply' %}" method="get">
                 {% csrf_token %}
-                <input class="input-button" type="submit" value="Apply for a job"><br>
+                <input class="input-button" type="submit" value="Apply for a position now!"><br>
             </form>
     {% endif %}
 
 
         <form action="{% url 'logout' %}" method="get">
             {% csrf_token %}
-            <input class="input-button" type="submit" value="Logout"><br>
+            <input class="input-button" type="submit" value="Log out"><br>
         </form>
 
 

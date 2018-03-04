@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from job.models import Application
-from .models import Job, Gang, Section
+from .models import Position, Gang, Section
 from django.forms.widgets import CheckboxSelectMultiple
 from django.forms.models import ModelMultipleChoiceField
 
@@ -20,7 +20,9 @@ class SignUpForm(UserCreationForm):
 
 
 class ApplicationForm(forms.ModelForm):
-    text = forms.CharField(max_length=2000, required=True, widget=forms.Textarea(), help_text='Write your application here!' )
+    text = forms.CharField(label="Why do you want to volunteer with ISFiT?", max_length=2000, required=True, widget=forms.Textarea())
+    trondheim = forms.BooleanField(label="Do you currently live in Trondheim?", help_text="Yes")
+    student = forms.BooleanField(label="Are you a student?", help_text="Yes")
 
     class Meta:
         model = Application

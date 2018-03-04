@@ -4,36 +4,36 @@ from django.views.generic import View
 from django.contrib.auth.forms import UserCreationForm
 from .forms import SignUpForm, ApplicationForm
 from django.views import generic
-from .models import Gang, Application, Job, Section
+from .models import Gang, Application, Position, Section
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
 
-class JobView(generic.ListView):
-    template_name = 'job/jobs.html'
-    context_object_name = 'all_jobs'
+class PositionView(generic.ListView):
+    template_name = 'job/positions.html'
+    context_object_name = 'all_positions'
 
     def get_queryset(self):
-        self.description = get_object_or_404(Job, name=self.kwargs['description'])
-        return Job.objects.filter(description=self.description)
+        self.description = get_object_or_404(Position, name=self.kwargs['description'])
+        return Position.objects.filter(description=self.description)
 
 
-class JobDetail(generic.ListView):
-    template_name = 'job/job_details.html'
-    context_object_name = 'all_jobs'
+class PositionDetail(generic.ListView):
+    template_name = 'job/position_details.html'
+    context_object_name = 'all_positions'
 
     def get_queryset(self):
         return Application.objects.all()
 
 @login_required
 def profile(request):
-    jobs = None
+    positions = None
     if Application.objects.filter(applicant=request.user).first():
         user_application = Application.objects.filter(applicant=request.user).first()
-        jobs= user_application.jobs.all()
+        positions= user_application.positions.all()
 
     return render(request, 'job/profile.html', {
-        'jobs':jobs
+        'positions':positions
     })
 
 
@@ -55,21 +55,21 @@ def apply(request):
     applied_to = None
     if application is not None:
         form = ApplicationForm(instance=application)
-        applied_to = application.jobs.all()
+        applied_to = application.positions.all()
     else:
         form = ApplicationForm(request.POST, instance=application)
     if request.method == 'POST':
-        jobs = request.POST.getlist('jobs', None)
+        positions = request.POST.getlist('positions', None)
         form = ApplicationForm(request.POST, instance=application)
-        if jobs: # if any jobs were selected
+        if positions: # if any jobs were selected
             if application is not None: # if user already has an application
                 if form.is_valid():
                     application = form.save(commit=False)
                     application.applicant = request.user
-                    application.jobs.clear()
+                    application.positions.clear()
                     application.save()
-                    for job in jobs:
-                        application.jobs.add(job)
+                    for position in positions:
+                        application.positions.add(position)
                     application.save()
                     return (redirect('profile'))
             else:  # create new application
@@ -77,15 +77,15 @@ def apply(request):
                     application = form.save(commit=False)
                     application.applicant = request.user
                     application.save()
-                    for job in jobs:
-                        application.jobs.add(job)
+                    for position in positions:
+                        application.positions.add(position)
                     application.save()
                     return redirect('profile')
         else:
-            pass  # can't make am application to no jobs :S
+            pass  # can't make am application to no positions :S
 
     return render(request, 'job/application_form.html', {
-        'jobs': Job.objects.all(),
+        'positions': Position.objects.all(),
         'form':form,
         'sections': Section.objects.all(),
         'gangs': Gang.objects.all(),

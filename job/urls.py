@@ -5,6 +5,6 @@ from django.contrib.auth.views import login
 app_name = 'job'
 
 urlpatterns = [
-    path('jobs', views.JobView.as_view(), name='jobs'),
+    path('positions', views.PositionView.as_view(), name='positions'),
     #path('jobs/<int:job_id>', views.JobDetailView.as_view(), name='job_details'),
 ]

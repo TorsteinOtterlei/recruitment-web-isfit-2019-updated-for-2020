@@ -21,7 +21,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ['SECRET_KEY']
-# SECRET_KEY = '*o#&hk_xb@tga0cvru5ny&#djv5)8spo6)_s^=8vkphb345&gf'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -143,9 +142,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
-#AWS_ACCESS_KEY_ID = 'AKIAJEWT6PGBC45XIY6A'
+AWS_ACCESS_KEY_ID = 'AKIAJEWT6PGBC45XIY6A'
 AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
-#AWS_SECRET_ACCESS_KEY = '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'
+AWS_SECRET_ACCESS_KEY = 'jXVcrIEk/WaBFeuB1XWVdCJabSio3hyHsrZLLSn9'
 AWS_STORAGE_BUCKET_NAME = 'recruitment-web-isfit-2019'
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 AWS_S3_OBJECT_PARAMETERS = {
@@ -160,7 +159,9 @@ STATICFILES_DIRS = [
 STATIC_ROOT = os.path.join(BASE_DIR, "..", "www", "static")
 
 STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+#STATIC_URL = '/static/'
 
 LOGIN_REDIRECT_URL = 'profile'
 

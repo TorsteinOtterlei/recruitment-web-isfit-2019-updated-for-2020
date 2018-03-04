@@ -5,13 +5,13 @@
 <h1>ISFiT 2019</h1>
 
 <h2>Welcome {{ applicant.full_name }}!</h2>
-<h2>Select jobs you would like to apply for</h2>
+<h2>Select positions you would like to apply for</h2>
 
 <ul>
-{% for job in all_jobs %}
+{% for position in all_positions %}
     <form method="POST" class="post-form">{% csrf_token %}
          <div>
-             <button class="input-button" name="selectJob" type="submit" value="{{ job.pk }}">{{ job.title }}</button>
+             <button class="input-button" name="selectPosition" type="submit" value="{{ position.pk }}">{{ position.title }}</button>
          </div>
     </form>
 {% endfor %}

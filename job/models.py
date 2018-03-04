@@ -12,7 +12,7 @@ class Section(models.Model):
 
 class Gang(models.Model):
     name = models.CharField(max_length=50)
-    leader = models.OneToOneField(User, on_delete=models.SET_NULL, null=True)
+    #leader = models.OneToOneField(User, on_delete=models.SET_NULL, null=True)
     section = models.ForeignKey(Section, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -28,22 +28,23 @@ class Project(models.Model):
         return self.name
 
 
-class Job(models.Model):
+class Position(models.Model):
     title = models.CharField(max_length=50)
     gang = models.ForeignKey(Gang, on_delete=models.CASCADE)
-    description = models.CharField(max_length=2000)
+    description = models.TextField(max_length=20000)
 
     def __str__(self):
         return str(self.title) + ', ' + str(self.gang)
 
 
 class Application(models.Model):
-    jobs = models.ManyToManyField(Job)
+    positions = models.ManyToManyField(Position)
     applicant = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.CharField(max_length=2000)
     phone_number = models.IntegerField()
     weight = models.IntegerField(default=0)
-    trondheim = models.BooleanField(default=True)
+    trondheim = models.BooleanField(default=False)
+    student = models.BooleanField(default=False)
     #interview_time = models.DateTimeField(auto_now=False, auto_now_add=False)
 
     def __str__(self):

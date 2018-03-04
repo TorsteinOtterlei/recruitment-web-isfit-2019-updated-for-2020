@@ -21,41 +21,57 @@
                             {% endfor %}
                         </p>
                         {% endfor %}
-                        <!-- Lists available jobs for each section/gang -->
+                        <!-- Lists available positions for each section/gang -->
+                        <h3>Available positions: <br>
+                          <small> They are sorted in 'Section' -> 'Gang' -> 'Positions'</small></h3>
                         {% for section in sections %}
-                        <h1> <a data-toggle="collapse" href="#{{ section.name }}"
-                          role="button" aria-expanded="false" aria-controls="collapseExample">
-                          {{ section.name }}</a></h1>
-                        <div class="gangs-div collapse" id="{{ section.name }}">
-                        {% for gang in gangs %}
-                            {% if gang.section == section %}
+                        <div class="flex-horizontal">
+                          <h3 class="column-1">
+                            <a data-toggle="collapse" href="#{{ section.name }}"
+                            role="button" aria-expanded="false" aria-controls="collapseExample">
+                            {{ section.name }}
+                          </a>
+                          </h3>
+                          <div class="gangs-div collapse" id="{{ section.name }}">
+                          {% for gang in gangs %}
+                              {% if gang.section == section %}
+                                <div class="flex-vertical">
 
-                                <h5>
-                                  <a data-toggle="collapse" href="#{{ gang.name }}"
-                                    role="button" aria-expanded="false" aria-controls="collapseExample">
-                                    {{ gang.name }}
-                                  </a>
-                                </h5>
+                                    <h5 class="column-2">
+                                      <a data-toggle="collapse" href="#{{ gang.name }}"
+                                        role="button" aria-expanded="false" aria-controls="collapseExample">
+                                        {{ gang.name }}
+                                      </a>
+                                    </h5>
 
-                                <div class="positions-div collapse" id="{{ gang.name }}">
-                                {% for job in jobs %}
-                                    {% if job.gang == gang %}
-                                        <input name="jobs" id="{{ job.pk }}" type="checkbox" value="{{ job.pk }}">
-                                        <a class="" data-toggle="collapse" href="#{{ job.title }}"
-                                          role="button" aria-expanded="false" aria-controls="collapseExample"
-                                          for="{{ job.pk }}">{{ job.title }}
-                                        </a>
-                                        <div class="collapse" id="{{ job.title }}">
-                                          <p class="dropdown-item">{{ job.description }}</p>
-                                        </div>
-                                    {% endif %}
-                                {% endfor %}
+                                  <div class="positions-div collapse" id="{{ gang.name }}">
+                                  {% for position in positions %}
+
+                                      {% if position.gang == gang %}
+                                          <div class="flex-horizontal">
+                                          <input name="positions" id="{{ position.pk }}" type="checkbox" value="{{ position.pk }}"></input>
+                                          <a class="" data-toggle="collapse" href="#{{ position.title }}"
+                                            role="button" aria-expanded="false" aria-controls="collapseExample"
+                                            for="{{ position.pk }}">{{ position.title }} <small>(Click to see text)</small>
+                                          </a></div>
+                                          <div class="collapse" id="{{ position.title }}">
+                                            <div class="dropdown-item">
+                                              <p class="">{{ position.description }}</p>
+                                            </div>
+                                          </div>
+
+                                      {% endif %}
+
+                                  {% endfor %}
+                                  </div>
                                 </div>
 
-                            {% endif %}
-                        {% endfor %}
+                              {% endif %}
+                          {% endfor %}
+                          </div>
                         </div>
                     {% endfor %}
+
                         <button name="submitForm" type="submit" class="btn btn-primary" style="width:100%">Sign up</button>
 
     </form>
