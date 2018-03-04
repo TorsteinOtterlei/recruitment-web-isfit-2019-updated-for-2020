@@ -25,7 +25,7 @@ class JobDetail(generic.ListView):
     def get_queryset(self):
         return Application.objects.all()
 
-
+@login_required
 def profile(request):
     jobs = None
     if Application.objects.filter(applicant=request.user).first():
@@ -52,15 +52,14 @@ def applications(request):
 @login_required
 def apply(request):
     application = Application.objects.filter(applicant=request.user).first()
-    print(application)
+    applied_to = None
     if application is not None:
         form = ApplicationForm(instance=application)
+        applied_to = application.jobs.all()
     else:
         form = ApplicationForm(request.POST, instance=application)
     if request.method == 'POST':
         jobs = request.POST.getlist('jobs', None)
-        print(jobs)
-        print(not jobs)
         form = ApplicationForm(request.POST, instance=application)
         if jobs: # if any jobs were selected
             if application is not None: # if user already has an application
@@ -90,6 +89,7 @@ def apply(request):
         'form':form,
         'sections': Section.objects.all(),
         'gangs': Gang.objects.all(),
+        'applied_to':applied_to
 
     })
 
@@ -106,10 +106,10 @@ def signup(request):
             return redirect('index')
         else:
             form = SignUpForm()
-        return render(request, 'job/registration_form.html', {'form':form})
+        return render(request, 'registration/registration_form.html', {'form':form})
 
 
 def logout_view(request):
     logout(request)
     # Redirect to a success page.
-    render(request, 'job/logout.html')
+    render(request, 'registration/logout.html')

@@ -23,10 +23,10 @@ urlpatterns = [
     path('job/', include('job.urls')),
     path('', views.index, name='index'),
     path('signup/', views.signup, name='signup'),
-    path('login/', login, {'template_name':'job/login.html'}, name='login'),
+    path('login/', login, {'template_name':'registration/login.html'}, name='login'),
     path('profile/', views.profile, name='profile'),
     path('job_detail/', views.JobDetail.as_view(), name='job_detail'),
-    path('logout/', logout, {'template_name':'job/logout.html'}, name='logout'),
+    path('logout/', logout, {'template_name':'registration/logout.html'}, name='logout'),
     path('apply/', views.apply, name='apply'),
     path('applications/', views.applications, name='applications'),
 
