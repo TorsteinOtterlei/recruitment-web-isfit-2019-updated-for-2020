@@ -25,7 +25,9 @@ SECRET_KEY = os.environ['SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['recruitment-web-isfit-2019.eu-west-1.elasticbeanstalk.com']
+ALLOWED_HOSTS = ['recruitment-web-isfit-2019.eu-west-1.elasticbeanstalk.com',
+                'www.recruitment-web-isfit-2019.eu-west-1.elasticbeanstalk.com',
+                'recruiting.isfit.org', 'www.recruiting.isfit.org']
 
 
 # Application definition
