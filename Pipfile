@@ -8,6 +8,8 @@ name = "pypi"
 [packages]
 
 django = "*"
+awsebcli = "*"
+"psycopg2" = "*"
 
 
 [dev-packages]
