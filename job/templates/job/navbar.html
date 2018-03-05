@@ -12,10 +12,7 @@
             <div class="container">
               <a class="main-logo-footprints" href="{% url 'index' %}">
                   <p id="main-logo"></p>
-                  <p class="footprint" id=footprint-1></p>
-                  <div class="footprint" id=footprint-2></div>
-                  <div class="footprint" id=footprint-3></div>
-                  <div class="footprint" id=footprint-4></div>
+                  <p class="footprint" id=footprints_long></p>
               </a>
             </div>
         </div>
@@ -25,7 +22,7 @@
         <ul class="nav navbar-nav">
           <a href="{% url 'index' %}">Home</a>
            <li class="dropdown">
-                <a href="information" class="" role="button">Positions
+                <a href="{% url 'information' %}" class="" role="button">Positions
                 </a>
             </li>
         </ul>

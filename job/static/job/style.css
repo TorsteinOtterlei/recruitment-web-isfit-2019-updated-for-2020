@@ -107,25 +107,14 @@ button {
   height: 5px;
 }
 
-#footprint-1 {
-  background: url("images/footprints-06.png");
-}
-#footprint-2 {
-  background: url("images/footprints-07.png");
-}
-#footprint-3 {
-  background: url("images/footprints-08.png");
-}
-#footprint-4 {
-  background: url("images/footprints-09.png");
-}
-
-.footprint {
-  width: 100px;
+#footprints_long {
+  border-width: 3px;
+  background: url("images/footprints_long.png");
+  background-size: cover;
+  width: -webkit-fill-available;
   height: 80px;
-  -ms-transform: rotate(20deg);
-  -webkit-transform: rotate(20deg);
-  transform: rotate(90deg);
+  margin-bottom: 0;
+  margin: 10px 0 0 20px;
 }
 
 #main-logo {
