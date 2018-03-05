@@ -28,6 +28,7 @@
                 {% endfor %}
                 <button class="btn btn-primary" type="submit">Sign in</button>
             </form>
+            <p>Don't remember your password? Send an e-mail to recruitment.it at isfit.no</p>
             <form action="{% url 'signup' %}" method="post">
                 {% csrf_token %}
                 <input class="have-user have-user-button" type="submit" value="Don't have a user?"><br>

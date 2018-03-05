@@ -113,3 +113,10 @@ def logout_view(request):
     logout(request)
     # Redirect to a success page.
     render(request, 'registration/logout.html')
+
+def information(request):
+    return render(request, 'job/information.html', {
+        'sections': Section.objects.all(),
+        'gangs': Gang.objects.all(),
+        'positions':Position.objects.all()
+    })

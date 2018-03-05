@@ -24,17 +24,10 @@
     <div class="collapse navbar-collapse container" id="navigation_menu">
         <ul class="nav navbar-nav">
           <a href="{% url 'index' %}">Home</a>
-<<<<<<< HEAD
            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Positions<span class="caret"></span></a>
-                <ul class="dropdown-menu" id="dropdown-nav">
-                    <li><a href="#"></a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a href="#"></a></li>
-                </ul>
+                <a href="information" class="" role="button">Positions
+                </a>
             </li>
-=======
->>>>>>> dev
         </ul>
         <ul class="nav navbar-nav navbar-right">
 
@@ -45,14 +38,8 @@
 
         <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ user.username }} <span class="caret"></span></a>
-<<<<<<< HEAD
-            <ul class="dropdown-menu" id="dropdown-nav">
-                <li><a href="{% url 'profile' %}">Min profil</a></li>
-                <li><a href="#">Profil instillinger</a></li>
-=======
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu dropdown-nav">
                 <li><a href="{% url 'profile' %}">My profile</a></li>
->>>>>>> dev
                 <li role="separator" class="divider"></li>
                 <li><a href="{% url 'logout' %}">Logout</a>
             </ul>

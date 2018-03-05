@@ -18,12 +18,19 @@ h3 {
   margin-top: 10px;
 }
 
+a {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: none;
+}
+
 .navbar-nav > a,
 .navbar-nav > li a {
   color: white;
 }
 
-#dropdown-nav {
+.dropdown-nav {
   background-color: black;
 }
 
@@ -50,6 +57,7 @@ button {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-top: 5vh;
 }
 
 .input-button {
@@ -57,6 +65,7 @@ button {
   border-color: #007bff;
   margin: 5px;
   color: white;
+  width: 180px;
 }
 
 .input-button:hover {
@@ -180,19 +189,28 @@ button {
   display: flex;
 }
 
+.flex-horizontal > h3 {
+  margin: 0;
+  margin-top: 10px;
+}
+
 .flex-vertical {
   display: flex;
   flex-direction: column;
 }
 
-.column-1 {
-  width: 25%;
-}
-
-.column-2 {
-  width: 200px;
-}
-
 .gangs-div {
-  max-width: 75%;
+  max-width: 70%;
+  margin-left: 10px;
+  position: relative;
+  top: 50px;
+  margin-bottom: 50px;
+}
+
+.gangs-div > .flex-vertical > h5 {
+  margin: 0;
+}
+
+.positions-div {
+  margin-left: 10px;
 }

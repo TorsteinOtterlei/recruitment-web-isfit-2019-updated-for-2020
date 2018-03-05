@@ -1,0 +1,65 @@
+{% extends 'job/base.html' %}
+
+{% block body %}
+
+    <div class="container" style="color: black">
+        <div class="row space-below">
+            <div class="col-xl-12 space-above">
+                <div class="white-box" id="text-box">
+
+                        <h1>All available positions<br></h1>
+                        {% for section in sections %}
+                        <div class="flex-horizontal">
+                          <h3 class="column-1">
+                            <a class="dropdown-toggle" data-toggle="collapse" href="#{{ section.name }}"
+                            role="button" aria-expanded="false" aria-controls="collapseExample">
+                            {{ section.name }}
+                          </a>
+                          </h3>
+                          <div class="gangs-div collapse" id="{{ section.name }}">
+                          {% for gang in gangs %}
+                              {% if gang.section == section %}
+                                <div class="flex-vertical">
+
+                                    <h5 class="column-2">
+                                      <a class="dropdown-toggle" data-toggle="collapse" href="#{{ gang.name }}"
+                                        role="button" aria-expanded="false" aria-controls="collapseExample">
+                                        {{ gang.name }}
+                                      </a>
+                                    </h5>
+
+                                  <div class="positions-div collapse" id="{{ gang.name }}">
+                                  {% for position in positions %}
+
+                                      {% if position.gang == gang %}
+                                          <div class="flex-horizontal">
+                                            <h6><a class="dropdown-toggle" data-toggle="collapse" href="#{{ position.title }}"
+                                              role="button" aria-expanded="false" aria-controls="collapseExample"
+                                              for="{{ position.pk }}">{{ position.title }}
+                                            </a></h6>
+                                            </div>
+                                            <div class="collapse" id="{{ position.title }}">
+                                              <div class="dropdown-item">
+                                                <p class="">{{ position.description }}</p>
+                                              </div>
+                                            </div>
+
+                                      {% endif %}
+
+                                  {% endfor %}
+                                  </div>
+                                </div>
+
+                              {% endif %}
+                          {% endfor %}
+                          </div>
+                        </div>
+                    {% endfor %}
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
