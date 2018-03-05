@@ -18,6 +18,16 @@ class SignUpForm(UserCreationForm):
         model = User
         fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')
 
+    def __init__(self, *args, **kwargs):
+        super(SignUpForm, self).__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs.update({'class': 'form-control'})
+        self.fields['first_name'].widget.attrs.update({'class': 'form-control'})
+        self.fields['last_name'].widget.attrs.update({'class': 'form-control'})
+        self.fields['email'].widget.attrs.update({'class': 'form-control'})
+        self.fields['password1'].widget.attrs.update({'class': 'form-control'})
+        self.fields['password1'].help_text = 'Your password cant be too similar to your other personal information. Your password must contain atleast 8 characters. Your password cant be a commonly used password and cant be entierly numeric.'
+        self.fields['password2'].widget.attrs.update({'class': 'form-control'})
+
 
 class ApplicationForm(forms.ModelForm):
     text = forms.CharField(label="Why do you want to volunteer with ISFiT?", max_length=2000, required=True, widget=forms.Textarea())
