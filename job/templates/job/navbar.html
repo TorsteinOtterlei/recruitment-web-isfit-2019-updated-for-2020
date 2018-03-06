@@ -28,6 +28,8 @@
         </ul>
         <ul class="nav navbar-nav navbar-right">
 
+        <a href="{% url 'apply' %}">Application</a>
+
        {% if user.is_authenticated %}
                 {% if user.is_staff %}
                     <li><a href="{% url 'admin:index' %}">Administration</a>
@@ -38,7 +40,7 @@
             <ul class="dropdown-menu dropdown-nav">
                 <li><a href="{% url 'profile' %}">My profile</a></li>
                 <li role="separator" class="divider"></li>
-                <li><a href="{% url 'logout' %}">Logout</a>
+                <li><a href="{% url 'logout' %}" style="color: red">Logout</a>
             </ul>
         </li>
         {% else %}
