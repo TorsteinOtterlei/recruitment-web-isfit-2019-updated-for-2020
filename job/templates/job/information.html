@@ -17,21 +17,22 @@
                           </a>
                           </h3>
                           <div class="gangs-div collapse" id="{{ section.name }}">
+                            <h5>About {{ section.name }}</h5>
                             <p>{{ section.information }}</p>
-                            <h4>Gangs</h4>
+                            <h5>Gangs</h5>
                           {% for gang in gangs %}
                               {% if gang.section == section %}
                                 <div class="flex-vertical">
 
-                                    <h5 class="column-2">
+                                    <h6 class="column-2">
                                       <a class="dropdown-toggle" data-toggle="collapse" href="#{{ gang.name }}"
                                         role="button" aria-expanded="false" aria-controls="collapseExample">
                                         {{ gang.name }}
                                       </a>
-                                    </h5>
+                                    </h6>
 
                                   <div class="positions-div collapse" id="{{ gang.name }}">
-                                    <h5>Positions</h5>
+                                    <h6>Positions</h6>
                                   {% for position in positions %}
 
                                       {% if position.gang == gang %}

@@ -5,6 +5,8 @@ from django.db import models
 
 class ApplicationAdmin(admin.ModelAdmin):
     model = Application
+    readonly_fields = ('positions','applicant', 'phone_number','text', )
+
     filter_horizontal = ('positions',) #was jobs
     formfield_overrides = {
         models.CharField: {'widget': TextInput(attrs={'size':'200'})},

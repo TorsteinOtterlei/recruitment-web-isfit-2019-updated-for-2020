@@ -41,11 +41,12 @@ class Position(models.Model):
 class Application(models.Model):
     positions = models.ManyToManyField(Position)
     applicant = models.ForeignKey(User, on_delete=models.CASCADE)
-    text = models.CharField(max_length=2000)
+    text = models.TextField(max_length=2000)
     phone_number = models.IntegerField()
     weight = models.IntegerField(default=0)
     trondheim = models.BooleanField(default=False)
     student = models.BooleanField(default=False)
+    interview_time = models.DateTimeField()
     #interview_time = models.DateTimeField(auto_now=False, auto_now_add=False)
 
     def __str__(self):

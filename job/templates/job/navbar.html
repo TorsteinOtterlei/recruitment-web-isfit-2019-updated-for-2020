@@ -28,9 +28,9 @@
         </ul>
         <ul class="nav navbar-nav navbar-right">
 
-        <a href="{% url 'apply' %}">Application</a>
-
        {% if user.is_authenticated %}
+
+        <a href="{% url 'apply' %}">Application</a>
                 {% if user.is_staff %}
                     <li><a href="{% url 'admin:index' %}">Administration</a>
                 {% endif %}
