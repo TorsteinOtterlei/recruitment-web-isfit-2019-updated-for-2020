@@ -37,14 +37,18 @@
 
                                       {% if position.gang == gang %}
                                           <div class="flex-horizontal">
-                                            <h6><a class="dropdown-toggle" data-toggle="collapse" href="#{{ position.title }}"
+                                            <h5 href=""><a class="dropdown-toggle" data-toggle="collapse" href="#{{ position.title }}"
                                               role="button" aria-expanded="false" aria-controls="collapseExample"
                                               for="{{ position.pk }}">{{ position.title }}
-                                            </a></h6>
+                                            </a></h5>
                                             </div>
                                             <div class="collapse" id="{{ position.title }}">
                                               <div class="dropdown-item">
                                                 <p class="">{{ position.description }}</p>
+                                                <h5>Contact Information</h5>
+                                                <p><b>Name:</b> {{ position.name_of_interviewer }} <br>
+                                                  <b>Phone:</b> {{ position.phone_number }} <br>
+                                                  <b>Email:</b> <a href="">{{ position.email }}</a></p>
                                               </div>
                                             </div>
 

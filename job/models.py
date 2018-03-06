@@ -33,6 +33,9 @@ class Position(models.Model):
     title = models.CharField(max_length=50)
     gang = models.ForeignKey(Gang, on_delete=models.CASCADE)
     description = models.TextField(max_length=20000)
+    email = models.EmailField(max_length=200)
+    name_of_interviewer = models.CharField(max_length=100)
+    phone_number = models.IntegerField()
 
     def __str__(self):
         return str(self.title) + ', ' + str(self.gang)
