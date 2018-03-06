@@ -24,9 +24,10 @@
                         <!-- Lists available positions for each section/gang -->
                         <h3>Which positions do you want to apply for?</h3>
                         <p>A full list of the positions with all information can be found <a href="/information">here</a>.</p>
-                          <p>THE POSITIONS</p>
+
                           <div class="gangs-div " id="{{ section.name }}">
-                          {% for gang in gangs %}
+                            <h4>Gangs</h4>
+                            {% for gang in gangs %}
                                 <div class="flex-horizontal">
 
                                     <h5 class="column-2">
@@ -37,6 +38,7 @@
                                     </h5>
 
                                   <div class="positions-div collapse" id="{{ gang.name }}">
+                                  <h5>Positions</h5>
                                   {% for position in positions %}
 
                                       {% if position.gang == gang %}
