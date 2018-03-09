@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 
 class Section(models.Model):
@@ -49,8 +50,8 @@ class Application(models.Model):
     weight = models.IntegerField(default=0)
     trondheim = models.BooleanField(default=False)
     student = models.BooleanField(default=False)
-    interview_time = models.DateTimeField()
+    interview_time = models.DateTimeField(default=timezone.now, blank=True)
     #interview_time = models.DateTimeField(auto_now=False, auto_now_add=False)
 
     def __str__(self):
-        return str(self.applicant)
+        return str(self.applicant.last_name) + ', ' + str(self.applicant.first_name)

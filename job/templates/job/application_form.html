@@ -1,5 +1,6 @@
 {% extends 'job/base.html' %}
 
+
 {% block body %}
 
     <div class="container" style="color: black">
@@ -66,14 +67,23 @@
 
                           {% endfor %}
                           </div>
-
-                        <button name="submitForm" type="submit" class="btn btn-primary" style="width:100%">Sign up</button>
+                        Have you prioriticed your choices?
+                        <br><input onclick="des()" type="checkbox" name="prog" value="1">
+                        <button style="display: none; width: 100%; background-color: #007bff; color: white;" id="submit_prog" class="btn button-form" type="submit" >Apply</button>
 
     </form>
             </div>
         </div>
     </div>
 </div>
-
+<script>
+    function des(){
+       if( document.getElementById("submit_prog").style.display === "none"){
+           document.getElementById("submit_prog").style.display = "block";
+       } else {
+            document.getElementById("submit_prog").style.display = "none";
+       }
+    }
+</script>
 
 {% endblock %}

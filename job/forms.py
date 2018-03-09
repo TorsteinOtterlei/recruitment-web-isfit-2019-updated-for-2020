@@ -30,7 +30,7 @@ class SignUpForm(UserCreationForm):
 
 
 class ApplicationForm(forms.ModelForm):
-    text = forms.CharField(label="Why do you want to volunteer with ISFiT?", max_length=2000, required=True, widget=forms.Textarea())
+    text = forms.CharField(label="Why do you want to volunteer with ISFiT? (Remember to write a ranking list of your top 3 choices where nr. 1 is your top choice)", max_length=2000, required=True, widget=forms.Textarea())
     trondheim = forms.BooleanField(label="Do you currently live in Trondheim?", help_text="Yes")
     student = forms.BooleanField(label="Are you a student?", help_text="Yes")
 
