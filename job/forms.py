@@ -37,10 +37,11 @@ class ApplicationForm(forms.ModelForm):
     class Meta:
         model = Application
         exclude = ['applicant', 'weight']
-        fields = ('text', 'phone_number', 'trondheim')
+        fields = ('text', 'phone_number', 'trondheim', 'student')
 
     def __init__(self, *args, **kwargs):
         super(ApplicationForm, self).__init__(*args, **kwargs)
         self.fields['text'].widget.attrs.update({'class': 'form-control'})
         self.fields['phone_number'].widget.attrs.update({'class': 'form-control'})
         self.fields['trondheim'].widget.attrs.update({'class': 'form-control'})
+        self.fields['student'].widget.attrs.update({'class': 'form-control'})
