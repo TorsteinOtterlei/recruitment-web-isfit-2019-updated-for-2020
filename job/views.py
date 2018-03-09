@@ -48,6 +48,14 @@ def applications(request):
 
     })
 
+def view_applications(request):
+    return render(request, 'job/view_applications.html', {
+        'applications': Application.objects.all(),
+        'sections': Section.objects.all(),
+        'gangs': Gang.objects.all(),
+        'pos': Position.objects.all(),
+    })
+
 
 @login_required
 def apply(request):
