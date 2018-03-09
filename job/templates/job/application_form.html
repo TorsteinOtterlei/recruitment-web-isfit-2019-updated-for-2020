@@ -68,9 +68,12 @@
                           {% endfor %}
                           </div>
                         Have you prioriticed your choices?
-                        <br><input onclick="des()" type="checkbox" name="prog" value="1">
+                        <br><input onclick="des()" type="checkbox" name="prog" value="1" value="Yes" label="Yes">
+                          <small style="display: inline-block;">Yes</small></input>
+                        <div id="apply-text" style="margin-top: 10px;">
+                          <h5>You have to prioritice your position choices before you can apply!</h5>
+                        </div>
                         <button style="display: none; width: 100%; background-color: #007bff; color: white;" id="submit_prog" class="btn button-form" type="submit" >Apply</button>
-
     </form>
             </div>
         </div>
@@ -79,9 +82,11 @@
 <script>
     function des(){
        if( document.getElementById("submit_prog").style.display === "none"){
+           document.getElementById("apply-text").style.display = "none";
            document.getElementById("submit_prog").style.display = "block";
        } else {
             document.getElementById("submit_prog").style.display = "none";
+            document.getElementById("apply-text").style.display = "block";
        }
     }
 </script>

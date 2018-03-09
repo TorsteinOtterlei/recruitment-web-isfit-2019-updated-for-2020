@@ -25,6 +25,10 @@ a:hover {
   text-decoration: none;
 }
 
+small {
+  display: inline-block !important;
+}
+
 .container {
   max-width: 800px;
 }
