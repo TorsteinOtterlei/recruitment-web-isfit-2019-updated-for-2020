@@ -29,7 +29,8 @@ urlpatterns = [
     path('logout/', logout, {'template_name':'registration/logout.html'}, name='logout'),
     path('apply/', views.apply, name='apply'),
     path('applications/', views.applications, name='applications'),
-    path('information/', views.information, name='information')
+    path('information/', views.information, name='information'),
+    path('view_applications/', views.view_applications, name='view_applications')
 
     #path('application_form/<int:position_id>/', views.PositionDetailView.as_view(), name='position_details'),
 ]

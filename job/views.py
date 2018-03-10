@@ -89,8 +89,8 @@ def apply(request):
         'form':form,
         'sections': Section.objects.all(),
         'gangs': Gang.objects.all(),
-        'applied_to':applied_to
-
+        'applied_to':applied_to,
+        #'csrf_token': csrf_token
     })
 
 
