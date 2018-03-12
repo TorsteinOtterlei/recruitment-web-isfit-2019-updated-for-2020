@@ -44,8 +44,6 @@ def index(request):
 def applications(request):
     return render(request, 'job/applications.html', {
         'gangs':Gang.objects.all(),
-
-
     })
 
 def view_applications(request):
@@ -55,6 +53,15 @@ def view_applications(request):
         'gangs': Gang.objects.all(),
         'pos': Position.objects.all(),
     })
+
+class ApplicationDetail(generic.DetailView):
+    model = Application
+    template_name = 'job/applicant_text.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['text'] = Application.text
+        return context
 
 
 @login_required

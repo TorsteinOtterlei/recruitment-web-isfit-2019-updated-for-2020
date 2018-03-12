@@ -44,9 +44,8 @@
                                                   {% if user.is_staff %}
                                                       {% for application in applications %}
                                                         {% if position in application.positions.all %}
-                                                            <li><a>{{ application.applicant.first_name }} {{application.applicant.last_name}} ( {{ application.applicant.email }} )</a></li>
+                                                            <a href="{% url 'applicant_text' application.pk %}">{{application.applicant.first_name}} {{ application.applicant.last_name}}</a><br>
                                                         {% endif %}
-
                                                       {% endfor %}
                                                   {% endif %}
 
