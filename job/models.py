@@ -50,8 +50,14 @@ class Application(models.Model):
     weight = models.IntegerField(default=0)
     trondheim = models.BooleanField(default=False)
     student = models.BooleanField(default=False)
-    interview_time = models.DateTimeField(default=timezone.now, blank=True)
+    interview_time = models.DateTimeField(null=True, blank=True)
     #interview_time = models.DateTimeField(auto_now=False, auto_now_add=False)
 
     def __str__(self):
-        return str(self.applicant.last_name) + ', ' + str(self.applicant.first_name)
+        if (self.interview_time == None):
+            return str(self.applicant.last_name) + ', ' + str(self.applicant.first_name) + '. No time set'
+        else:
+            return str(self.applicant.last_name) + ', ' + str(self.applicant.first_name)+ '. Date: ' + \
+                   str(self.interview_time.day) + '.' + str(self.interview_time.month) + '.' + str(self.interview_time.year) + '. Time: ' + \
+                   str(self.interview_time.hour) + ':' + str(self.interview_time.minute)
+

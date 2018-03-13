@@ -18,15 +18,15 @@
 
     <form action="{% url 'profile' %}" method="post">
     {% csrf_token %}
-        <input class="input-button" type="submit" value="See profile"><br>
+        <input class="input-button" type="submit" value="See profile" style="cursor: pointer"><br>
     </form>
     <form action="{% url 'apply' %}" method="get">
         {% csrf_token %}
-        <input class="input-button" type="submit" value="Edit application"><br>
+        <input class="input-button" type="submit" value="Edit application" style="cursor: pointer"><br>
     </form>
     <form action="{% url 'logout' %}" method="post">
     {% csrf_token %}
-        <input class="input-button" style="background-color:red; border-color: red" type="submit" value="Log out"><br>
+        <input class="input-button" style="background-color:red; border-color: red; cursor: pointer;" type="submit" value="Log out"><br>
     </form>
 
 {% else %}
