@@ -36,7 +36,7 @@ class Position(models.Model):
     description = models.TextField(max_length=20000)
     email = models.EmailField(max_length=200)
     name_of_interviewer = models.CharField(max_length=100)
-    phone_number = models.IntegerField()
+    phone_number = models.CharField(max_length=12)
 
     def __str__(self):
         return str(self.title) + ', ' + str(self.gang)
@@ -46,7 +46,7 @@ class Application(models.Model):
     positions = models.ManyToManyField(Position)
     applicant = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.TextField(max_length=2000)
-    phone_number = models.IntegerField()
+    phone_number = models.CharField(max_length=12)
     weight = models.IntegerField(default=0)
     trondheim = models.BooleanField(default=False)
     student = models.BooleanField(default=False)

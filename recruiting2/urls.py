@@ -30,7 +30,8 @@ urlpatterns = [
     path('apply/', views.apply, name='apply'),
     path('applications/', views.applications, name='applications'),
     path('information/', views.information, name='information'),
-    path('view_applications/', views.view_applications, name='view_applications')
+    path('view_applications/', views.view_applications, name='view_applications'),
+    path('applicant_text/<int:pk>', views.ApplicationDetail.as_view(), name='applicant_text'),
 
     #path('application_form/<int:position_id>/', views.PositionDetailView.as_view(), name='position_details'),
 ]
