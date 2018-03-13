@@ -46,8 +46,6 @@ def applications(request):
         'gangs':Gang.objects.all(),
     })
 
-<<<<<<< HEAD
-=======
 def view_applications(request):
     return render(request, 'job/view_applications.html', {
         'applications': Application.objects.all(),
@@ -65,7 +63,6 @@ class ApplicationDetail(generic.DetailView):
         context['text'] = Application.text
         return context
 
->>>>>>> 933cc206dca3ef813e2af4e7b1dfb2f36a9e8655
 
 @login_required
 def apply(request):
