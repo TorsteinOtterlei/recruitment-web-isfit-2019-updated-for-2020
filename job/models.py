@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.utils import timezone
 
 
@@ -47,7 +48,7 @@ class Application(models.Model):
     applicant = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.TextField(max_length=2000)
     phone_number = models.CharField(max_length=12)
-    weight = models.IntegerField(default=0)
+    #weight = models.IntegerField(default=0)
     trondheim = models.BooleanField(default=False)
     student = models.BooleanField(default=False)
     interview_time = models.DateTimeField(null=True, blank=True)
@@ -61,3 +62,13 @@ class Application(models.Model):
                    str(self.interview_time.day) + '.' + str(self.interview_time.month) + '.' + str(self.interview_time.year) + '. Time: ' + \
                    str(self.interview_time.hour) + ':' + str(self.interview_time.minute)
 
+class Ranking(models.Model):
+    position = models.ForeignKey(Position, on_delete=models.CASCADE)
+    applicant = models.ForeignKey(User, on_delete=models.CASCADE)
+    rank = models.IntegerField(default=3,validators=[
+            MaxValueValidator(3),
+            MinValueValidator(1)
+        ])
+
+    def __str__(self):
+        return str(self.applicant.first_name) + ' ' + str(self.applicant.last_name) + ', ' + str(self.position.title) + ' ' + str(self.rank)

@@ -1,13 +1,9 @@
 {% extends 'job/base.html' %}
-{% block title %}Position details{% endblock %}
-{% block body %}
 
-<ul>
-    {% for application in all_positions %}
-        {% if application.applicant == user %}
-            {{ application.jobs }}
-        {% endif %}
-    {% endfor %}
-</ul>
+{% block body %}
+{% block title %}Position description{% endblock %}
+<br>
+<br>
+<h2>{{position.description}}</h2>
 
 {% endblock %}

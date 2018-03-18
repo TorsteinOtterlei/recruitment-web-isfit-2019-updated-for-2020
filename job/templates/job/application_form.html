@@ -45,6 +45,7 @@
                                       {% if position.gang == gang %}
                                           <div class="flex-horizontal">
                                           <input name="positions" id="{{ position.pk }}" type="checkbox" value="{{ position.pk }}"></input>
+                                          <input name="rank" id="{{ ranking.pk }}" type="number" value="{{ ranking.pk }}"></input>
                                           <a class="" data-toggle="collapse" href="#{{ position.title }}"
                                             role="button" aria-expanded="false" aria-controls="collapseExample"
                                             for="{{ position.pk }}">{{ position.title }}

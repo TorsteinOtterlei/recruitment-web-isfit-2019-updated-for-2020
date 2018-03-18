@@ -4,7 +4,7 @@ from django.views.generic import View
 from django.contrib.auth.forms import UserCreationForm
 from .forms import SignUpForm, ApplicationForm
 from django.views import generic
-from .models import Gang, Application, Position, Section
+from .models import Gang, Application, Position, Section, Ranking
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
@@ -18,22 +18,26 @@ class PositionView(generic.ListView):
         return Position.objects.filter(description=self.description)
 
 
-class PositionDetail(generic.ListView):
+class PositionDetail(generic.DetailView):
+    model = Position
     template_name = 'job/position_details.html'
-    context_object_name = 'all_positions'
 
-    def get_queryset(self):
-        return Application.objects.all()
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['description'] = Position.description
+        return context
 
 @login_required
 def profile(request):
     positions = None
+    rankings = Ranking.objects.all()
     if Application.objects.filter(applicant=request.user).first():
         user_application = Application.objects.filter(applicant=request.user).first()
         positions= user_application.positions.all()
 
     return render(request, 'job/profile.html', {
-        'positions':positions
+        'positions':positions,
+        'rankings': rankings
     })
 
 
@@ -52,6 +56,11 @@ def view_applications(request):
         'sections': Section.objects.all(),
         'gangs': Gang.objects.all(),
         'pos': Position.objects.all(),
+    })
+
+def all_applications(request):
+    return render(request, 'job/all_applications.html', {
+        'applications': Application.objects.all(),
     })
 
 class ApplicationDetail(generic.DetailView):

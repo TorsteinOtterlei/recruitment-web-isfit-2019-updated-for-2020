@@ -10,7 +10,13 @@
         <h2>You have applied for these positions:</h2>
         <ul>
             {% for position in positions %}
+
                 <li><a href="{% url 'position_detail' position.pk %}">{{ position.title }}</a></li>
+                {% for rank in rankings %}
+                    {% if position.pk == rank.position.pk %}
+                        <h4>{{ rank.rank }}</h4>
+                    {% endif %}
+                {% endfor %}
             {% endfor %}
         </ul>
         <form action="{% url 'apply' %}" method="get">

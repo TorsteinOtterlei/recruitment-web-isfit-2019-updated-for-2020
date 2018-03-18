@@ -33,6 +33,7 @@
 
         <a href="{% url 'apply' %}">Application</a>
                 {% if user.is_staff %}
+                    <li><a href="{% url 'all_applications' %}">Applications</a>
                     <li><a href="{% url 'view_applications' %}">All applicants</a>
                     <li><a href="{% url 'admin:index' %}">Administration</a>
                 {% endif %}

@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
-from job.models import Application
+from job.models import Application, Ranking
 from .models import Position, Gang, Section
 from django.forms.widgets import CheckboxSelectMultiple
 from django.forms.models import ModelMultipleChoiceField
@@ -35,8 +35,8 @@ class ApplicationForm(forms.ModelForm):
     student = forms.BooleanField(label="Are you a student?", help_text="Yes")
 
     class Meta:
-        model = Application
-        exclude = ['applicant', 'weight']
+        model = Application#, Ranking
+        exclude = ['applicant']
         fields = ('text', 'phone_number', 'trondheim', 'student')
 
     def __init__(self, *args, **kwargs):
@@ -45,3 +45,4 @@ class ApplicationForm(forms.ModelForm):
         self.fields['phone_number'].widget.attrs.update({'class': 'form-control'})
         self.fields['trondheim'].widget.attrs.update({'class': 'form-control'})
         self.fields['student'].widget.attrs.update({'class': 'form-control'})
+        #self.fields['rank'].widget.attrs.update({'class': 'form-control'})
