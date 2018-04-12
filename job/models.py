@@ -42,27 +42,24 @@ class Position(models.Model):
     def __str__(self):
         return str(self.title) + ', ' + str(self.gang)
 
-
 class Application(models.Model):
     positions = models.ManyToManyField(Position)
     applicant = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.TextField(max_length=2000)
     phone_number = models.CharField(max_length=12)
-    #weight = models.IntegerField(default=0)
     trondheim = models.BooleanField(default=False)
     student = models.BooleanField(default=False)
     interview_time = models.DateTimeField(null=True, blank=True)
-    #interview_time = models.DateTimeField(auto_now=False, auto_now_add=False)
 
     def __str__(self):
         if (self.interview_time == None):
-            return str(self.applicant.last_name) + ', ' + str(self.applicant.first_name) + '. No time set'
+            return str(self.applicant.last_name) + ', ' + str(self.applicant.first_name) + '. No time set  ' + str(User.objects.get(id=self.applicant.pk))
         else:
             return str(self.applicant.last_name) + ', ' + str(self.applicant.first_name)+ '. Date: ' + \
                    str(self.interview_time.day) + '.' + str(self.interview_time.month) + '.' + str(self.interview_time.year) + '. Time: ' + \
                    str(self.interview_time.hour) + ':' + str(self.interview_time.minute)
 
-class Ranking(models.Model):
+'''class Ranking(models.Model):
     position = models.ForeignKey(Position, on_delete=models.CASCADE)
     applicant = models.ForeignKey(User, on_delete=models.CASCADE)
     rank = models.IntegerField(default=3,validators=[
@@ -71,4 +68,4 @@ class Ranking(models.Model):
         ])
 
     def __str__(self):
-        return str(self.applicant.first_name) + ' ' + str(self.applicant.last_name) + ', ' + str(self.position.title) + ' ' + str(self.rank)
+        return str(self.applicant.first_name) + ' ' + str(self.applicant.last_name) + ', ' + str(self.position.title) + ' ' + str(self.rank)'''

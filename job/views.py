@@ -2,9 +2,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.views.generic import View
 from django.contrib.auth.forms import UserCreationForm
-from .forms import SignUpForm, ApplicationForm
+from .forms import SignUpForm, ApplicationForm#, RankingForm
 from django.views import generic
-from .models import Gang, Application, Position, Section, Ranking
+from .models import Gang, Application, Position, Section#, Ranking
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
@@ -30,14 +30,14 @@ class PositionDetail(generic.DetailView):
 @login_required
 def profile(request):
     positions = None
-    rankings = Ranking.objects.all()
+    #rankings = Ranking.objects.all()
     if Application.objects.filter(applicant=request.user).first():
         user_application = Application.objects.filter(applicant=request.user).first()
         positions= user_application.positions.all()
 
     return render(request, 'job/profile.html', {
         'positions':positions,
-        'rankings': rankings
+        #'rankings': rankings
     })
 
 
@@ -58,10 +58,12 @@ def view_applications(request):
         'pos': Position.objects.all(),
     })
 
+
 def all_applications(request):
     return render(request, 'job/all_applications.html', {
         'applications': Application.objects.all(),
     })
+
 
 class ApplicationDetail(generic.DetailView):
     model = Application
@@ -72,6 +74,15 @@ class ApplicationDetail(generic.DetailView):
         context['text'] = Application.text
         return context
 
+'''def rankTest(request):
+    if request == 'POST':
+        form = RankingForm(request.POST)
+        if form.is_valid():
+            return redirect('profile')
+    else:
+        form = RankingForm()
+    return render(request, 'job/rankTest.html', {'form':form})
+'''
 
 @login_required
 def apply(request):
@@ -92,8 +103,8 @@ def apply(request):
                     application.applicant = request.user
                     application.positions.clear()
                     application.save()
-                    for position in positions:
-                        application.positions.add(position)
+                    for pos in positions:
+                        application.positions.add(pos)
                     application.save()
                     return (redirect('profile'))
             else:  # create new application
@@ -101,8 +112,8 @@ def apply(request):
                     application = form.save(commit=False)
                     application.applicant = request.user
                     application.save()
-                    for position in positions:
-                        application.positions.add(position)
+                    for pos in positions:
+                        application.positions.add(pos)
                     application.save()
                     return redirect('profile')
         else:
@@ -114,7 +125,6 @@ def apply(request):
         'sections': Section.objects.all(),
         'gangs': Gang.objects.all(),
         'applied_to':applied_to,
-        #'csrf_token': csrf_token
     })
 
 

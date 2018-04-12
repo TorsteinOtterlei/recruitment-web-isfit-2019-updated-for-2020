@@ -1,7 +1,8 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
-from job.models import Application, Ranking
+from job.models import Application#, Ranking
+from django.forms import inlineformset_factory
 from .models import Position, Gang, Section
 from django.forms.widgets import CheckboxSelectMultiple
 from django.forms.models import ModelMultipleChoiceField
@@ -45,4 +46,46 @@ class ApplicationForm(forms.ModelForm):
         self.fields['phone_number'].widget.attrs.update({'class': 'form-control'})
         self.fields['trondheim'].widget.attrs.update({'class': 'form-control'})
         self.fields['student'].widget.attrs.update({'class': 'form-control'})
-        #self.fields['rank'].widget.attrs.update({'class': 'form-control'})
+
+
+'''class RankingForm(forms.ModelForm):
+    rank = forms.IntegerField(max_value=3, min_value=1)
+    user = User.objects.get(id=4)
+    application = Application.objects.get(id=user.pk)
+    position = forms.ModelMultipleChoiceField(queryset=application.positions.all())
+
+
+    class Meta:
+        model = Ranking
+        exclude = ['applicant']
+        fields = ('rank', 'position')
+
+    def __init__(self, *args, **kwargs):
+        super(RankingForm, self).__init__(*args, **kwargs)
+        self.fields['rank'].widget.attrs.update({'class': 'form-control'})
+        #application = Application.objects.first()
+        #self.fields['position'].queryset = application.positions.all()
+
+RankFormSet = inlineformset_factory(Application, Ranking, fields=('rank',))
+rankForPosition = Ranking.objects.get(position=Ranking.position)
+formset = RankFormSet(instance=rankForPosition)'''
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

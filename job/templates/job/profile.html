@@ -13,7 +13,7 @@
 
                 <li><a href="{% url 'position_detail' position.pk %}">{{ position.title }}</a></li>
                 {% for rank in rankings %}
-                    {% if position.pk == rank.position.pk %}
+                    {% if position.pk == rank.position.pk and user == rank.applicant %}
                         <h4>{{ rank.rank }}</h4>
                     {% endif %}
                 {% endfor %}
