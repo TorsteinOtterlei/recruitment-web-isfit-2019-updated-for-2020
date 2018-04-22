@@ -42,13 +42,20 @@ class Position(models.Model):
     def __str__(self):
         return str(self.title) + ', ' + str(self.gang)
 
+class Ranking(models.Model):
+    first = models.ForeignKey(Position, related_name='first' , on_delete=models.CASCADE)
+    second = models.ForeignKey(Position, related_name='second' ,  on_delete=models.CASCADE)
+    third = models.ForeignKey(Position, related_name='third' ,  on_delete=models.CASCADE)
+
+    def __str__(self):
+        return "1: " + str(self.first.title) + ", 2: " + str(self.second.title) + ", 3: " + str(self.third.title)
+
+
 class Application(models.Model):
-    positions = models.ManyToManyField(Position)
+    ranking = models.ForeignKey(Ranking, on_delete=models.CASCADE)
     applicant = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.TextField(max_length=2000)
     phone_number = models.CharField(max_length=12)
-    trondheim = models.BooleanField(default=False)
-    student = models.BooleanField(default=False)
     interview_time = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
@@ -58,14 +65,3 @@ class Application(models.Model):
             return str(self.applicant.last_name) + ', ' + str(self.applicant.first_name)+ '. Date: ' + \
                    str(self.interview_time.day) + '.' + str(self.interview_time.month) + '.' + str(self.interview_time.year) + '. Time: ' + \
                    str(self.interview_time.hour) + ':' + str(self.interview_time.minute)
-
-'''class Ranking(models.Model):
-    position = models.ForeignKey(Position, on_delete=models.CASCADE)
-    applicant = models.ForeignKey(User, on_delete=models.CASCADE)
-    rank = models.IntegerField(default=3,validators=[
-            MaxValueValidator(3),
-            MinValueValidator(1)
-        ])
-
-    def __str__(self):
-        return str(self.applicant.first_name) + ' ' + str(self.applicant.last_name) + ', ' + str(self.position.title) + ' ' + str(self.rank)'''

@@ -29,11 +29,13 @@ class PositionDetail(generic.DetailView):
 
 @login_required
 def profile(request):
-    positions = None
+    ranking = None
     #rankings = Ranking.objects.all()
+    print(Application.objects.filter(applicant=request.user).first())
     if Application.objects.filter(applicant=request.user).first():
         user_application = Application.objects.filter(applicant=request.user).first()
-        positions= user_application.positions.all()
+        positions = [user_application.ranking.first, user_application.ranking.second,
+        user_application.ranking.third]
 
     return render(request, 'job/profile.html', {
         'positions':positions,
@@ -74,23 +76,14 @@ class ApplicationDetail(generic.DetailView):
         context['text'] = Application.text
         return context
 
-'''def rankTest(request):
-    if request == 'POST':
-        form = RankingForm(request.POST)
-        if form.is_valid():
-            return redirect('profile')
-    else:
-        form = RankingForm()
-    return render(request, 'job/rankTest.html', {'form':form})
-'''
-
 @login_required
 def apply(request):
     application = Application.objects.filter(applicant=request.user).first()
     applied_to = None
     if application is not None:
         form = ApplicationForm(instance=application)
-        applied_to = application.positions.all()
+        applied_to = [application.ranking.first, application.ranking.second,
+        application.ranking.third]
     else:
         form = ApplicationForm(request.POST, instance=application)
     if request.method == 'POST':

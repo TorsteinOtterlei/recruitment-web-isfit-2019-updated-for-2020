@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from job.models import Application#, Ranking
 from django.forms import inlineformset_factory
-from .models import Position, Gang, Section
+from .models import Position, Gang, Section, Ranking
 from django.forms.widgets import CheckboxSelectMultiple
 from django.forms.models import ModelMultipleChoiceField
 
@@ -32,60 +32,32 @@ class SignUpForm(UserCreationForm):
 
 class ApplicationForm(forms.ModelForm):
     text = forms.CharField(label="Why do you want to volunteer with ISFiT? (Remember to write a ranking list of your top 3 choices where nr. 1 is your top choice)", max_length=2000, required=True, widget=forms.Textarea())
-    trondheim = forms.BooleanField(label="Do you currently live in Trondheim?", help_text="Yes")
-    student = forms.BooleanField(label="Are you a student?", help_text="Yes")
 
     class Meta:
         model = Application#, Ranking
         exclude = ['applicant']
-        fields = ('text', 'phone_number', 'trondheim', 'student')
+        fields = ('text', 'phone_number')
 
     def __init__(self, *args, **kwargs):
         super(ApplicationForm, self).__init__(*args, **kwargs)
         self.fields['text'].widget.attrs.update({'class': 'form-control'})
         self.fields['phone_number'].widget.attrs.update({'class': 'form-control'})
-        self.fields['trondheim'].widget.attrs.update({'class': 'form-control'})
-        self.fields['student'].widget.attrs.update({'class': 'form-control'})
 
 
-'''class RankingForm(forms.ModelForm):
-    rank = forms.IntegerField(max_value=3, min_value=1)
-    user = User.objects.get(id=4)
-    application = Application.objects.get(id=user.pk)
-    position = forms.ModelMultipleChoiceField(queryset=application.positions.all())
-
+class RankingForm(forms.ModelForm):
+    first = Position.objects.get(id=1)
+    second = Position.objects.get(id=1)
+    third = Position.objects.get(id=1)
 
     class Meta:
         model = Ranking
-        exclude = ['applicant']
-        fields = ('rank', 'position')
+        exclude = []
+        fields = ('first', 'second', 'third')
 
     def __init__(self, *args, **kwargs):
         super(RankingForm, self).__init__(*args, **kwargs)
-        self.fields['rank'].widget.attrs.update({'class': 'form-control'})
-        #application = Application.objects.first()
-        #self.fields['position'].queryset = application.positions.all()
-
-RankFormSet = inlineformset_factory(Application, Ranking, fields=('rank',))
-rankForPosition = Ranking.objects.get(position=Ranking.position)
-formset = RankFormSet(instance=rankForPosition)'''
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#RankFormSet = inlineformset_factory(Application, Ranking, fields=('rank',))
+#rankForPosition = Ranking.objects.get(position=Ranking.position)
+#formset = RankFormSet(instance=rankForPosition)
