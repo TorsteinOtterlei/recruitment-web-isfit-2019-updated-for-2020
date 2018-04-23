@@ -45,9 +45,9 @@ class ApplicationForm(forms.ModelForm):
 
 
 class RankingForm(forms.ModelForm):
-    first = Position.objects.get(id=1)
-    second = Position.objects.get(id=1)
-    third = Position.objects.get(id=1)
+    #first = Position.objects.get(id=1)
+    #second = Position.objects.get(id=1)
+    #third = Position.objects.get(id=1)
 
     class Meta:
         model = Ranking

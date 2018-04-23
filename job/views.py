@@ -8,7 +8,6 @@ from .models import Gang, Application, Position, Section#, Ranking
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
-
 class PositionView(generic.ListView):
     template_name = 'job/positions.html'
     context_object_name = 'all_positions'
@@ -29,7 +28,7 @@ class PositionDetail(generic.DetailView):
 
 @login_required
 def profile(request):
-    ranking = None
+    positions = None
     #rankings = Ranking.objects.all()
     print(Application.objects.filter(applicant=request.user).first())
     if Application.objects.filter(applicant=request.user).first():
