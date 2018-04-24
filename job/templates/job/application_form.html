@@ -1,5 +1,8 @@
 {% extends 'job/base.html' %}
-
+{% load static %}
+{% block link %}
+    <link rel="stylesheet" type="text/css" href="{% static "job/application_form.css" %}">
+{% endblock %}
 
 {% block body %}
 
@@ -22,52 +25,61 @@
                             {% endfor %}
                         </p>
                         {% endfor %}
+
                         <!-- Lists available positions for each section/gang -->
                         <h3>Which positions do you want to apply for?</h3>
                         <p>A full list of the positions with all information can be found <a href="/information">here</a>.</p>
 
-                          <div class="gangs-div " id="{{ section.name }}">
-                            <h4>Gangs</h4>
-                            {% for gang in gangs %}
-                                <div class="flex-horizontal">
+                          <div id="chooseDiv">
+                            <div id="positionsDiv">
+                              <h4>Gangs</h4>
+                              {% for gang in gangs %}
+                                  <div class="flex-horizontal">
 
-                                    <h5 class="column-2">
-                                      <a class="dropdown-toggle" data-toggle="collapse" href="#{{ gang.name }}"
-                                        role="button" aria-expanded="false" aria-controls="collapseExample">
-                                        {{ gang.name }}
-                                      </a>
-                                    </h5>
+                                      <h5 class="column-2">
+                                        <a class="dropdown-toggle" data-toggle="collapse" href="#{{ gang.name }}"
+                                          role="button" aria-expanded="false" aria-controls="collapseExample">
+                                          {{ gang.name }}
+                                        </a>
+                                      </h5>
 
-                                  <div class="positions-div collapse" id="{{ gang.name }}">
-                                  <h5>Positions</h5>
-                                  {% for position in positions %}
+                                    <div class="positions-div collapse" id="{{ gang.name }}">
+                                    <h5>Positions</h5>
+                                    {% for position in positions %}
 
-                                      {% if position.gang == gang %}
-                                          <div class="flex-horizontal">
-                                          <input name="positions" id="{{ position.pk }}" type="checkbox" value="{{ position.pk }}"></input>
-                                          <input name="rank" id="{{ ranking.pk }}" type="number" value="{{ ranking.pk }}"></input>
-                                          <a class="" data-toggle="collapse" href="#{{ position.title }}"
-                                            role="button" aria-expanded="false" aria-controls="collapseExample"
-                                            for="{{ position.pk }}">{{ position.title }}
-                                          </a></div>
-                                          <div class="collapse" id="{{ position.title }}">
-                                            <div class="dropdown-item">
-                                              <p class="">{{ position.description }}</p>
-                                              <h5>Contact Information</h5>
-                                              <p><b>Name:</b> {{ position.name_of_interviewer }} <br>
-                                                <b>Phone:</b> {{ position.phone_number }} <br>
-                                                <b>Email:</b> <a href="">{{ position.email }}</a></p>
-                                            </div>
-                                          </div>
+                                        {% if position.gang == gang %}
+                                            <div class="flex-horizontal">
+                                            <!--<input name="positions" id="{{ position.pk }}" type="checkbox" value="{{ position.pk }}"></input>
+                                            <input name="rank" id="{{ ranking.pk }}" type="number" value="{{ ranking.pk }}"></input>-->
+                                            <a class='positions' id='{{ position.title|cut:" "  }}' onclick="addChoice(this, '{{ position.title }}')">{{ position.title }}
+                                            </a></div>
+                                        {% endif %}
 
-                                      {% endif %}
-
-                                  {% endfor %}
+                                    {% endfor %}
+                                    </div>
                                   </div>
-                                </div>
 
-                          {% endfor %}
+                            {% endfor %}
+                            </div>
+                            <div id="rankingBox">
+                              <div style="padding: 5px 5px 0 10px;">Your prioritised positions</div>
+                              <div class="d-flex flex-column">
+                                <div class="d-flex" id="firstChoice">
+                                  <div class="p-2 chosen"></div>
+                                  <div class="ml-auto p-2 removeChoice" onclick="removeChoice(this)"></div>
+                                </div>
+                                <div class="d-flex" id="secondChoice">
+                                  <div class="p-2 chosen"></div>
+                                  <div class="ml-auto p-2 removeChoice" onclick="removeChoice(this)"></div>
+                                </div>
+                                <div class="d-flex" id="thirdChoice">
+                                  <div class="p-2 chosen"></div>
+                                  <div class="ml-auto p-2 removeChoice" onclick="removeChoice(this)"></div>
+                                </div>
+                              </div>
+                            </div>
                           </div>
+
                         Have you prioriticed your choices?
                         <br><input onclick="des()" type="checkbox" name="prog" value="1" value="Yes" label="Yes">
                           <small style="display: inline-block;">Yes</small></input>
@@ -81,14 +93,56 @@
     </div>
 </div>
 <script>
-    function des(){
-       if( document.getElementById("submit_prog").style.display === "none"){
-           document.getElementById("apply-text").style.display = "none";
-           document.getElementById("submit_prog").style.display = "block";
-       } else {
-            document.getElementById("submit_prog").style.display = "none";
-            document.getElementById("apply-text").style.display = "block";
-       }
+    //The three id's for the divs containing the user choices
+    const ids = ['#firstChoice', '#secondChoice', '#thirdChoice']
+    var div, nxtDiv;
+
+    // Adding position to choices if it's not full already
+    // Note: this is only front-end, nothing is added to the database
+    function addChoice(elem, pos){
+      if ($(ids[0]).find('div').first().text().split(')  ')[1] != pos &&
+       $(ids[1]).find('div').first().text().split(')  ')[1] != pos){
+        for (i = 0; i < ids.length; i++){
+          div = $(ids[i]).find('div');
+          if (div.first().text().length == 0){
+            div.first().html((i+1).toString() + ")  " + pos);
+            div.first().css("opacity", 1);
+            div.eq(1).html("X");
+            elem.style.color = "green";
+            break;
+          }
+        }
+      }
+    }
+
+    // Remove position
+    function removeChoice(ch){
+      div = $(ch).parent().find('div');
+      var id = div.first().text().replace(/\s/g, '');
+      $("#" + id.split(')')[1]).css("color", "black");
+      div.first().html("");
+
+
+      //Rotate positions up so the bottom one is open
+      for (i = 0; i < ids.length - 1; i++){
+        div = $(ids[i]).find('div');
+        nxtDiv = $(ids[i+1]).find('div');
+        if (div.first().text().length == 0){
+          if (nxtDiv.first().text().length != 0){
+            var txt = nxtDiv.first().text().split(')  ')[1];
+            div.first().html((i+1).toString() + ")  " + txt);
+          }
+          else{ div.first().html(nxtDiv.first().text()); }
+          nxtDiv.first().html("");
+        }
+      }
+      for (i = 0; i < ids.length; i++){
+        div = $(ids[i]).find('div');
+        if (div.first().text().length == 0){
+          div.eq(1).html("");
+          div.first().css("opacity", 0);
+        }
+      }
     }
 </script>
 
