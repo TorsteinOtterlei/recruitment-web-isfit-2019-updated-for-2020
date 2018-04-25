@@ -30,6 +30,7 @@ class PositionDetail(generic.DetailView):
 def profile(request):
     positions = None
     #rankings = Ranking.objects.all()
+    
     print(Application.objects.filter(applicant=request.user).first())
     if Application.objects.filter(applicant=request.user).first():
         user_application = Application.objects.filter(applicant=request.user).first()

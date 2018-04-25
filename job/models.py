@@ -52,16 +52,20 @@ class Ranking(models.Model):
 
 
 class Application(models.Model):
-    ranking = models.ForeignKey(Ranking, on_delete=models.CASCADE)
+    ranking = models.ForeignKey(Ranking, on_delete=models.CASCADE, default=None)
     applicant = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.TextField(max_length=2000)
     phone_number = models.CharField(max_length=12)
-    interview_time = models.DateTimeField(null=True, blank=True)
+    interview_time = models.DateTimeField(null=True, blank=True, default=None)
+
+    def pretty_date(self):
+        if self.interview_time != None:
+            return self.interview_time.strftime('%a %b %Y %H:%M') # day month year hour:min
+        else:
+            return "No time set"
 
     def __str__(self):
-        if (self.interview_time == None):
-            return str(self.applicant.last_name) + ', ' + str(self.applicant.first_name) + '. No time set  ' + str(User.objects.get(id=self.applicant.pk))
-        else:
-            return str(self.applicant.last_name) + ', ' + str(self.applicant.first_name)+ '. Date: ' + \
-                   str(self.interview_time.day) + '.' + str(self.interview_time.month) + '.' + str(self.interview_time.year) + '. Time: ' + \
-                   str(self.interview_time.hour) + ':' + str(self.interview_time.minute)
+        lastname = str(self.applicant.last_name)
+        firstname = str(self.applicant.first_name)
+        interviw_date = self.pretty_date()
+        return "{}, {}, Date: {}".format(lastname, firstname, interviw_date)
