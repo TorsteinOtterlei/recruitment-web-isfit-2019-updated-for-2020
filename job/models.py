@@ -56,7 +56,7 @@ class Application(models.Model):
     applicant = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.TextField(max_length=2000)
     phone_number = models.CharField(max_length=12)
-    interview_time = models.DateTimeField(null=True, blank=True, default=None)
+    interview_time = models.DateTimeField(null=True, blank=True)
 
     def pretty_date(self):
         if self.interview_time != None:
