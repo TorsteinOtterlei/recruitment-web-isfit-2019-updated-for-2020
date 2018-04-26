@@ -1,20 +1,31 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
-from job.models import Section, Gang, Position, Project #, Application, Ranking
+from job.models import Section, Gang, Position, Project, Ranking, Application
+from django.utils import timezone
 
 class Command(BaseCommand):
     args = '<foo bar ...>'
     help = """No options or args needed.
     Run this command to fill the database with dummydata:
+    OBS: It will flush the database first
     Superuser
     Users
     Sections
     Gangs
     Positions
     Projects
-    Applications
     Ranks
+    Applications
     """
+
+    def flush(self):
+        User.objects.all().delete()
+        Section.objects.all().delete()
+        Gang.objects.all().delete()
+        Position.objects.all().delete()
+        Project.objects.all().delete()
+        Ranking.objects.all().delete()
+        Application.objects.all().delete()
 
     def createsu(self):
         if not User.objects.filter(username="admin").exists():
@@ -223,24 +234,21 @@ class Command(BaseCommand):
         p.save()
 
         # End of create_positions
-    """
+
     def create_rankings(self):
         r = Ranking()
-        r.nr = 1
         r.first = Position.objects.get(title="Web App Developer")
         r.second = Position.objects.get(title="App Developer")
         r.third = Position.objects.get(title="Culture_position1")
         r.save()
 
         r = Ranking()
-        r.nr = 2
         r.first = Position.objects.get(title="Culture_position1")
         r.second = Position.objects.get(title="Internal Project Manager")
         r.third = Position.objects.get(title="Participant Web Developer")
         r.save()
 
         r = Ranking()
-        r.nr = 3
         r.first = Position.objects.get(title="Recruitment Web Developer")
         r.second = Position.objects.get(title="Theme_position1")
         #r.third = None
@@ -249,11 +257,9 @@ class Command(BaseCommand):
         # End of create_rankings
 
     def create_applications(self):
+        rankings = list(Ranking.objects.all())
         a = Application()
-        a.ranking = Ranking.objects.get(nr=1)
-        #a.positions.add(Position.objects.get(title="Recruitment Web Developer"))
-        #a.positions.add(Position.objects.get(title="Participant Web Developer"))
-        #a.positions.add(Position.objects.get(title="Theme_position1"))
+        a.ranking = rankings.pop()
         a.applicant = User.objects.get(username="kris")
         a.text = "dummy"
         a.phone_number = 12345678
@@ -261,37 +267,33 @@ class Command(BaseCommand):
         a.save()
 
         a = Application()
-        a.ranking = Ranking.objects.get(nr=2)
-        #a.positions.add(Position.objects.get(title="Theme_position1"))
-        #a.positions.add(Position.objects.get(title="Administration_position1"))
-        #a.positions.add(Position.objects.get(title="Participant Web Developer"))
+        a.ranking = rankings.pop()
         a.applicant = User.objects.get(username="synn")
         a.text = "dummy"
         a.phone_number = 12345678
-        a.interview_time = None
+        a.interview_time = timezone.now()
         a.save()
 
         a = Application()
-        a.ranking = Ranking.objects.get(nr=3)
-        #a.positions.add(Position.objects.get(title="App Developer"))
-        #a.positions.add(Position.objects.get(title="Internal Project Manager"))
+        a.ranking = rankings.pop()
         a.applicant = User.objects.get(username="ragn")
         a.text = "dummy"
         a.phone_number = 12345678
-        a.interview_time = None
+        a.interview_time = timezone.now()
         a.save()
 
         # End of create_applications
-    """
+
 
     def handle(self, *args, **options):
+        self.flush()
         self.createsu()
         self.create_users()
         self.create_sections()
         self.create_gangs()
         self.create_projects()
         self.create_positions()
-        #self.create_applications()
-        #self.create_rankings()
+        self.create_rankings()
+        self.create_applications()
         print("  ==  Dummydata inserted  ==  ")
         # End of handle

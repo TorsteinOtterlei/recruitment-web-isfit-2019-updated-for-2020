@@ -4,7 +4,7 @@ from django.views.generic import View
 from django.contrib.auth.forms import UserCreationForm
 from .forms import SignUpForm, ApplicationForm#, RankingForm
 from django.views import generic
-from .models import Gang, Application, Position, Section#, Ranking
+from .models import Gang, Application, Position, Section, Ranking
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
@@ -30,7 +30,7 @@ class PositionDetail(generic.DetailView):
 def profile(request):
     positions = None
     #rankings = Ranking.objects.all()
-    
+
     print(Application.objects.filter(applicant=request.user).first())
     if Application.objects.filter(applicant=request.user).first():
         user_application = Application.objects.filter(applicant=request.user).first()

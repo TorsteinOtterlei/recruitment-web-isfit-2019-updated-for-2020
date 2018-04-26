@@ -44,15 +44,20 @@ class Position(models.Model):
 
 class Ranking(models.Model):
     first = models.ForeignKey(Position, related_name='first' , on_delete=models.CASCADE)
-    second = models.ForeignKey(Position, related_name='second' ,  on_delete=models.CASCADE)
-    third = models.ForeignKey(Position, related_name='third' ,  on_delete=models.CASCADE)
+    second = models.ForeignKey(Position, related_name='second' ,  on_delete=models.CASCADE, default=None, null=True)
+    third = models.ForeignKey(Position, related_name='third' ,  on_delete=models.CASCADE, default=None, null=True)
 
     def __str__(self):
-        return "1: " + str(self.first.title) + ", 2: " + str(self.second.title) + ", 3: " + str(self.third.title)
+        s = "1. " + str(self.first.title)
+        if self.second != None:
+            s += ", 2. " + str(self.second.title)
+        if self.third != None:
+            s += ", 3. " + str(self.third.title)
+        return s
 
 
 class Application(models.Model):
-    ranking = models.ForeignKey(Ranking, on_delete=models.CASCADE, default=None)
+    ranking = models.ForeignKey(Ranking, on_delete=models.CASCADE, default=None, null=True)
     applicant = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.TextField(max_length=2000)
     phone_number = models.CharField(max_length=12)
@@ -67,5 +72,5 @@ class Application(models.Model):
     def __str__(self):
         lastname = str(self.applicant.last_name)
         firstname = str(self.applicant.first_name)
-        interviw_date = self.pretty_date()
-        return "{}, {}, Date: {}".format(lastname, firstname, interviw_date)
+        interview_date = self.pretty_date()
+        return "{}, {}, Date: {}".format(lastname, firstname, interview_date)
