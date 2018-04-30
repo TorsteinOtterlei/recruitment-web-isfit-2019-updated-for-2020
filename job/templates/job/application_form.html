@@ -65,15 +65,18 @@
                               <div style="padding: 5px 5px 0 10px;">Your prioritised positions</div>
                               <div class="d-flex flex-column">
                                 <div class="d-flex" id="firstChoice">
-                                  <div class="p-2 chosen"></div>
+                                  <input type="button" class="chosen" value="">
+                                  <input type="hidden" name="first" value="">
                                   <div class="ml-auto p-2 removeChoice" onclick="removeChoice(this)"></div>
                                 </div>
                                 <div class="d-flex" id="secondChoice">
-                                  <div class="p-2 chosen"></div>
+                                  <input type="button" class="chosen" value="">
+                                  <input type="hidden" name="second" value="">
                                   <div class="ml-auto p-2 removeChoice" onclick="removeChoice(this)"></div>
                                 </div>
                                 <div class="d-flex" id="thirdChoice">
-                                  <div class="p-2 chosen"></div>
+                                  <input type="button" class="chosen" value="">
+                                  <input type="hidden" name="third" value="">
                                   <div class="ml-auto p-2 removeChoice" onclick="removeChoice(this)"></div>
                                 </div>
                               </div>
@@ -86,13 +89,26 @@
                         <div id="apply-text" style="margin-top: 10px;">
                           <h5>You have to prioritice your position choices before you can apply!</h5>
                         </div>
-                        <button style="display: none; width: 100%; background-color: #007bff; color: white;" id="submit_prog" class="btn button-form" type="submit" >Apply</button>
+                        <button style="display: block; width: 100%; background-color: #007bff; color: white;" id="submit_prog" class="btn button-form" type="submit" >Apply</button>
     </form>
             </div>
         </div>
     </div>
 </div>
 <script>
+
+    var rankings = "{{applied_to}}".split(", ");
+    console.log(rankings);
+    for (var i = 0; i < rankings.length; i++) {
+      cmd = "addChoice(document.getElementById('" + rankings[i].replace(/\s/g, '').split(".")[1]
+        + "'), '" + rankings[i].split(". ")[1] + "')";
+      setTimeout(cmd, 1);
+      console.log(cmd)
+
+    }
+
+
+
     //The three id's for the divs containing the user choices
     const ids = ['#firstChoice', '#secondChoice', '#thirdChoice']
     var div, nxtDiv;
@@ -100,14 +116,16 @@
     // Adding position to choices if it's not full already
     // Note: this is only front-end, nothing is added to the database
     function addChoice(elem, pos){
-      if ($(ids[0]).find('div').first().text().split(')  ')[1] != pos &&
-       $(ids[1]).find('div').first().text().split(')  ')[1] != pos){
+      if ($(ids[0]).find('input').first().val().split(')  ')[1] != pos &&
+       $(ids[1]).find('input').first().val().split(')  ')[1] != pos){
         for (i = 0; i < ids.length; i++){
-          div = $(ids[i]).find('div');
-          if (div.first().text().length == 0){
-            div.first().html((i+1).toString() + ")  " + pos);
-            div.first().css("opacity", 1);
-            div.eq(1).html("X");
+          inp = $(ids[i]).find('input');
+          cross = $(ids[i]).find('div');
+          if (inp.first().val().length == 0){
+            inp.first().val((i+1).toString() + ")  " + pos);
+            inp.eq(1).val(pos);
+            inp.first().css("opacity", 1);
+            cross.first().html("X");
             elem.style.color = "green";
             break;
           }
@@ -117,30 +135,37 @@
 
     // Remove position
     function removeChoice(ch){
-      div = $(ch).parent().find('div');
-      var id = div.first().text().replace(/\s/g, '');
+      inp = $(ch).parent().find('input');
+      var id = inp.first().val().replace(/\s/g, '');
       $("#" + id.split(')')[1]).css("color", "black");
-      div.first().html("");
+      inp.first().val("");
+      inp.eq(1).val("");
 
 
       //Rotate positions up so the bottom one is open
       for (i = 0; i < ids.length - 1; i++){
-        div = $(ids[i]).find('div');
-        nxtDiv = $(ids[i+1]).find('div');
-        if (div.first().text().length == 0){
-          if (nxtDiv.first().text().length != 0){
-            var txt = nxtDiv.first().text().split(')  ')[1];
-            div.first().html((i+1).toString() + ")  " + txt);
+        inp = $(ids[i]).find('input');
+        nxtInp = $(ids[i+1]).find('input');
+        if (inp.first().val().length == 0){
+          if (nxtInp.first().val().length != 0){
+            var pos = nxtInp.first().val().split(')  ')[1];
+            inp.first().val((i+1).toString() + ")  " + pos);
+            inp.eq(1).val(pos);
           }
-          else{ div.first().html(nxtDiv.first().text()); }
-          nxtDiv.first().html("");
+          else{
+            inp.first().val( nxtInp.first().val() );
+            inp.eq(1).val( nxtInp.first().val().split(')  ')[1] );
+          }
+          nxtInp.first().val("");
+          nxtInp.eq(1).val("");
         }
       }
       for (i = 0; i < ids.length; i++){
-        div = $(ids[i]).find('div');
-        if (div.first().text().length == 0){
-          div.eq(1).html("");
-          div.first().css("opacity", 0);
+        inp = $(ids[i]).find('input');
+        cross = $(ids[i]).find('div');
+        if (inp.first().val().length == 0){
+          cross.first().html("");
+          inp.first().css("opacity", 0);
         }
       }
     }

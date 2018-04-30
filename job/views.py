@@ -29,17 +29,22 @@ class PositionDetail(generic.DetailView):
 @login_required
 def profile(request):
     positions = None
-    #rankings = Ranking.objects.all()
 
     print(Application.objects.filter(applicant=request.user).first())
     if Application.objects.filter(applicant=request.user).first():
         user_application = Application.objects.filter(applicant=request.user).first()
-        positions = [user_application.ranking.first, user_application.ranking.second,
-        user_application.ranking.third]
+
+        positions = [user_application.ranking.first]
+
+        if user_application.ranking.third is not None:
+            positions.append(user_application.ranking.second)
+            positions.append(user_application.ranking.third)
+
+        elif user_application.ranking.second is not None:
+            positions.append(user_application.ranking.second)
 
     return render(request, 'job/profile.html', {
         'positions':positions,
-        #'rankings': rankings
     })
 
 
@@ -82,35 +87,36 @@ def apply(request):
     applied_to = None
     if application is not None:
         form = ApplicationForm(instance=application)
-        applied_to = [application.ranking.first, application.ranking.second,
-        application.ranking.third]
+        applied_to = application.ranking
     else:
         form = ApplicationForm(request.POST, instance=application)
     if request.method == 'POST':
-        positions = request.POST.getlist('positions', None)
+
         form = ApplicationForm(request.POST, instance=application)
-        if positions: # if any jobs were selected
-            if application is not None: # if user already has an application
-                if form.is_valid():
-                    application = form.save(commit=False)
-                    application.applicant = request.user
-                    application.positions.clear()
-                    application.save()
-                    for pos in positions:
-                        application.positions.add(pos)
-                    application.save()
-                    return (redirect('profile'))
-            else:  # create new application
-                if form.is_valid():
-                    application = form.save(commit=False)
-                    application.applicant = request.user
-                    application.save()
-                    for pos in positions:
-                        application.positions.add(pos)
-                    application.save()
-                    return redirect('profile')
-        else:
-            pass  # can't make am application to no positions :S
+        if (len(request.POST.get('first', '')) != 0): # if any jobs were selected
+            if form.is_valid():
+
+                r = Ranking() # making a new ranking object
+                r.first = Position.objects.get(title = request.POST.get('first', ''))
+
+                # TODO maybe fix this hard code
+                second = request.POST.get('second', '')
+                third = request.POST.get('third', '')
+                if (len(third) > 0):
+                    r.second = Position.objects.get(title = second)
+                    r.third = Position.objects.get(title = third)
+                elif (len(second) > 0):
+                    r.second = Position.objects.get(title = second)
+                r.save()
+
+                if application is not None: # delete old ranking
+                    Ranking.objects.filter(id = application.ranking.id).delete()
+
+                application = form.save(commit=False)
+                application.ranking = r
+                application.applicant = request.user
+                application.save()
+                return (redirect('profile'))
 
     return render(request, 'job/application_form.html', {
         'positions': Position.objects.all(),
