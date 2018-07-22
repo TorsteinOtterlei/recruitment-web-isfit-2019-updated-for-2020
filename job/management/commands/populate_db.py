@@ -2,6 +2,8 @@ from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 from job.models import Section, Gang, Position, Project, Ranking, Application
 from django.utils import timezone
+import random
+from hopcroftkarp import HopcroftKarp
 
 class Command(BaseCommand):
     args = '<foo bar ...>'
@@ -259,7 +261,6 @@ class Command(BaseCommand):
 
         all_positions = list(Position.objects.all())
         for i in range(180):
-            import random
             r = Ranking()
             pos = random.sample(all_positions, 3) # Three unique positions
             r.first = pos.pop()
@@ -281,6 +282,8 @@ class Command(BaseCommand):
             a.text = "dummy"
             a.phone_number = 12345678
             a.interview_time = timezone.now()
+            a.dates = ",".join(str(x) for x in random.sample(range(70), 40))
+            print(a.dates)
             a.save()
 
         print("Over 180 applications generated")
@@ -292,7 +295,7 @@ class Command(BaseCommand):
         self.flush()
         print("Flushed current database")
         self.createsu()
-        print("Working...")
+        print("This will take some time...")
         self.create_users()
         self.create_sections()
         self.create_gangs()

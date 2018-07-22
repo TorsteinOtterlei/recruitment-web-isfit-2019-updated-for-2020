@@ -62,7 +62,7 @@ class Application(models.Model):
     text = models.TextField(max_length=2000)
     phone_number = models.CharField(max_length=12)
     interview_time = models.DateTimeField(null=True, blank=True, default=None)
-    #times = models.TextField(max_length=2000) # 1,2,43,68 possible dates
+    dates = models.TextField(max_length=2000, default=None) # 1,2,43,68 possible dates
 
     def pretty_date(self):
         if self.interview_time != None:
