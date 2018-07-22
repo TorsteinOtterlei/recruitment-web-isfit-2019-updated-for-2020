@@ -19,6 +19,13 @@ class Command(BaseCommand):
     Ranks
     Applications
     """
+    # Settings:
+    USER_AMOUNT = 200
+    USER_PW = "django123"
+    APPLICATION_AMOUNT = 180
+    RANKING_AMOUNT = 180 # <= APPLICATION_AMOUNT
+    DATES_RANGE = 70
+    DATES_SAMPLE = 40
 
     def flush(self):
         User.objects.all().delete()
@@ -34,21 +41,21 @@ class Command(BaseCommand):
             User.objects.create_superuser("admin", "admin@admin.com", "admin")
 
     def create_users(self):
-        pw = "django123"
-        kristian = User.objects.create_user(username="kris", email="test6@test.no", first_name="kristian", password=pw)
-        camilla = User.objects.create_user(username="cami", email="test1@test.no", first_name="camilla", password=pw)
-        johan = User.objects.create_user(username="joha", email="test2@test.no", first_name="johan", password=pw)
-        peder = User.objects.create_user(username="pede", email="test3@test.no", first_name="peder", password=pw)
-        sofie = User.objects.create_user(username="sofi", email="test5@test.no", first_name="sofie", password=pw)
-        synnove = User.objects.create_user(username="synn", email="test5@test.no", first_name="synnove", password=pw)
-        ola = User.objects.create_user(username="ola", email="test4@test.no", first_name="ola", password=pw)
-        mona = User.objects.create_user(username="mona", email="test4@test.no", first_name="mona", password=pw)
-        ellen = User.objects.create_user(username="elle", email="test4@test.no", first_name="ellen", password=pw)
-        ragnhild = User.objects.create_user(username="ragn", email="test4@test.no", first_name="ragnhild", password=pw)
-        # Create 200 simple users
-        for i in range(200):
-            User.objects.create_user(username="p"+str(i), email="pers"+str(i)+"@test.no", first_name="pers"+str(i), password=pw)
-        print("Over 200 users generated")
+        global USER_AMOUNT, USER_USER_PW
+        kristian = User.objects.create_user(username="kris", email="test6@test.no", first_name="kristian", password=USER_PW)
+        camilla = User.objects.create_user(username="cami", email="test1@test.no", first_name="camilla", password=USER_PW)
+        johan = User.objects.create_user(username="joha", email="test2@test.no", first_name="johan", password=USER_PW)
+        peder = User.objects.create_user(username="pede", email="test3@test.no", first_name="peder", password=USER_PW)
+        sofie = User.objects.create_user(username="sofi", email="test5@test.no", first_name="sofie", password=USER_PW)
+        synnove = User.objects.create_user(username="synn", email="test5@test.no", first_name="synnove", password=USER_PW)
+        ola = User.objects.create_user(username="ola", email="test4@test.no", first_name="ola", password=USER_PW)
+        mona = User.objects.create_user(username="mona", email="test4@test.no", first_name="mona", password=USER_PW)
+        ellen = User.objects.create_user(username="elle", email="test4@test.no", first_name="ellen", password=USER_PW)
+        ragnhild = User.objects.create_user(username="ragn", email="test4@test.no", first_name="ragnhild", password=USER_PW)
+        # Create simple users
+        for i in range(USER_AMOUNT):
+            User.objects.create_user(username="p"+str(i), email="pers"+str(i)+"@test.no", first_name="pers"+str(i), password=USER_PW)
+        print("Over {} users generated".format(USER_AMOUNT))
 
     def create_sections(self):
         s1 = Section()
@@ -250,6 +257,7 @@ class Command(BaseCommand):
         # End of create_positions
 
     def create_rankings(self):
+        global RANKING_AMOUNT
         r = Ranking()
         r.first = Position.objects.get(title="Web App Developer")
         r.save()
@@ -260,7 +268,7 @@ class Command(BaseCommand):
         r.save()
 
         all_positions = list(Position.objects.all())
-        for i in range(180):
+        for i in range(RANKING_AMOUNT):
             r = Ranking()
             pos = random.sample(all_positions, 3) # Three unique positions
             r.first = pos.pop()
@@ -273,20 +281,21 @@ class Command(BaseCommand):
         # End of create_rankings
 
     def create_applications(self):
+        global APPLICATION_AMOUNT, DATES_RANGE, DATES_SAMPLE
         rankings = list(Ranking.objects.all())
         users = list(User.objects.all())
-        for i in range(180): # Dependent on number of rankings available
+        for i in range(APPLICATION_AMOUNT): # Dependent on number of rankings available
             a = Application()
             a.ranking = rankings[i]
             a.applicant = users[i]
             a.text = "dummy"
             a.phone_number = 12345678
             a.interview_time = timezone.now()
-            a.dates = ",".join(str(x) for x in random.sample(range(70), 40))
+            a.dates = ",".join(str(x) for x in random.sample(range(DATES_RANGE), DATES_SAMPLE))
             print(a.dates)
             a.save()
 
-        print("Over 180 applications generated")
+        print("Over {} applications generated".format(APPLICATION_AMOUNT))
 
         # End of create_applications
 
