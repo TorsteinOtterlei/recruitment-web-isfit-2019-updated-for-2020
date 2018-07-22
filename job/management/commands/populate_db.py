@@ -43,6 +43,10 @@ class Command(BaseCommand):
         mona = User.objects.create_user(username="mona", email="test4@test.no", first_name="mona", password=pw)
         ellen = User.objects.create_user(username="elle", email="test4@test.no", first_name="ellen", password=pw)
         ragnhild = User.objects.create_user(username="ragn", email="test4@test.no", first_name="ragnhild", password=pw)
+        # Create 200 simple users
+        for i in range(200):
+            User.objects.create_user(username="p"+str(i), email="pers"+str(i)+"@test.no", first_name="pers"+str(i), password=pw)
+        print("Over 200 users generated")
 
     def create_sections(self):
         s1 = Section()
@@ -68,6 +72,8 @@ class Command(BaseCommand):
         s4.leader = User.objects.get(first_name='ola')
         s4.information = "Driver med kultur"
         s4.save()
+
+        print("Sections added")
 
         # End of create_sections
 
@@ -121,6 +127,8 @@ class Command(BaseCommand):
         g.section = Section.objects.get(name="Administration")
         g.save()
 
+        print("Gangs added")
+
         #"  ==  End of create_gangs()  ==  "
 
     def create_projects(self):
@@ -153,6 +161,8 @@ class Command(BaseCommand):
         # Theme
 
         # Administration
+
+        print("Projects added")
 
         # End of create_projects
 
@@ -233,61 +243,56 @@ class Command(BaseCommand):
         p.phone_number = 12345678
         p.save()
 
+        print("Positions added")
+
         # End of create_positions
 
     def create_rankings(self):
         r = Ranking()
         r.first = Position.objects.get(title="Web App Developer")
-        r.second = Position.objects.get(title="App Developer")
-        r.third = Position.objects.get(title="Culture_position1")
-        r.save()
-
-        r = Ranking()
-        r.first = Position.objects.get(title="Culture_position1")
-        r.second = Position.objects.get(title="Internal Project Manager")
-        r.third = Position.objects.get(title="Participant Web Developer")
         r.save()
 
         r = Ranking()
         r.first = Position.objects.get(title="Recruitment Web Developer")
         r.second = Position.objects.get(title="Theme_position1")
-        #r.third = None
         r.save()
+
+        all_positions = list(Position.objects.all())
+        for i in range(180):
+            import random
+            r = Ranking()
+            pos = random.sample(all_positions, 3) # Three unique positions
+            r.first = pos.pop()
+            r.second = pos.pop()
+            r.third = pos.pop()
+            r.save()
+
+        print("Over 180 rankings generated")
 
         # End of create_rankings
 
     def create_applications(self):
         rankings = list(Ranking.objects.all())
-        a = Application()
-        a.ranking = rankings.pop()
-        a.applicant = User.objects.get(username="kris")
-        a.text = "dummy"
-        a.phone_number = 12345678
-        a.interview_time = None
-        a.save()
+        users = list(User.objects.all())
+        for i in range(180): # Dependent on number of rankings available
+            a = Application()
+            a.ranking = rankings[i]
+            a.applicant = users[i]
+            a.text = "dummy"
+            a.phone_number = 12345678
+            a.interview_time = timezone.now()
+            a.save()
 
-        a = Application()
-        a.ranking = rankings.pop()
-        a.applicant = User.objects.get(username="synn")
-        a.text = "dummy"
-        a.phone_number = 12345678
-        a.interview_time = timezone.now()
-        a.save()
-
-        a = Application()
-        a.ranking = rankings.pop()
-        a.applicant = User.objects.get(username="ragn")
-        a.text = "dummy"
-        a.phone_number = 12345678
-        a.interview_time = timezone.now()
-        a.save()
+        print("Over 180 applications generated")
 
         # End of create_applications
 
 
     def handle(self, *args, **options):
         self.flush()
+        print("Flushed current database")
         self.createsu()
+        print("Working...")
         self.create_users()
         self.create_sections()
         self.create_gangs()

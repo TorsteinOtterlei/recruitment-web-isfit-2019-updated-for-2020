@@ -61,13 +61,17 @@ class Application(models.Model):
     applicant = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.TextField(max_length=2000)
     phone_number = models.CharField(max_length=12)
-    interview_time = models.DateTimeField(null=True, blank=True)
+    interview_time = models.DateTimeField(null=True, blank=True, default=None)
+    #times = models.TextField(max_length=2000) # 1,2,43,68 possible dates
 
     def pretty_date(self):
         if self.interview_time != None:
             return self.interview_time.strftime('%a %b %Y %H:%M') # day month year hour:min
         else:
             return "No time set"
+
+    def times_list(self):
+        return [int(x) for x in self.times.split(',')]
 
     def __str__(self):
         lastname = str(self.applicant.last_name)
