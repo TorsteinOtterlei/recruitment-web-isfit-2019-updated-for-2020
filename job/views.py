@@ -153,3 +153,9 @@ def information(request):
         'gangs': Gang.objects.all(),
         'positions':Position.objects.all()
     })
+
+def calendar(request):
+    return render(request, 'job/calendar.html', {
+        'applications': Application.objects.all(),
+        'interviews': {'pers153': 3, 'pers57': 11, 'pers195': 13, 'pers95': 22, 'pers22': 23, 'pers8': 25, 'pers15': 26, 'pers199': 28, 'pers94': 32, 'pers27': 35, 'pers133': 41, 'pers56': 44, 'pers35': 47, 'pers34': 49, 'pers117': 52, 'pers78': 54, 'pers190': 55, 'pers179': 56, 'pers175': 58, 'pers174': 59, 'pers12': 63, 'pers197': 65, 'pers178': 69}
+    })
