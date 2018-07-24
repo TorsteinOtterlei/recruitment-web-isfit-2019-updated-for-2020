@@ -19,16 +19,12 @@
         {% block styleblock %}{% endblock %}
     </head>
     <body>
+        {% include 'job/navbar.html' %}
 
-        <div id="wrapper">
-            {%include 'job/navbar.html'%}
-
-            <div id="page-content-wrapper">
-
-                {% block body %}
-                {% endblock %}
-
-            </div>
+        <div id="page-content-wrapper">
+            {% block body %}
+            
+            {% endblock %}
         </div>
 
         <!-- Optional JavaScript -->

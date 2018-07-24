@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from job.models import Application#, Ranking
 from django.forms import inlineformset_factory
-from .models import Position, Gang, Section, Ranking
+from .models import *
 from django.forms.widgets import CheckboxSelectMultiple
 from django.forms.models import ModelMultipleChoiceField
 
@@ -43,7 +43,7 @@ class ApplicationForm(forms.ModelForm):
         self.fields['text'].widget.attrs.update({'class': 'form-control'})
         self.fields['phone_number'].widget.attrs.update({'class': 'form-control'})
 
-
+"""
 class RankingForm(forms.ModelForm):
     #first = Position.objects.get(id=1)
     #second = Position.objects.get(id=1)
@@ -61,3 +61,4 @@ class RankingForm(forms.ModelForm):
 #RankFormSet = inlineformset_factory(Application, Ranking, fields=('rank',))
 #rankForPosition = Ranking.objects.get(position=Ranking.position)
 #formset = RankFormSet(instance=rankForPosition)
+"""

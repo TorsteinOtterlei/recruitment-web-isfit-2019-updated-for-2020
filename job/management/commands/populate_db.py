@@ -1,9 +1,18 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
-from job.models import Section, Gang, Position, Project, Ranking, Application
+from job.models import *
 from django.utils import timezone
 import random
 from hopcroftkarp import HopcroftKarp
+
+# Settings:
+USER_AMOUNT = 200
+USER_PW = "Django123"
+USERS_WITH_APPLICATION = 180
+RANKING_AMOUNT = 180 # <= USERS_WITH_APPLICATION
+DATES_RANGE = 70
+DATES_SAMPLE = 40
+USERS_WITH_DATES = 180
 
 class Command(BaseCommand):
     args = '<foo bar ...>'
@@ -19,13 +28,7 @@ class Command(BaseCommand):
     Ranks
     Applications
     """
-    # Settings:
-    USER_AMOUNT = 200
-    USER_PW = "django123"
-    APPLICATION_AMOUNT = 180
-    RANKING_AMOUNT = 180 # <= APPLICATION_AMOUNT
-    DATES_RANGE = 70
-    DATES_SAMPLE = 40
+
 
     def flush(self):
         User.objects.all().delete()
@@ -35,13 +38,15 @@ class Command(BaseCommand):
         Project.objects.all().delete()
         Ranking.objects.all().delete()
         Application.objects.all().delete()
+        Dates.objects.all().delete()
 
     def createsu(self):
         if not User.objects.filter(username="admin").exists():
             User.objects.create_superuser("admin", "admin@admin.com", "admin")
 
     def create_users(self):
-        global USER_AMOUNT, USER_USER_PW
+        global USER_AMOUNT
+        global USER_PW
         kristian = User.objects.create_user(username="kris", email="test6@test.no", first_name="kristian", password=USER_PW)
         camilla = User.objects.create_user(username="cami", email="test1@test.no", first_name="camilla", password=USER_PW)
         johan = User.objects.create_user(username="joha", email="test2@test.no", first_name="johan", password=USER_PW)
@@ -55,7 +60,7 @@ class Command(BaseCommand):
         # Create simple users
         for i in range(USER_AMOUNT):
             User.objects.create_user(username="p"+str(i), email="pers"+str(i)+"@test.no", first_name="pers"+str(i), password=USER_PW)
-        print("Over {} users generated".format(USER_AMOUNT))
+        print("Over {} users generated. Password: Django123".format(USER_AMOUNT))
 
     def create_sections(self):
         s1 = Section()
@@ -276,29 +281,85 @@ class Command(BaseCommand):
             r.third = pos.pop()
             r.save()
 
-        print("Over 180 rankings generated")
+        print("Over {} rankings generated".format(RANKING_AMOUNT))
 
         # End of create_rankings
 
     def create_applications(self):
-        global APPLICATION_AMOUNT, DATES_RANGE, DATES_SAMPLE
+        global USERS_WITH_APPLICATION, DATES_RANGE, DATES_SAMPLE
         rankings = list(Ranking.objects.all())
         users = list(User.objects.all())
-        for i in range(APPLICATION_AMOUNT): # Dependent on number of rankings available
+        application_amount = min(USERS_WITH_APPLICATION, len(users), len(rankings))
+        for i in range(application_amount): # Dependent on number of rankings available
             a = Application()
             a.ranking = rankings[i]
             a.applicant = users[i]
             a.text = "dummy"
             a.phone_number = 12345678
             a.interview_time = timezone.now()
-            a.dates = ",".join(str(x) for x in random.sample(range(DATES_RANGE), DATES_SAMPLE))
-            print(a.dates)
             a.save()
 
-        print("Over {} applications generated".format(APPLICATION_AMOUNT))
+        print("Over {} applications generated".format(application_amount))
 
         # End of create_applications
 
+    def create_dates(self):
+        global USERS_WITH_DATES, DATES_RANGE, DATES_SAMPLE
+        users = list(User.objects.all())
+        dates_amount = min(USERS_WITH_DATES, len(users))
+        for i in range(dates_amount):
+            d = Dates()
+            d.user = users[i]
+            if i > (dates_amount // 4): # 3/4 of the users set dates
+                d.user = users[i]
+                d.dates = ",".join(str(x) for x in sorted(random.sample(range(DATES_RANGE), DATES_SAMPLE)))
+                d.save()
+        # And one for admin
+        d = Dates()
+        d.user = User.objects.get(username="admin")
+        d.dates = ",".join(str(x) for x in sorted(random.sample(range(DATES_RANGE), DATES_SAMPLE)))
+        d.save()
+        print("About {} user has now set dates".format(dates_amount -(dates_amount//4) ))
+
+    """
+    def create_calendars(self):
+        c = Calendar()
+        gangleader = User.objects.filter(username="admin")
+        c.gangleader = gangleader
+        gangleader_dates = Dates.objects.filter(user=gangleader).dates_list()
+        print(gangleader_dates)
+
+        applications = list(Application.objects.filter(ranking.first=))
+
+
+
+
+
+        # Genererer 200 søkere med 20 tilfeldige tider som passer for dem
+        graph = {}
+        for i in range(200):
+            # key er navn fra 0 til 200
+            # value er samplet fra grid over
+            graph["pers"+str(i)] = random.sample(range(70), 20)
+
+        # Bare tider som er tilgjengelig for begge gjengledere blir med videre.
+        # Gjør dette ved å fjerne tider som egt passet for søker, men som
+        # ikke passet for intervjuerne.
+        for pers, times in graph.items():
+            # Skriver over tidene til søkeren med de nye gunstige tidene
+            times = [t for t in times if t in gjengleder1 and t in gjengleder2]
+            # Erstatter de gamle tidspunktene med de nye
+            graph[pers] = times
+
+        # HopcroftKarp algoritmen matcher flest mulig søkere på kalenderen
+        result = HopcroftKarp(graph).maximum_matching()
+        # Ordner slik at person får tildelt ett tidspunkt
+        fixed = [(pers, time) for pers, time in result.items() if type(pers) is not int]
+        fixed2 = {pers: time for pers, time in result.items() if type(pers) is not int}
+        # Vis resultat
+        print("Result:")
+        print(fixed2)
+    """
 
     def handle(self, *args, **options):
         self.flush()
@@ -312,5 +373,6 @@ class Command(BaseCommand):
         self.create_positions()
         self.create_rankings()
         self.create_applications()
+        self.create_dates()
         print("  ==  Dummydata inserted  ==  ")
         # End of handle

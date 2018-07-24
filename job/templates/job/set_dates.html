@@ -1,0 +1,138 @@
+{% extends 'job/base.html' %}
+{% block title %}Set dates{% endblock %}
+{% block styleblock %}
+    <style media="screen">
+        .calendar {
+            display: grid;
+            grid-template-columns: 1fr 6fr;
+            gap: 1em;
+            border: solid;
+            border-radius: 20px;
+            border-color: gray;
+            padding: 2em;
+            text-align: center;
+            color: DeepSkyBlue;
+        }
+        .topleft {
+            border: hidden;
+        }
+        .times {
+            display: grid;
+            border: hidden;
+            gap: 1em;
+        }
+        .times div {
+            border: hidden;
+        }
+        .days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            border: hidden;
+
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            grid-template-rows: repeat(10, 1.9em);
+            border: hidden;
+            gap: 1em;
+        }
+        .gridcell {
+            border: solid;
+            border-radius: 6px;
+        }
+        .gridcell:hover {
+            cursor: pointer;
+            color: orange;
+        }
+
+    </style>
+{% endblock %}
+
+{% block body %}
+<div class="calendar">
+    <div class="topleft">Time / Day</div>
+    <div class="days">
+        <div>Mon</div>
+        <div>Tue</div>
+        <div>Wed</div>
+        <div>Thu</div>
+        <div>Fri</div>
+        <div>Sat</div>
+        <div>Sun</div>
+    </div>
+    <div class="times">
+        <div>08:00 - 09:00</div>
+        <div>09:00 - 10:00</div>
+        <div>10:00 - 11:00</div>
+        <div>11:00 - 12:00</div>
+        <div>12:00 - 13:00</div>
+        <div>13:00 - 14:00</div>
+        <div>14:00 - 15:00</div>
+        <div>15:00 - 16:00</div>
+        <div>16:00 - 17:00</div>
+        <div>17:00 - 18:00</div>
+    </div>
+    <div class="grid">
+
+    </div> <!-- End: grid -->
+
+    <button type="button" class="btn btn-outline-success" id="select_all">Select all</button>
+    <button type="button" class="btn btn-outline-danger" id="unselect_all">Unselect all</button>
+
+</div> <!-- End: calendar -->
+{% endblock %}
+
+{% block scriptblock %}
+<script>
+    $(document).ready(function() {
+        // Retrieve Django variable, user_dates, from views.py
+        // and convert string into list
+        var user_dates = "{{ user_dates }}".split(",")
+        console.log(user_dates);
+
+        // Create divs inside grid. Easier than adding them manually
+        for (var i=0; i<70; i++) { // 70 because of temporary 0-69 grid
+            var div = document.createElement("div");  // Create with DOM
+            div.id = i.toString(); // Give each cell their id according to grid
+            div.className = "gridcell";
+            $(".grid").append(div);
+        } // End: cell-appending to grid
+
+        // Display previously selected dates
+        for (var i = 0; i < user_dates.length; i++) {
+            var cellid = "#" + user_dates[i];
+            $(cellid).html("X");
+        } // End: Display previously selected dates
+
+        // Select or unselect dates, and update the array accordingly
+        $(".gridcell").click(function(){
+            if (this.innerHTML == "X") { // Unselect
+                this.innerHTML = "";
+                var index = user_dates.indexOf(this.id)
+                user_dates.splice(index, 1);
+                console.log(user_dates);
+            }
+            else { // Select
+                this.innerHTML = "X";
+                user_dates.push(this.id);
+                console.log(user_dates);
+            }
+
+        }); // End: click function
+
+        $("#select_all").click(function() {
+            $(".gridcell").html("X");
+            for (var i = 0; i < 70; i++) {
+                user_dates[i] = i.toString();
+            }
+        })
+        $("#unselect_all").click(function() {
+            $(".gridcell").html("");
+            user_dates = []
+        })
+
+
+    }); // End: document ready
+</script>
+{% endblock %}

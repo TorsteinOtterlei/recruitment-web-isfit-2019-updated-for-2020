@@ -1,12 +1,12 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth import authenticate, login, logout
-from django.views.generic import View
-from django.contrib.auth.forms import UserCreationForm
-from .forms import SignUpForm, ApplicationForm#, RankingForm
 from django.views import generic
-from .models import Gang, Application, Position, Section, Ranking
+from django.views.generic import View
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from .forms import SignUpForm, ApplicationForm#, RankingForm
+from .models import *
 
 class PositionView(generic.ListView):
     template_name = 'job/positions.html'
@@ -154,8 +154,20 @@ def information(request):
         'positions':Position.objects.all()
     })
 
+@login_required
 def calendar(request):
-    return render(request, 'job/calendar.html', {
-        'applications': Application.objects.all(),
-        'interviews': {'pers153': 3, 'pers57': 11, 'pers195': 13, 'pers95': 22, 'pers22': 23, 'pers8': 25, 'pers15': 26, 'pers199': 28, 'pers94': 32, 'pers27': 35, 'pers133': 41, 'pers56': 44, 'pers35': 47, 'pers34': 49, 'pers117': 52, 'pers78': 54, 'pers190': 55, 'pers179': 56, 'pers175': 58, 'pers174': 59, 'pers12': 63, 'pers197': 65, 'pers178': 69}
+    return render(request, 'calendar', {
+        'calendar': Calendar.objects.filter(gangleader=request.user).first(),
+        'applications': list(Application.objects.all()),
+        'interviews': {'pers45': 0, 'pers92': 6, 'pers118': 7, 'pers195': 11, 'pers142': 16, 'pers35': 26, 'pers70': 27, 'pers19': 28, 'pers82': 32, 'pers61': 39, 'pers128': 40, 'pers89': 41, 'pers149': 43, 'pers33': 50, 'pers123': 51, 'pers48': 52, 'pers96': 55, 'pers199': 58, 'pers178': 60, 'pers43': 61, 'pers159': 64, 'pers140': 65, 'pers34': 66, 'pers32': 68}
     })
+
+@login_required
+def set_dates(request):
+    if request == 'POST':
+        # TODO: Replace user_dates
+        pass
+    else:
+        return render(request, 'job/set_dates.html', {
+            'user_dates': Dates.objects.filter(user=request.user).first().dates
+        })

@@ -34,6 +34,7 @@ urlpatterns = [
     path('applicant_text/<int:pk>', views.ApplicationDetail.as_view(), name='applicant_text'),
     path('all_applications/', views.all_applications, name='all_applications'),
     path('calendar/', views.calendar, name='calendar'),
+    path('set_dates/', views.set_dates, name='set_dates'),
     #path('rankTest', views.rankTest, name='rankTest'),
     #path('application_form/<int:position_id>/', views.PositionDetailView.as_view(), name='position_details'),
 ]
