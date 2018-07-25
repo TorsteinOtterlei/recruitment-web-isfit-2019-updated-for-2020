@@ -1,6 +1,6 @@
 {% extends 'job/base.html' %}
 {% block title %}Calendar{% endblock %}
-{% block styleblock %}
+{% block head %}
     <style media="screen">
         .calendar {
             display: grid;
@@ -31,60 +31,57 @@
 
     </style>
 {% endblock %}
+
 {% block body %}
-
-<div class="calendar">
-    <div class="topleft">Time / Day</div>
-    <div class="days">
-        <div>Mon</div>
-        <div>Tue</div>
-        <div>Wed</div>
-        <div>Thu</div>
-        <div>Fri</div>
-        <div>Sat</div>
-        <div>Sun</div>
-    </div>
-    <div class="times">
-        <p>08:00 - 09:00</p>
-        <p>09:00 - 10:00</p>
-        <p>10:00 - 11:00</p>
-        <p>11:00 - 12:00</p>
-        <p>12:00 - 13:00</p>
-        <p>13:00 - 14:00</p>
-        <p>14:00 - 15:00</p>
-        <p>15:00 - 16:00</p>
-        <p>16:00 - 17:00</p>
-        <p>17:00 - 18:00</p>
-    </div>
-    <div class="grid">
-
-    </div>
-
-</div>
-
-
+    <div class="calendar">
+        <div class="topleft">Time / Day</div>
+        <div class="days">
+            <div>Mon</div>
+            <div>Tue</div>
+            <div>Wed</div>
+            <div>Thu</div>
+            <div>Fri</div>
+            <div>Sat</div>
+            <div>Sun</div>
+        </div>
+        <div class="times">
+            <p>08:00 - 09:00</p>
+            <p>09:00 - 10:00</p>
+            <p>10:00 - 11:00</p>
+            <p>11:00 - 12:00</p>
+            <p>12:00 - 13:00</p>
+            <p>13:00 - 14:00</p>
+            <p>14:00 - 15:00</p>
+            <p>15:00 - 16:00</p>
+            <p>16:00 - 17:00</p>
+            <p>17:00 - 18:00</p>
+        </div>
+        <div class="grid">
+            <!-- cells inserted with javascript -->
+        </div>
+    </div> <!-- End: calendar -->
 {% endblock %}
 
 {% block scriptblock %}
-<script>
-    $(document).ready(function() {
-        // interviews retrieved from dictionary sent from views.calendar
-        var interviews = {{ interviews | safe }};
+    <script>
+        $(document).ready(function() {
+            // interviews retrieved from dictionary sent from views.calendar
+            var interviews = {{ interviews | safe }};
 
-        // Create divs inside grid
-        for (var i=0; i<70; i++) {
-            //console.log(i);
-            var div = document.createElement("div");  // Create with DOM
-            div.id = i;
-            div.innerHTML = i;
-            $(".grid").append(div);
-        }
+            // Create divs inside grid
+            for (var i=0; i<70; i++) {
+                //console.log(i);
+                var div = document.createElement("div");  // Create with DOM
+                div.id = i;
+                div.innerHTML = i;
+                $(".grid").append(div);
+            }
 
-        // Place persons to their given date
-        for (var key in interviews) {
-            var cell = "#" + interviews[key];
-            $(cell).html(key);
-        }
-    });
-</script>
+            // Place persons to their given date
+            for (var key in interviews) {
+                var cell = "#" + interviews[key];
+                $(cell).html(key);
+            }
+        });
+    </script>
 {% endblock %}

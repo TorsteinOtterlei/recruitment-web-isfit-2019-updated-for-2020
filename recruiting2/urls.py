@@ -18,6 +18,8 @@ from django.contrib import admin
 from job import views
 from django.contrib.auth.views import login, logout
 
+# TODO: Clean up urls. Should be forwarded to job-app
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('position/', include('job.urls')),

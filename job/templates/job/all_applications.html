@@ -1,20 +1,18 @@
 {% extends 'job/base.html' %}
+{% block title %}All applications{% endblock %}
 
 {% block body %}
-
-{% block title %}All applications{% endblock %}
-<br>
-<br>
-  {% if user.is_staff %}
-      {% for application in applications %}
+    <br>
+    <br>
+    {% if user.is_staff %}
+        {% for application in applications %}
             <!--<a href="{% url 'applicant_text' application.pk %}">{{application.applicant.first_name}} {{ application.applicant.last_name}}</a>-->
-                {% if application.interview_time == None %}
-                    <a href="{% url 'applicant_text' application.pk %}">{{application.applicant.first_name}} {{ application.applicant.last_name}}</a> (None)<br><br>
-                {% endif %}
-                {% if application.interview_time != None %}
-                    <a href="{% url 'applicant_text' application.pk %}">{{application.applicant.first_name}} {{ application.applicant.last_name}}</a> {{ application.interview_time.day}}.{{ application.interview_time.month}}.{{ application.interview_time.year}}, {{ application.interview_time.hour}}:{{ application.interview_time.minute}}<br><br>
-                {% endif %}
-      {% endfor %}
-  {% endif %}
-
+            {% if application.interview_time == None %}
+                <a href="{% url 'applicant_text' application.pk %}">{{application.applicant.first_name}} {{ application.applicant.last_name}}</a> (None)<br><br>
+            {% endif %}
+            {% if application.interview_time != None %}
+                <a href="{% url 'applicant_text' application.pk %}">{{application.applicant.first_name}} {{ application.applicant.last_name}}</a> {{ application.interview_time.day}}.{{ application.interview_time.month}}.{{ application.interview_time.year}}, {{ application.interview_time.hour}}:{{ application.interview_time.minute}}<br><br>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
 {% endblock %}

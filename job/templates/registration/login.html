@@ -1,6 +1,6 @@
 {% extends 'job/base.html' %}
 {% load static %}
-{% block link %}
+{% block head %}
     <link rel="stylesheet" type="text/css" href="{% static "job/login.css" %}">
 {% endblock %}
 
@@ -19,10 +19,8 @@
             <p id="profile-name" class="profile-name-card"></p>
             <form class="form-signin" method="post">
                 {% csrf_token %}
-
-
                 {% for field in form %}
-                    <div class="fieldWrapper" >
+                    <div class="fieldWrapper">
                         {{ field.label_tag }} {{ field }}
                     </div>
                 {% endfor %}
