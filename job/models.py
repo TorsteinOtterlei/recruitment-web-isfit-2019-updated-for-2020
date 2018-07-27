@@ -16,7 +16,7 @@ class Section(models.Model):
 class Gang(models.Model):
     name = models.CharField(max_length=50)
     #leader = models.OneToOneField(User, on_delete=models.SET_NULL, null=True)
-    section = models.ForeignKey(Section, on_delete=models.CASCADE)
+    section = models.ForeignKey(Section, on_delete=models.CASCADE, related_name="gangs")
 
     def __str__(self):
         return self.name
@@ -25,7 +25,7 @@ class Gang(models.Model):
 class Project(models.Model):
     name = models.CharField(max_length=50)
     leader = models.OneToOneField(User, on_delete=models.SET_NULL, null=True)
-    gang = models.ForeignKey(Gang, on_delete=models.CASCADE)
+    gang = models.ForeignKey(Gang, on_delete=models.CASCADE, related_name="projects")
 
     def __str__(self):
         return self.name
@@ -33,7 +33,7 @@ class Project(models.Model):
 
 class Position(models.Model):
     title = models.CharField(max_length=50)
-    gang = models.ForeignKey(Gang, on_delete=models.CASCADE)
+    gang = models.ForeignKey(Gang, on_delete=models.CASCADE, related_name="positions")
     description = models.TextField(max_length=20000)
     email = models.EmailField(max_length=200)
     name_of_interviewer = models.CharField(max_length=100)
@@ -59,7 +59,7 @@ class Ranking(models.Model):
 
 class Application(models.Model):
     ranking = models.ForeignKey(Ranking, on_delete=models.CASCADE, default=None, null=True)
-    applicant = models.ForeignKey(User, on_delete=models.CASCADE)
+    applicant = models.OneToOneField(User, on_delete=models.CASCADE)
     text = models.TextField(max_length=2000)
     phone_number = models.CharField(max_length=12)
     interview_time = models.DateTimeField(null=True, blank=True, default=None)
@@ -83,21 +83,18 @@ class Application(models.Model):
 
 
 class Dates(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     dates = models.TextField(max_length=2000, default="", blank=True) # 1,2,43,68 possible dates
 
     def dates_list(self):
-        if dates == None:
-            return [i for i in range(70)]
-        else:
-            return [int(x) for x in self.dates.split(',')]
+        return [int(x) for x in self.dates.split(',')]
 
     def __str__(self):
-        return self.user.username + " " + self.dates
+        return self.user.username + "'s dates: " + self.dates
 
 
 class Calendar(models.Model):
-    gangleader = models.ForeignKey(User, on_delete=models.CASCADE)
+    gangleader = models.OneToOneField(User, on_delete=models.CASCADE)
     dict = models.TextField(max_length=2000, default=None) # user:1,user:2
     #gangleader_dates = models.ForeignKey(Dates, on_delete=models.CASCADE, default=None, null=True)
 
@@ -106,7 +103,8 @@ class Calendar(models.Model):
         cal = {}
         for tuple in c:
             t = tuple.split(":")
-            cal[t[0]] = int(t[1])
+            user = User.objects.get(username=t[0])
+            cal[user] = int(t[1])
         return cal
 
     def __str__(self):

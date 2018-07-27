@@ -51,6 +51,7 @@
 {% endblock %}
 
 {% block body %}
+
     <div class="calendar">
         <div class="topleft">Time / Day</div>
 
@@ -80,11 +81,12 @@
         <div class="grid">
             <!-- cells inserted with javascript -->
         </div> <!-- End: grid -->
+    </div> <!-- End: calendar -->
 
+    <div>
         <button type="button" class="btn btn-outline-success" id="select_all">Select all</button>
         <button type="button" class="btn btn-outline-danger" id="unselect_all">Unselect all</button>
-
-    </div> <!-- End: calendar -->
+    </div>
 {% endblock %}
 
 {% block scriptblock %}
@@ -92,13 +94,15 @@
         $(document).ready(function() {
             // Retrieve Django variable, user_dates, from views.py
             // and convert string into list
-            var user_dates = "{{ user_dates }}".split(",")
+            //var user_dates = "{{ user_dates }}".split(",")
+            var user_dates = {{ user_dates }}
             console.log(user_dates);
+            var filler = "X";
 
             // Create divs inside grid. Easier than adding them manually
             for (var i=0; i<70; i++) { // 70 because of temporary 0-69 grid
                 var div = document.createElement("div");  // Create with DOM
-                div.id = i.toString(); // Give each cell their id according to grid
+                div.id = i; // Give each cell their id according to grid
                 div.className = "gridcell";
                 $(".grid").append(div);
             } // End: cell-appending to grid
@@ -106,35 +110,35 @@
             // Display previously selected dates
             for (var i = 0; i < user_dates.length; i++) {
                 var cellid = "#" + user_dates[i];
-                $(cellid).html("X");
+                $(cellid).html(filler);
             } // End: Display previously selected dates
 
             // Select or unselect dates, and update the array accordingly
             $(".gridcell").click(function(){
-                if (this.innerHTML == "X") { // Unselect
+                if (this.innerHTML == filler) { // Unselect
                     this.innerHTML = "";
-                    var index = user_dates.indexOf(this.id)
+                    var index = user_dates.indexOf(parseInt(this.id));
                     user_dates.splice(index, 1);
                     console.log(user_dates);
                 }
                 else { // Select
-                    this.innerHTML = "X";
-                    user_dates.push(this.id);
+                    this.innerHTML = filler;
+                    user_dates.push(parseInt(this.id));
                     console.log(user_dates);
                 }
 
-            }); // End: click function
+            }); // End: gridcell.click
 
             $("#select_all").click(function() {
-                $(".gridcell").html("X");
+                $(".gridcell").html(filler);
                 for (var i = 0; i < 70; i++) {
-                    user_dates[i] = i.toString();
+                    user_dates[i] = i;
                 }
-            })
+            });
             $("#unselect_all").click(function() {
                 $(".gridcell").html("");
                 user_dates = []
-            })
+            });
 
 
         }); // End: document ready

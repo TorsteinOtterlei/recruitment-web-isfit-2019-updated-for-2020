@@ -169,5 +169,5 @@ def set_dates(request):
         pass
     else:
         return render(request, 'job/set_dates.html', {
-            'user_dates': Dates.objects.filter(user=request.user).first().dates
+            'user_dates': Dates.objects.filter(user=request.user).first().dates_list()
         })
