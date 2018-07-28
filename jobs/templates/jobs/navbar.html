@@ -1,0 +1,59 @@
+{% load static %}
+{% comment %}
+    NEEDS FIXING
+{% endcomment %}
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header container">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navigation_menu" aria-expanded="false" style="cursor: pointer"
+                    onmouseover="this.style.opacity = 0.85" onmouseout="this.style.opacity = 1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <div class="container">
+              <a class="main-logo-footprints" href="{% url 'home' %}">
+                  <p id="main-logo"></p>
+                  <p class="footprint" id=footprints_long></p>
+              </a>
+            </div>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse container" id="navigation_menu">
+            <ul class="nav navbar-nav">
+                <a href="{% url 'home' %}">Home</a>
+                <li class="dropdown">
+                    <a href="{% url 'jobs:information' %}" class="" role="button">Positions</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'applications:apply' %}">Application</a>
+                    {% if user.is_staff %}
+                        <li><a href="{% url 'applications:all_applications' %}">Applications</a>
+                        <li><a href="{% url 'applications:view_applications' %}">All applicants</a>
+                        <li><a href="{% url 'admin:index' %}">Administration</a>
+                    {% endif %}
+
+                    <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ user.username }} <span class="caret"></span></a>
+                    <ul class="dropdown-menu dropdown-nav">
+                        <li><a href="{% url 'accounts:profile' %}">My profile</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="{% url 'accounts:logout' %}" style="color: red">Logout</a>
+                    </ul>
+                </li>
+                {% else %}
+                <a href="{% url 'accounts:login' %}">Login</a>
+
+    		</ul>
+            </li>
+            {% endif %}
+
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>

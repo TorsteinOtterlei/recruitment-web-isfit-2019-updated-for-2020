@@ -1,0 +1,9 @@
+{% extends 'jobs/base.html'%}
+
+{% block body %}
+    <form class="site-form" action="{% url 'rankTest' %}" method="post">
+        {% csrf_token %}
+        {{form}}
+        <input type="submit" value="Submit">
+    </form>
+{% endblock %}
