@@ -14,43 +14,40 @@
                                 </a>
                             </h3>
                             <div class="gangs-div collapse" id="{{ section.name }}">
-                                <h5>About {{ section.name }}</h5>
+                                <h5>About</h5>
                                 <p>{{ section.information }}</p>
+                                <hr>
                                 <h5>Gangs</h5>
-                                {% for gang in gangs %}
-                                    {% if gang.section == section %}
-                                        <div class="flex-vertical">
-                                            <h6 class="column-2">
-                                                <a class="dropdown-toggle" data-toggle="collapse" href="#{{ gang.name }}" role="button" aria-expanded="false" aria-controls="collapseExample">
-                                                    {{ gang.name }}
-                                                </a>
-                                            </h6>
-                                            <div class="positions-div collapse" id="{{ gang.name }}">
-                                                <h6>Positions</h6>
-                                                {% for position in positions %}
-                                                    {% if position.gang == gang %}
-                                                        <div class="flex-horizontal">
-                                                            <h5 href="">
-                                                                <a class="dropdown-toggle" data-toggle="collapse" href="#{{ position.title }}" role="button" aria-expanded="false" aria-controls="collapseExample" for="{{ position.pk }}">
-                                                                    {{ position.title }}
-                                                                </a>
-                                                            </h5>
-                                                        </div>
-                                                        <div class="collapse" id="{{ position.title }}">
-                                                            <div class="dropdown-item">
-                                                                <p class="">{{ position.description }}</p>
-                                                                <h5>Contact Information</h5>
-                                                                <p><b>Name:</b> {{ position.name_of_interviewer }} <br>
-                                                                    <b>Phone:</b> {{ position.phone_number }} <br>
-                                                                    <b>Email:</b> <a href="">{{ position.email }}</a>
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    {% endif %}
-                                                {% endfor %}
-                                            </div>
+                                {% for gang in section.gangs.all %}
+                                    <div class="flex-vertical">
+                                        <h5 class="column-2">
+                                            <a class="dropdown-toggle" data-toggle="collapse" href="#{{ gang.name }}" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                                {{ gang.name }}
+                                            </a>
+                                        </h5>
+                                        <div class="positions-div collapse" id="{{ gang.name }}">
+                                            <h5>Positions</h5>
+                                            {% for position in gang.positions.all %}
+                                                <div class="flex-horizontal">
+                                                    <h5 href="">
+                                                        <a class="dropdown-toggle" data-toggle="collapse" href="#{{ position.title }}" role="button" aria-expanded="false" aria-controls="collapseExample" for="{{ position.pk }}">
+                                                            {{ position.title }}
+                                                        </a>
+                                                    </h5>
+                                                </div>
+                                                <div class="collapse" id="{{ position.title }}">
+                                                    <div class="dropdown-item">
+                                                        <p class="">{{ position.description }}</p>
+                                                        <h5>Contact Information</h5>
+                                                        <p><b>Name:</b> {{ position.name_of_interviewer }} <br>
+                                                            <b>Phone:</b> {{ position.phone_number }} <br>
+                                                            <b>Email:</b> <a href="">{{ position.email }}</a>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
                                         </div>
-                                    {% endif %}
+                                    </div>
                                 {% endfor %}
                             </div>
                         </div>
