@@ -9,5 +9,5 @@ urlpatterns = [
     #path('jobs/<int:jobs_id>', views.JobsDetailView.as_view(), name='jobs_details'),
     path('position_detail/<int:pk>', views.PositionDetail.as_view(), name='position_detail'),
     path('information/', views.information, name='information'),
-
+    path('calendar/', views.calendar, name='calendar'),
 ]

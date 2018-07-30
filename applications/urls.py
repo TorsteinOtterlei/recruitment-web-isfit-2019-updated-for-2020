@@ -11,5 +11,4 @@ urlpatterns = [
     path('applicant_text/<int:pk>', views.ApplicationDetail.as_view(), name='applicant_text'),
     path('all_applications/', views.all_applications, name='all_applications'),
     path('set_dates/', views.set_dates, name='set_dates'),
-    path('calendar/', views.calendar, name='calendar'),
 ]

@@ -85,22 +85,12 @@ def apply(request):
         'applied_to':applied_to,
     })
 
-# IDEA: Move to jobs
-# BUG: Not finished at all
-@login_required
-def calendar(request):
-    return render(request, 'applications/calendar.html', {
-        'calendar': Calendar.objects.filter(gangleader=request.user).first(),
-        'applications': list(Application.objects.all()),
-        'interviews': {'pers45': 0, 'pers92': 6, 'pers118': 7, 'pers195': 11, 'pers142': 16, 'pers35': 26, 'pers70': 27, 'pers19': 28, 'pers82': 32, 'pers61': 39, 'pers128': 40, 'pers89': 41, 'pers149': 43, 'pers33': 50, 'pers123': 51, 'pers48': 52, 'pers96': 55, 'pers199': 58, 'pers178': 60, 'pers43': 61, 'pers159': 64, 'pers140': 65, 'pers34': 66, 'pers32': 68}
-    })
-
 @login_required
 def set_dates(request):
     if request == 'POST':
         # TODO: Replace user_dates
         pass
-    elif request == 'GET':
+    else:
         return render(request, 'applications/set_dates.html', {
             'user_dates': Dates.objects.get(user=request.user).dates_list()
         })

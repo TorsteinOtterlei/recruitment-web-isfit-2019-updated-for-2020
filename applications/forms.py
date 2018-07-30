@@ -1,18 +1,20 @@
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.forms import inlineformset_factory
 from .models import *
-from django.forms.widgets import CheckboxSelectMultiple
-from django.forms.models import ModelMultipleChoiceField
+#from django.forms.widgets import CheckboxSelectMultiple
+#from django.forms.models import ModelMultipleChoiceField
 
 class ApplicationForm(forms.ModelForm):
     text = forms.CharField(label="Why do you want to volunteer with ISFiT? (Remember to write a ranking list of your top 3 choices where nr. 1 is your top choice)", max_length=2000, required=True, widget=forms.Textarea())
 
     class Meta:
         model = Application#, Ranking
+        fields = (
+            'text',
+            'phone_number'
+        )
         exclude = ['applicant']
-        fields = ('text', 'phone_number')
 
     def __init__(self, *args, **kwargs):
         super(ApplicationForm, self).__init__(*args, **kwargs)

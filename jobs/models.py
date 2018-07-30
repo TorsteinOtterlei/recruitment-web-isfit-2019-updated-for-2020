@@ -42,3 +42,20 @@ class Position(models.Model):
 
     def __str__(self):
         return str(self.title) + ', ' + str(self.gang)
+
+class Calendar(models.Model):
+    gangleader = models.OneToOneField(User, on_delete=models.CASCADE)
+    dict = models.TextField(max_length=2000, default=None) # user:1,user:2
+    #gangleader_dates = models.ForeignKey(Dates, on_delete=models.CASCADE, default=None, null=True)
+
+    def calendar_dict(self):
+        c = dict.split(",")
+        cal = {}
+        for tuple in c:
+            t = tuple.split(":")
+            user = User.objects.get(username=t[0])
+            cal[user] = int(t[1])
+        return cal
+
+    def __str__(self):
+        return "Calendar for " + self.gangleader
