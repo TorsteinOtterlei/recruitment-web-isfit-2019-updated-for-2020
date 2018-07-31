@@ -51,22 +51,19 @@ def apply(request):
     else:
         form = ApplicationForm(request.POST, instance=application)
     if request.method == 'POST':
-
+        selected_positions = request.POST.get('selected_positions', '').split('||')
+        print(selected_positions)
         form = ApplicationForm(request.POST, instance=application)
-        if (len(request.POST.get('first', '')) != 0): # if any jobs were selected
+        if (len(request.POST.get('selected_positions', '')) != 0): # if any jobs were selected
             if form.is_valid():
 
                 r = Ranking() # making a new ranking object
-                r.first = Position.objects.get(title = request.POST.get('first', ''))
-
-                # TODO maybe fix this hard code
-                second = request.POST.get('second', '')
-                third = request.POST.get('third', '')
-                if (len(third) > 0):
-                    r.second = Position.objects.get(title = second)
-                    r.third = Position.objects.get(title = third)
-                elif (len(second) > 0):
-                    r.second = Position.objects.get(title = second)
+                r.first = Position.objects.get(title = selected_positions[0])
+                if len(selected_positions) > 1:
+                    r.second = Position.objects.get(title = selected_positions[1])
+                if len(selected_positions) > 2:
+                    r.third = Position.objects.get(title = selected_positions[2])
+                    
                 r.save()
 
                 if application is not None: # delete old ranking
@@ -76,7 +73,7 @@ def apply(request):
                 application.ranking = r
                 application.applicant = request.user
                 application.save()
-                return redirect('profile')
+                return redirect('../../account')
 
     return render(request, 'applications/application_form.html', {
         'positions': Position.objects.all(),

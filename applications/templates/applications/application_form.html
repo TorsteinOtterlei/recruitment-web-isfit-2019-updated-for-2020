@@ -1,195 +1,179 @@
 {% extends 'jobs/base.html' %}
+{% block title %}Apply{% endblock %}
+
+{% block head %}
+  <style media="screen">
+      ul {
+          list-style-type: none;
+      }
+      .container {
+          max-width: 1000px;
+      }
+      .options {
+          cursor: pointer;
+          color: gray;
+          line-height: 2rem;
+      }
+      .sections {
+          font-size: 1.5rem;
+          line-height: 3rem;
+
+      }
+      .gangs {
+          font-size: 1.3rem;
+          line-height: 2rem;
+
+      }
+      .positions {
+          padding-left: 15px;
+          padding-right: 15px;
+      }
+      .positions li:hover {
+          color: orange;
+      }
+      .dropzone {
+          border-radius: 20px;
+          border: solid;
+          border-style: inset;
+          border-color: orange;
+          height: 250px;
+          max-width: 400px;
+      }
+      #chosenList li {
+          border-radius: 5px;
+          border-style: solid;
+          border-width: 1px;
+          color: gray;
+          line-height: 1rem;
+          margin-top: 1rem;
+          margin-right: 50px;
+          padding: 8px 8px 8px 20px;
+          list-style-position: inside;
+      }
+      #chosenList li:hover {
+          cursor: move;
+          color: orange;
+      }
+
+  </style>
+{% endblock %}
+
 {% block body %}
 
-<html lang="en" dir="ltr">
-<head>
-    {% load static %}
-    <meta charset="utf-8">
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+                  <h2>Your application</h2>
+                  <form method="post" name='application_form'>
+                      {% csrf_token %}
+                      {% for field in form %}
+                      <p>
+                          {{ field.label_tag }}<br>
+                          {{ field }}
+                          {% if field.help_text %}
+                              <small class="form-text text-muted">{{ field.help_text }}</small>
+                          {% endif %}
+                          {% for error in field.errors %}
+                              <p style="color: red">{{ error }}</p>
+                          {% endfor %}
+                      </p>
+                      {% endfor %}
+                      <!-- <input name="test" value="yolo"></input> -->
+                      <input id="selected_positions" name="selected_positions" style="display:none;"></input>
 
-    <style media="screen">
-        ul {
-            list-style-type: none;
+
+                    </form>
+  <div class="row container">
+
+      <div class="col-md-7">
+          <h2>Sections:</h2>
+          <ul class="options">
+              {% for section in sections %}
+              <li><span class="collapsable sections">{{section.name}}</span>
+                  <ul>
+                      <!--<h3>Gangs:</h3>-->
+                      {% for gang in gangs %}
+                          {% if gang.section == section %}
+                              <li><span class="collapsable gangs">{{gang.name}}</span>
+                                  <ul class="positions">
+                                      {% for position in positions %}
+                                          {% if position.gang == gang %}
+                                              <li id="{{position.title}}"><span>{{position.title}}</span></li>
+                                          {% endif %}
+                                      {% endfor %}
+                                  </ul>
+                              </li>
+                          {% endif %}
+                      {% endfor %}
+                  </ul>
+              </li>
+              {% endfor %}
+          </ul>
+      </div>
+      <div class="col-md-5 dropzone">
+          <h2>Chosen:</h2>
+          <ol id="chosenList"></ol>
+      </div>
+  </div>
+  <button onclick="submit()" style="width: 100%; background-color: orange;" class="btn button-form">Apply</button>
+
+{% endblock %}
+
+{% block scriptblock %}
+  <script type="text/javascript" src="http://rubaxa.github.io/Sortable/Sortable.js">//https://github.com/RubaXa/Sortable</script>
+
+  <script>
+      var chosen = {};
+      
+      // Getting saved application
+      var rankings = "{{applied_to}}".split(',');
+      for (i in rankings){
+        pos = rankings[i].split('. ')[1];
+        chosen[pos] = 'chosen'
+        li = document.createElement("li");
+        li.innerHTML = pos;
+        li.id = pos;
+        document.getElementById("chosenList").appendChild(li);
+      }
+
+
+      Sortable.create(chosenList, {animation: 150 });
+
+      $(function() {
+          $(".collapsable").click(function () {
+              $(this).parent().children().toggle();
+              $(this).toggle();
+          });
+
+          $(".collapsable").each(function(){
+              $(this).parent().children().toggle();
+              $(this).toggle();
+          });
+
+          $(".positions li").on("click", function (e) {
+              console.log(chosen);
+              if ($("#chosenList li").length < 3 && chosen[this.id] == null) {
+                  chosen[this.id] = "chosen";
+                  li = document.createElement("li");
+                  li.innerHTML = this.innerHTML;
+                  li.id = this.id;
+                  document.getElementById("chosenList").appendChild(li);
+              }
+          });
+
+          $("#chosenList").on("click", "li", function (e) {
+              delete chosen[this.id];
+              this.parentNode.removeChild(this);
+          });
+      });
+
+      function submit(){
+        var pos = "";
+        var cl = $('#chosenList li');
+        for (var i = 0; i < cl.length; i++) {
+          pos += cl[i].id + "||";
         }
-        .container {
-            max-width: 1000px;
-        }
-        .options {
-            cursor: pointer;
-            color: gray;
-            line-height: 2rem;
-        }
-        .sections {
-            font-size: 1.5rem;
-            line-height: 3rem;
+        pos = pos.slice(0, -2);
+        $('#selected_positions').val(pos);
+        document.application_form.submit();
+      }
 
-        }
-        .gangs {
-            font-size: 1.3rem;
-            line-height: 2rem;
-
-        }
-        .positions {
-            padding-left: 15px;
-            padding-right: 15px;
-        }
-        .positions li:hover {
-            color: orange;
-        }
-        .dropzone {
-            border-radius: 20px;
-            border: solid;
-            border-style: inset;
-            border-color: orange;
-            height: 250px;
-            max-width: 400px;
-        }
-        #chosenList li {
-            border-radius: 5px;
-            border-style: solid;
-            border-width: 1px;
-            color: gray;
-            line-height: 1rem;
-            margin-top: 1rem;
-            margin-right: 50px;
-            padding: 8px 8px 8px 20px;
-            list-style-position: inside;
-        }
-        #chosenList li:hover {
-            cursor: move;
-            color: orange;
-        }
-
-    </style>
-
-</head>
-
-<body>
-<div class="row container">
-
-    <div class="col-md-7">
-        <h2>Sections:</h2>
-        <ul class="options">
-            {% for section in sections %}
-            <li><span class="collapsable sections">{{section.name}}</span>
-                <ul>
-                    <!--<h3>Gangs:</h3>-->
-                    {% for gang in gangs %}
-                        {% if gang.section == section %}
-                            <li><span class="collapsable gangs">{{gang.name}}</span>
-                                <ul class="positions">
-                                    {% for position in positions %}
-                                        {% if position.gang == gang %}
-                                            <li id="{{position.title}}"><span>{{position.title}}</span></li>
-                                        {% endif %}
-                                    {% endfor %}
-                                </ul>
-                            </li>
-                        {% endif %}
-                    {% endfor %}
-                </ul>
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
-    <div class="col-md-5 dropzone">
-        <h2>Chosen:</h2>
-        <ol id="chosenList">
-
-        </ol>
-    </div>
-</div>
-
-
-    <script type="text/javascript" src="http://rubaxa.github.io/Sortable/Sortable.js">//https://github.com/RubaXa/Sortable</script>
-
-    <script>
-        // Simple list: https://github.com/RubaXa/Sortable
-        /*
-        */
-        Sortable.create(chosenList, {animation: 150 });
-        // ---------------------------------------------------------
-        // http://jsfiddle.net/5Q8rJ/
-        /*
-        */
-        // ---------------------------------------------------------
-        $(function() {
-            var chosen = {};
-            $(".collapsable").click(function () {
-                $(this).parent().children().toggle();
-                $(this).toggle();
-            });
-
-            $(".collapsable").each(function(){
-                $(this).parent().children().toggle();
-                $(this).toggle();
-            });
-
-            $(".positions li").on("click", function (e) {
-                console.log(chosen);
-                if ($("#chosenList li").length < 3 && chosen[this.id] == null) {
-                    chosen[this.id] = "chosen";
-                    //document.getElementById("chosenList").appendChild(this);
-                    li = document.createElement("li");
-                    li.innerHTML = this.innerHTML;
-                    li.id = this.id;
-                    document.getElementById("chosenList").appendChild(li);
-                    /*
-                    span = document.createElement("span")
-                    span.innerHTML = this.innerHTML;
-                    span.className = "chosenPos";
-                    li.appendChild(span);
-                    var chosen = document.getElementById("chosenList");
-                    chosen.appendChild(li)
-                    //span.onclick = remove();
-                    */
-                } // end if
-                //console.log("Event: ", e);
-                //console.log("Current Target of Event: ", e.currentTarget);
-                //console.log("this: ", this);
-                //console.log("$(this): ", $(this));
-            });
-            /*
-            */
-            $("#chosenList").on("click", "li", function (e) {
-                delete chosen[this.id];
-                this.parentNode.removeChild(this);
-            });
-
-
-            /*
-            $(".positions").on('click'), function(this) {
-                $("positions").toggle(1000).toggle(1000);
-
-                alert(5)
-                if ($('#chosenList li').length < 3) {
-                alert(5);
-            }
-            };
-            */
-
-        }); // function end
-
-        /*
-        function addToPri(choise) {
-        var ol = document.getElementById("chosenList");
-        alert(choise.InnerHTML)
-        alert(ol.children().length);
-        if (true) {
-        //ol.appendChild(choise)
-        var li = document.createElement("li");
-        li.InnerHTML = choise.InnerHTML;
-        li.onclick = function() {
-        this.parentElement.removeChild(this);
-    }
-    ol.appendChild(li);
-
-};
-};
-        */
-
-
-    </script>
-</body>
-</html>
+  </script>
 {% endblock %}
