@@ -6,9 +6,9 @@ from jobs.models import Position
 
 # Create your models here.
 class Application(models.Model):
-    first = models.ForeignKey(Position, on_delete=models.CASCADE)
-    second = models.ForeignKey(Position, on_delete=models.CASCADE, default=None, null=True)
-    third = models.ForeignKey(Position, on_delete=models.CASCADE, default=None, null=True)
+    first = models.ForeignKey(Position, on_delete=models.CASCADE, default=None, related_name="first")
+    second = models.ForeignKey(Position, on_delete=models.CASCADE, default=None, null=True, blank=True, related_name="second")
+    third = models.ForeignKey(Position, on_delete=models.CASCADE, default=None, null=True, blank=True, related_name="third")
     applicant = models.OneToOneField(User, on_delete=models.CASCADE)
     text = models.TextField(max_length=2000)
     phone_number = models.CharField(max_length=12)

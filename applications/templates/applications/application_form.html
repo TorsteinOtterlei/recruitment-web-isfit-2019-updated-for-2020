@@ -124,13 +124,14 @@
 
       // Getting saved application
       var rankings = "{{applied_to}}".split(',');
-      for (i in rankings){
-        pos = rankings[i].split('. ')[1];
-        chosen[pos] = 'chosen'
-        li = document.createElement("li");
-        li.innerHTML = pos;
-        li.id = pos;
-        document.getElementById("chosenList").appendChild(li);
+      if (rankings[0] != 'None'){
+        for (i in rankings){
+          chosen[rankings[i]] = 'chosen'
+          li = document.createElement("li");
+          li.innerHTML = rankings[i];
+          li.id = rankings[i];
+          document.getElementById("chosenList").appendChild(li);
+        }
       }
 
 

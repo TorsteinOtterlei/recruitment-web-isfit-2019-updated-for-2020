@@ -18,14 +18,12 @@ def profile(request):
     if Application.objects.filter(applicant=request.user).first():
         user_application = Application.objects.filter(applicant=request.user).first()
 
-        positions = [user_application.ranking.first]
+        positions = [user_application.first]
 
-        if user_application.ranking.third is not None:
-            positions.append(user_application.ranking.second)
-            positions.append(user_application.ranking.third)
-
-        elif user_application.ranking.second is not None:
-            positions.append(user_application.ranking.second)
+        if user_application.second is not None:
+            positions.append(user_application.second)
+            if user_application.second is not None:
+                positions.append(user_application.third)
 
     return render(request, 'accounts/profile.html', {
         'positions':positions,

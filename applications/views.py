@@ -8,7 +8,6 @@ from django.utils.decorators import method_decorator
 from .forms import *
 from .models import *
 from jobs.models import Section, Gang
-from applications.models import Dates
 
 # Create your views here.
 
@@ -47,7 +46,11 @@ def apply(request):
     applied_to = None
     if application is not None:
         form = ApplicationForm(instance=application)
-        applied_to = application.ranking
+        applied_to = application.first.title
+        if application.second is not None:
+            applied_to += ',' + application.second.title
+            if application.third is not None:
+                applied_to += ',' + application.third.title
     else:
         form = ApplicationForm(request.POST, instance=application)
     if request.method == 'POST':
@@ -57,20 +60,14 @@ def apply(request):
         if (len(request.POST.get('selected_positions', '')) != 0): # if any jobs were selected
             if form.is_valid():
 
-                r = Ranking() # making a new ranking object
-                r.first = Position.objects.get(title = selected_positions[0])
-                if len(selected_positions) > 1:
-                    r.second = Position.objects.get(title = selected_positions[1])
-                if len(selected_positions) > 2:
-                    r.third = Position.objects.get(title = selected_positions[2])
-
-                r.save()
-
-                if application is not None: # delete old ranking
-                    Ranking.objects.filter(id = application.ranking.id).delete()
-
                 application = form.save(commit=False)
-                application.ranking = r
+
+                application.first = Position.objects.get(title = selected_positions[0])
+                if len(selected_positions) > 1:
+                    application.second = Position.objects.get(title = selected_positions[1])
+                if len(selected_positions) > 2:
+                    application.third = Position.objects.get(title = selected_positions[2])
+
                 application.applicant = request.user
                 application.save()
                 return redirect('applications:set_dates')
@@ -92,13 +89,9 @@ def set_dates(request):
         print("Fellofkr")
         # TODO: Replace user_dates
         if request.POST['times']:
-            time = Dates()
-            time.dates = request.POST['times']
-            time.applicant = request.user
-            print("Fello")
-            time.save()
-            print("fdker")
+            Application.objects.filter(applicant=request.user).first().dates = request.POST['times']
+
     else:
         return render(request, 'applications/set_dates.html', {
-            'user_dates': Dates.objects.get(applicant=request.user).dates_list()
+            'user_dates': Application.objects.get(applicant=request.user).dates_list()
         })
