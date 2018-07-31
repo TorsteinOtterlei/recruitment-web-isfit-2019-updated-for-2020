@@ -1,13 +1,11 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
-from django.views.generic import View
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
-from .forms import *
-from .models import *
-from jobs.models import Section, Gang
+# local
+from applications.forms import ApplicationForm
+from applications.models import Application
+# other apps
+from jobs.models import Section, Gang, Position
 
 # Create your views here.
 
