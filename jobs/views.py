@@ -1,12 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
-from django.views.generic import View
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
-from .forms import *
-from .models import *
+# local
+from jobs.models import Section, Gang, Position, Project, Calendar
+# other apps
 from applications.models import Application
 
 def home(request):
@@ -37,7 +34,6 @@ class PositionDetail(generic.DetailView):
         context['description'] = Position.description
         return context
 
-# IDEA: Move to jobs
 # BUG: Not finished at all
 @login_required
 def calendar(request):

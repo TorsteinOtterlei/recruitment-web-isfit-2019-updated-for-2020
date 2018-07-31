@@ -166,3 +166,5 @@ STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 LOGIN_REDIRECT_URL = 'account'
 
 LOGOUT_REDIRECT_URL = 'home'
+
+AUTH_USER_MODEL = 'accounts.User'

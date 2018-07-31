@@ -1,6 +1,6 @@
 from django.urls import path
-from . import views
-#from django.contrib.auth.views import login
+# local
+from jobs import views
 
 app_name = 'jobs'
 
