@@ -112,7 +112,7 @@
           <ol id="chosenList"></ol>
       </div>
   </div>
-  <button onclick="submit()" style="width: 100%; background-color: orange;" class="btn button-form">Apply</button>
+  <button onclick="submit()" style="width: 60%; margin: 20px 0 10px 0;" class="btn button-form">Next</button>
 
 {% endblock %}
 
@@ -121,7 +121,7 @@
 
   <script>
       var chosen = {};
-      
+
       // Getting saved application
       var rankings = "{{applied_to}}".split(',');
       for (i in rankings){

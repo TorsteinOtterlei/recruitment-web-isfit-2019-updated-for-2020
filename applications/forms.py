@@ -6,7 +6,7 @@ from .models import *
 #from django.forms.models import ModelMultipleChoiceField
 
 class ApplicationForm(forms.ModelForm):
-    text = forms.CharField(label="Why do you want to volunteer with ISFiT? (Remember to write a ranking list of your top 3 choices where nr. 1 is your top choice)", max_length=2000, required=True, widget=forms.Textarea())
+    text = forms.CharField(label="Why do you want to volunteer with ISFiT? Write a brief text and then choose the positions you want to apply for.", max_length=2000, required=True, widget=forms.Textarea())
 
     class Meta:
         model = Application#, Ranking

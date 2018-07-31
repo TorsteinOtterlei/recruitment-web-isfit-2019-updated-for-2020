@@ -59,9 +59,33 @@ small {
   padding: 25px;
 }
 
+/* ------ Buttons ------ */
 button {
   display: flex;
   height: auto;
+  background-color: #cc8102;
+  border: 1px solid gray;
+}
+
+.input-button {
+  background-color: #cc8102;
+  margin: 7px;
+  width: 180px;
+  border: 1px solid gray;
+  border-radius: 3%;
+  cursor: pointer;
+}
+
+.input-button:hover, button:hover {
+  background-color: #f79b00;
+  border-color: lightgray;
+}
+
+a:link, a:visited{
+  color: #cc8102;
+}
+a:link:hover, a:visited:hover, span:hover{
+  color: orange;
 }
 
 #page-content-wrapper {
@@ -70,19 +94,6 @@ button {
   justify-content: center;
   align-items: center;
   margin-top: 5vh;
-}
-
-.input-button {
-  background-color: #007bff;
-  border-color: #007bff;
-  margin: 5px;
-  color: white;
-  width: 180px;
-}
-
-.input-button:hover {
-  background-color: #0069d9;
-  border-color: #0062cc;
 }
 
 .navbar {

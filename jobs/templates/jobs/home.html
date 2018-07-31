@@ -17,15 +17,15 @@
     {% if user.is_authenticated %}
         <form action="{% url 'accounts:profile' %}" method="post">
             {% csrf_token %}
-            <input class="input-button" type="submit" value="See profile" style="cursor: pointer"><br>
+            <input class="input-button" type="submit" value="See profile"><br>
         </form>
         <form action="{% url 'applications:apply' %}" method="get">
             {% csrf_token %}
-            <input class="input-button" type="submit" value="Edit application" style="cursor: pointer"><br>
+            <input class="input-button" type="submit" value="Edit application"><br>
         </form>
         <form action="{% url 'accounts:logout' %}" method="post">
             {% csrf_token %}
-            <input class="input-button" style="background-color:red; border-color: red; cursor: pointer;" type="submit" value="Log out"><br>
+            <input class="input-button" type="submit" value="Log out"><br>
         </form>
     {% else %}
         <form action="{% url 'accounts:signup' %}" method="post">

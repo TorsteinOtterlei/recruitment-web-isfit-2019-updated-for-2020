@@ -62,7 +62,7 @@ def apply(request):
                     r.second = Position.objects.get(title = selected_positions[1])
                 if len(selected_positions) > 2:
                     r.third = Position.objects.get(title = selected_positions[2])
-                    
+
                 r.save()
 
                 if application is not None: # delete old ranking
@@ -72,7 +72,7 @@ def apply(request):
                 application.ranking = r
                 application.applicant = request.user
                 application.save()
-                return redirect('../../account')
+                return redirect('applications:set_dates')
 
     return render(request, 'applications/application_form.html', {
         'positions': Position.objects.all(),
