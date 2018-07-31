@@ -46,11 +46,11 @@ class Application(models.Model):
 
 
 class Dates(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    applicant = models.OneToOneField(User, on_delete=models.CASCADE)
     dates = models.TextField(max_length=2000, default="", blank=True) # 1,2,43,68 possible dates
 
     def dates_list(self):
         return [int(x) for x in self.dates.split(',')]
 
     def __str__(self):
-        return self.user.username + "'s dates: " + self.dates
+        return self.applicant.username + "'s dates: " + self.dates

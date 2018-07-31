@@ -47,6 +47,10 @@
             color: orange;
         }
 
+        #timestring {
+            display: none;
+        }
+
     </style>
 {% endblock %}
 
@@ -86,6 +90,14 @@
     <div>
         <button type="button" class="btn btn-outline-success" id="select_all">Select all</button>
         <button type="button" class="btn btn-outline-danger" id="unselect_all">Unselect all</button>
+        <br />
+
+        <form method="POST" action="{% url 'home' %}">
+            {% csrf_token %}
+            <input id="submit_times" class="input-button" type="submit" value="Done" style="cursor: pointer"><br />
+            <div type="text" id="timestring" name="times"></div>
+        </form>
+
     </div>
 {% endblock %}
 
@@ -120,24 +132,34 @@
                     var index = user_dates.indexOf(parseInt(this.id));
                     user_dates.splice(index, 1);
                     console.log(user_dates);
+                    $("#timestring").html(user_dates + ',');
+                    console.log($("#timestring").html());
                 }
                 else { // Select
                     this.innerHTML = filler;
                     user_dates.push(parseInt(this.id));
                     console.log(user_dates);
+                    $("#timestring").html(user_dates + ',');
+                    console.log($("#timestring").html());
                 }
 
             }); // End: gridcell.click
+
+            /*$("#submit_times").click(function() {
+                user_dates
+            });*/
 
             $("#select_all").click(function() {
                 $(".gridcell").html(filler);
                 for (var i = 0; i < 70; i++) {
                     user_dates[i] = i;
+                    console.log(user_dates);
                 }
             });
             $("#unselect_all").click(function() {
                 $(".gridcell").html("");
                 user_dates = []
+                console.log(user_dates);
             });
 
 

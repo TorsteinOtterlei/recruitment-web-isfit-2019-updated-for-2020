@@ -8,6 +8,7 @@ from django.utils.decorators import method_decorator
 from .forms import *
 from .models import *
 from jobs.models import Section, Gang
+from applications.models import Dates
 
 # Create your views here.
 
@@ -87,10 +88,20 @@ def apply(request):
 
 @login_required
 def set_dates(request):
-    if request == 'POST':
+    print(request)
+    print(request.method)
+    print("Felldfo")
+    if request.method == 'POST':
+        print("Fellofkr")
         # TODO: Replace user_dates
-        pass
+        if request.POST['times']:
+            time = Dates()
+            time.dates = request.POST['times']
+            time.applicant = request.user
+            print("Fello")
+            time.save()
+            print("fdker")
     else:
         return render(request, 'applications/set_dates.html', {
-            'user_dates': Dates.objects.get(user=request.user).dates_list()
+            'user_dates': Dates.objects.get(applicant=request.user).dates_list()
         })
