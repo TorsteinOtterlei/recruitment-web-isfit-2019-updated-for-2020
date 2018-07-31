@@ -14,6 +14,9 @@ class Application(models.Model):
     dates = models.TextField(max_length=2000, default="", blank=True) # 1,2,43,68 possible dates
 
     def dates_list(self):
+        print(self.dates)
+        print("=====================")
+        print(int(x) for x in self.dates.split(',') if x != "")
         return [int(x) for x in self.dates.split(',') if x != ""]
 
     def pretty_date(self):
