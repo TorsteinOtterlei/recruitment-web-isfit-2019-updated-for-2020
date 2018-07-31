@@ -114,3 +114,6 @@ venv.bak/
 !.elasticbeanstalk/*.global.yml
 
 # dev_settings.py
+
+db.sqlite3
+*/migrations/
