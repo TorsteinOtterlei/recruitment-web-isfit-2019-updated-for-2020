@@ -92,11 +92,12 @@
         <button type="button" class="btn btn-outline-danger" id="unselect_all">Unselect all</button>
         <br />
 
-        <form method="POST" action="{% url 'home' %}">
+        <form method="POST" name='dates_form'>
             {% csrf_token %}
-            <input id="submit_times" class="input-button" type="submit" value="Done" style="cursor: pointer"><br />
-            <div type="text" id="timestring" name="times"></div>
+            <input id="timestring" name="times"></input>
         </form>
+        <button onclick="submit()" style="width: 60%; margin: 20px 0 10px 0;" class="btn button-form">Next</button>
+
 
     </div>
 {% endblock %}
@@ -110,6 +111,7 @@
             var user_dates = {{ user_dates }}
             console.log(user_dates);
             var filler = "X";
+            $("#timestring").val(user_dates);
 
             // Create divs inside grid. Easier than adding them manually
             for (var i=0; i<70; i++) { // 70 because of temporary 0-69 grid
@@ -132,15 +134,15 @@
                     var index = user_dates.indexOf(parseInt(this.id));
                     user_dates.splice(index, 1);
                     console.log(user_dates);
-                    $("#timestring").html(user_dates + ',');
-                    console.log($("#timestring").html());
+                    $("#timestring").val(user_dates);
+                    console.log($("#timestring").val());
                 }
                 else { // Select
                     this.innerHTML = filler;
                     user_dates.push(parseInt(this.id));
                     console.log(user_dates);
-                    $("#timestring").html(user_dates + ',');
-                    console.log($("#timestring").html());
+                    $("#timestring").val(user_dates);
+                    console.log($("#timestring").val());
                 }
 
             }); // End: gridcell.click
@@ -155,14 +157,20 @@
                     user_dates[i] = i;
                     console.log(user_dates);
                 }
+                $("#timestring").val(user_dates);
             });
             $("#unselect_all").click(function() {
                 $(".gridcell").html("");
                 user_dates = []
                 console.log(user_dates);
+                $("#timestring").val(user_dates);
             });
 
 
         }); // End: document ready
+
+        function submit(){
+          document.dates_form.submit();
+        }
     </script>
 {% endblock %}

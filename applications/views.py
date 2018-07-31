@@ -82,16 +82,17 @@ def apply(request):
 
 @login_required
 def set_dates(request):
-    print(request)
-    print(request.method)
-    print("Felldfo")
     if request.method == 'POST':
-        print("Fellofkr")
         # TODO: Replace user_dates
-        if request.POST['times']:
-            Application.objects.filter(applicant=request.user).first().dates = request.POST['times']
-
+        times = request.POST.get('times')
+        if times:
+            print(times)
+            application = Application.objects.filter(applicant=request.user).first()
+            application.dates = times
+            application.save()
+            return redirect('../../account')
     else:
+        print("------>")
         return render(request, 'applications/set_dates.html', {
             'user_dates': Application.objects.get(applicant=request.user).dates_list()
         })

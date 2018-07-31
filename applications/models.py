@@ -16,7 +16,7 @@ class Application(models.Model):
     dates = models.TextField(max_length=2000, default="", blank=True) # 1,2,43,68 possible dates
 
     def dates_list(self):
-        return [int(x) for x in self.dates.split(',')]
+        return [int(x) for x in self.dates.split(',') if x != ""]
 
     def pretty_date(self):
         if self.interview_time != None:
