@@ -14,7 +14,6 @@ from applications.models import Application
 def profile(request):
     positions = None
 
-    print(Application.objects.filter(applicant=request.user).first())
     if Application.objects.filter(applicant=request.user).first():
         user_application = Application.objects.filter(applicant=request.user).first()
 
@@ -22,12 +21,12 @@ def profile(request):
 
         if user_application.second is not None:
             positions.append(user_application.second)
-            if user_application.second is not None:
+            if user_application.third is not None:
                 positions.append(user_application.third)
 
-    return render(request, 'accounts/profile.html', {
-        'positions':positions,
-    })
+    return render(request, 'accounts/profile.html',
+        {'positions':positions},
+    )
 
 # BUG: Oppdateres siden med get request får man error
 def signup(request):
