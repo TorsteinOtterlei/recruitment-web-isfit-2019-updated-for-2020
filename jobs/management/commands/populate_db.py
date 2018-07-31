@@ -266,31 +266,9 @@ class Command(BaseCommand):
 
         # End of create_positions
 
-    """
-    def create_rankings(self):
-        global RANKING_AMOUNT
-        r = Ranking()
-        r.first = Position.objects.get(title="Web App Developer")
-        r.save()
-
-        r = Ranking()
-        r.first = Position.objects.get(title="Recruitment Web Developer")
-        r.second = Position.objects.get(title="Theme_position1")
-        r.save()
-
-        all_positions = list(Position.objects.all())
-        for i in range(RANKING_AMOUNT):
-            pos = random.sample(all_positions, 3) # Three unique positions
-            Ranking.objects.create(first=pos.pop(), second=pos.pop(), third=pos.pop())
-
-        print("Over {} rankings generated".format(RANKING_AMOUNT))
-
-        # End of create_rankings
-    """
 
     def create_applications(self):
         global USERS_WITH_APPLICATION, DATES_RANGE, DATES_SAMPLE
-        #rankings = list(Ranking.objects.all())
         positions = list(Position.objects.all())
         users = list(User.objects.all())
         application_amount = min(USERS_WITH_APPLICATION, len(users))
@@ -302,7 +280,7 @@ class Command(BaseCommand):
                                         first=pos_sample.pop(),
                                         second=pos_sample.pop(),
                                         third=pos_sample.pop(),
-                                        dates=sorted(random.sample(range(70), 40)),
+                                        dates=",".join(str(x) for x in sorted(random.sample(range(DATES_RANGE), DATES_SAMPLE))),
                                         interview_time=timezone.now()
                                         )
 
@@ -373,7 +351,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.flush()
         self.createsu()
-        print("This will take some time...") # Because lots of users
+        print("This may take some time...") # Because lots of users
         self.create_users()
         self.create_sections()
         self.create_gangs()
