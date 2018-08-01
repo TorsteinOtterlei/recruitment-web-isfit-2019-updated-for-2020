@@ -1,37 +1,15 @@
 {% extends 'jobs/base.html' %}
 {% block title %}Register{% endblock %}
 
-{% block body %}
-    <div class="container">
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <div class="media">
-                    <h2>Create account</h2>
-                    <form method="post">
-                        {% csrf_token %}
-                        {% for field in form %}
-                            <p>
-                                {{ field.label_tag }}<br>
-                                {{ field }}
-                                {% if field.help_text %}
-                                    <small style="color: grey">{{ field.help_text }}</small>
-                                {% endif %}
-                                {% for error in field.errors %}
-                                    <p style="color: red">{{ error }}</p>
-                                {% endfor %}
-                            </p>
-                        {% endfor %}
-                        <p>By signing up you agree with ISFiT's Privacy Policy Statement.</p>
-    <html>
-    <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
+{% block head %}
+  <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+  <style>
     body {font-family: Arial, Helvetica, sans-serif;}
 
     /* The Modal (background) */
     .modal {
         display: none; /* Hidden by default */
-        position: center; /* Stay in place */
+        position: fixed; /* Stay in place */
         z-index: 1; /* Sit on top */
         left: 0;
         top: 0;
@@ -109,12 +87,33 @@
         from {opacity: 0}
         to {opacity: 1}
     }
-    </style>
-    </head>
-    <body>
-    <!-- Trigger/Open The Modal -->
-    <a id="myBtn" style="cursor: pointer; color: #007bff">View Privacy Policy</a>
-    <br />
+  </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="media">
+                    <h2>Create account</h2>
+                    <form method="post">
+                        {% csrf_token %}
+                        {% for field in form %}
+                            <p>
+                                {{ field.label_tag }}<br>
+                                {{ field }}
+                                {% if field.help_text %}
+                                    <small style="color: grey">{{ field.help_text }}</small>
+                                {% endif %}
+                                {% for error in field.errors %}
+                                    <p style="color: red">{{ error }}</p>
+                                {% endfor %}
+                            </p>
+                        {% endfor %}
+                        <p>By signing up you agree with ISFiT's Privacy Policy Statement.</p>
+                        <!-- Trigger/Open The Modal -->
+                        <a id="myBtn" style="cursor: pointer; color: #007bff">View Privacy Policy</a>
+                        <br />
                         <button type="submit" class="btn btn-primary" style="width:100%">Sign up</button>
                     </form>
                 </div>
@@ -128,10 +127,7 @@
         <input type="submit" value="Login"><br>
     </form>
 
-
 <!-- ------------------------- Here comes the modal for GDPR -------------------------------- -->
-
-
 
     <!-- The Modal -->
     <div id="myModal" class="modal">

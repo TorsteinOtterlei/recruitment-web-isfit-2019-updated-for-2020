@@ -39,8 +39,10 @@ def signup(request):
             user = authenticate(email=email, password=raw_password)
             login(request, user)
             return redirect('home')
-        else:
+        # So that error messages are not displayed at the first try
+        elif form.cleaned_data.get('first_name') == None:
             form = SignUpForm()
+
         return render(request, 'accounts/registration_form.html', {'form':form})
 
 
