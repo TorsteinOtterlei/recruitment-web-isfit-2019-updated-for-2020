@@ -1,12 +1,11 @@
 from django.core.management.base import BaseCommand
-from django.contrib.auth.models import User
 from django.utils import timezone
 import random
+from halo import Halo
 # from hopcroftkarp import HopcroftKarp
-from accounts.models import *
-from applications.models import *
-from jobs.models import *
 from accounts.models import User
+from applications.models import Application
+from jobs.models import Section, Gang, Position, Project
 
 # Settings:
 USER_AMOUNT = 200
@@ -32,24 +31,36 @@ class Command(BaseCommand):
     Applications
     """
 
-
     def flush(self):
-        User.objects.all().delete()
-        Section.objects.all().delete()
-        Gang.objects.all().delete()
-        Position.objects.all().delete()
-        Project.objects.all().delete()
-        Application.objects.all().delete()
-        print("Flushed current database")
+        spinner = Halo("Flushing database")
+        spinner.start()
+        try:
+            User.objects.all().delete()
+            Section.objects.all().delete()
+            Gang.objects.all().delete()
+            Position.objects.all().delete()
+            Project.objects.all().delete()
+            Application.objects.all().delete()
+            spinner.succeed()
+        except Exception as e:
+            spinner.fail()
 
     def createsu(self):
-        if not User.objects.filter(email="admin@admin.com").exists():
-            User.objects.create_superuser(email="admin@admin.com", password="admin", first_name="Admin", last_name="Adminsen", phone_number=12345678)
-            print("Superuser created. email: admin@admin.com, password: admin")
+        spinner = Halo("Creating superuser")
+        spinner.start()
+        email = "admin@admin.com"
+        pw = "admin"
+        if not User.objects.filter(email=email).exists():
+            User.objects.create_superuser(email=email, password=pw, first_name="Admin", last_name="Adminsen", phone_number=12345678)
+            spinner.succeed("Creating superuser. email: {}, password: {}".format(email, pw))
+        else:
+            spinner.fail("Superuser already exists")
 
     def create_users(self):
         global USER_AMOUNT
         global USER_PW
+        spinner = Halo(text="Creating users", color="magenta")
+        spinner.start()
         kristian = User.objects.create_user(email="kris@test.no", first_name="Kristian", password=USER_PW)
         camilla = User.objects.create_user(email="camilla@test.no", first_name="Camilla", password=USER_PW)
         johan = User.objects.create_user(email="johan@test.no", first_name="Johan", password=USER_PW)
@@ -63,9 +74,11 @@ class Command(BaseCommand):
         # Create simple users
         for i in range(USER_AMOUNT):
             User.objects.create_user(email="pers"+str(i)+"@test.no", password=USER_PW)
-        print("Over {} users generated. Password: Django123".format(USER_AMOUNT))
+        spinner.succeed("Creating users. Over {} users generated. Password: {}".format(USER_AMOUNT, USER_PW))
 
     def create_sections(self):
+        spinner = Halo("Creating sections")
+        spinner.start()
         s1 = Section()
         s1.name = "Economy"
         s1.leader = User.objects.get(first_name='Camilla')
@@ -90,11 +103,12 @@ class Command(BaseCommand):
         s4.information = "Driver med kultur"
         s4.save()
 
-        print("Sections added")
-
+        spinner.succeed()
         # End of create_sections
 
     def create_gangs(self):
+        spinner = Halo("Creating gangs")
+        spinner.start()
         # Economy
         g = Gang()
         g.name = "Accounting"
@@ -144,11 +158,13 @@ class Command(BaseCommand):
         g.section = Section.objects.get(name="Administration")
         g.save()
 
-        print("Gangs added")
+        spinner.succeed()
 
         #"  ==  End of create_gangs()  ==  "
 
     def create_projects(self):
+        spinner = Halo("Creating projects")
+        spinner.start()
         # Economy
         p = Project()
         p.name = "Recruitment Web"
@@ -179,11 +195,13 @@ class Command(BaseCommand):
 
         # Administration
 
-        print("Projects added")
+        spinner.succeed()
 
         # End of create_projects
 
     def create_positions(self):
+        spinner = Halo("Creating positions")
+        spinner.start()
         # Economy
         users = list(User.objects.all())
 
@@ -191,45 +209,35 @@ class Command(BaseCommand):
         p.title = "Web App Developer"
         p.gang = Gang.objects.get(name="IT")
         p.description = "dummy"
-        #p.email = "dummy@dummy.com"
         p.interviewer = users.pop()
-        #p.phone_number = 12345678
         p.save()
 
         p = Position()
         p.title = "App Developer"
         p.gang = Gang.objects.get(name="IT")
         p.description = "dummy"
-        #p.email = "dummy@dummy.com"
         p.interviewer = users.pop()
-        #p.phone_number = 12345678
         p.save()
 
         p = Position()
         p.title = "Participant Web Developer"
         p.gang = Gang.objects.get(name="IT")
         p.description = "dummy"
-        #p.email = "dummy@dummy.com"
         p.interviewer = users.pop()
-        #p.phone_number = 12345678
         p.save()
 
         p = Position()
         p.title = "Recruitment Web Developer"
         p.gang = Gang.objects.get(name="IT")
         p.description = "dummy"
-        #p.email = "dummy@dummy.com"
         p.interviewer = users.pop()
-        #p.phone_number = 12345678
         p.save()
 
         p = Position()
         p.title = "Internal Project Manager"
         p.gang = Gang.objects.get(name="Finance")
         p.description = "dummy2"
-        #p.email = "dummy2@dummy.com"
         p.interviewer = users.pop()
-        #p.phone_number = 12345678
         p.save()
 
         # Culture
@@ -237,9 +245,7 @@ class Command(BaseCommand):
         p.title = "Culture_position1"
         p.gang = Gang.objects.get(name="Art")
         p.description = "dummy"
-        #p.email = "dummy@dummy.com"
         p.interviewer = users.pop()
-        #p.phone_number = 12345678
         p.save()
 
         # Theme
@@ -247,9 +253,7 @@ class Command(BaseCommand):
         p.title = "Theme_position1"
         p.gang = Gang.objects.get(name="Dialogue")
         p.description = "dummy"
-        #p.email = "dummy@dummy.com"
         p.interviewer = users.pop()
-        #p.phone_number = 12345678
         p.save()
 
         # Administration
@@ -257,17 +261,16 @@ class Command(BaseCommand):
         p.title = "Administration_position1"
         p.gang = Gang.objects.get(name="Transport")
         p.description = "dummy"
-        #p.email = "dummy@dummy.com"
         p.interviewer = users.pop()
-        #p.phone_number = 12345678
         p.save()
 
-        print("Positions added")
-
+        spinner.succeed()
         # End of create_positions
 
-
     def create_applications(self):
+        spinner = Halo("Creating applications")
+        spinner.start()
+
         global USERS_WITH_APPLICATION, DATES_RANGE, DATES_SAMPLE
         positions = list(Position.objects.all())
         users = list(User.objects.all())
@@ -283,30 +286,8 @@ class Command(BaseCommand):
                                         dates=",".join(str(x) for x in sorted(random.sample(range(DATES_RANGE), DATES_SAMPLE))),
                                         interview_time=timezone.now()
                                         )
-
-        print("Over {} applications generated".format(application_amount))
-
+        spinner.succeed("Creating applications. Over {} applications generated".format(application_amount))
         # End of create_applications
-
-    """
-    def create_dates(self):
-        global USERS_WITH_DATES, DATES_RANGE, DATES_SAMPLE
-        users = list(User.objects.all())
-        dates_amount = min(USERS_WITH_DATES, len(users))
-        for i in range(dates_amount):
-            d = Dates()
-            d.user = users[i]
-            if i > (dates_amount // 4): # 3/4 of the users set dates
-                d.user = users[i]
-                d.dates = ",".join(str(x) for x in sorted(random.sample(range(DATES_RANGE), DATES_SAMPLE)))
-                d.save()
-        # And one for admin
-        d = Dates()
-        d.user = User.objects.get(username="admin")
-        d.dates = ",".join(str(x) for x in sorted(random.sample(range(DATES_RANGE), DATES_SAMPLE)))
-        d.save()
-        print("About {} user has now set dates".format(dates_amount -(dates_amount//4) ))
-    """
 
     """
     def create_calendars(self):
@@ -351,14 +332,11 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.flush()
         self.createsu()
-        print("This may take some time...") # Because lots of users
         self.create_users()
         self.create_sections()
         self.create_gangs()
         self.create_projects()
         self.create_positions()
-        #self.create_rankings()
         self.create_applications()
-        #self.create_dates()
         print("  ==  Dummydata inserted  ==  ")
         # End of handle
