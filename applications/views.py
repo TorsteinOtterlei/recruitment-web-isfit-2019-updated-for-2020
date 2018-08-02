@@ -92,3 +92,34 @@ def set_dates(request):
         return render(request, 'applications/set_dates.html', {
             'user_dates': Application.objects.get(applicant=request.user).dates_list()
         })
+
+
+def manage_applications(request):
+    if request.method == 'POST':
+        print("Posting")
+        app = Application()
+        #app.applicant = request.user
+        return redirect('application/' + str(app.applicant.id))
+    print("Getting")
+    return render(request, 'applications/manage_applications.html', {
+        'applicants': Application.objects.all(),
+    })
+
+def manage_profile(request, user_id):
+    print("1---")
+    print(user_id)
+    print("2---")
+    print(type(user_id))
+    u = User.objects.get(id=user_id)
+    print("3---")
+    print(u)
+    user = get_object_or_404(User, id=user_id)
+    print("4---")
+    print(user)
+    print("5---")
+    print(user_id)
+    #if request.method == 'POST':
+    #    redirect('#')
+    return render(request, 'applications/manage_profile.html', {
+        'user': user,
+    })
