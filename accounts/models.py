@@ -32,6 +32,28 @@ class User(AbstractBaseUser):
     staff = models.BooleanField(default=False)
     superuser = models.BooleanField(default=False)
 
+    NOT_EVALUATED = 'NE'
+    INTERVIEW_SET = 'IS'
+    INTERVIEW_CONFIRMED = 'IC'
+    INTERVIEWED = 'ID'
+    ACCEPTED = 'AC'
+    ADMIN = 'AD'
+    INTERVIEWER = 'IN'
+    STATUS_CHOISES = (
+        (NOT_EVALUATED, 'Not evaluated'),
+        (INTERVIEW_SET, 'Interview set'),
+        (INTERVIEW_CONFIRMED, 'Interview confirmed'),
+        (INTERVIEWED, 'Interviewed'),
+        (ACCEPTED, 'Accepted'),
+        (ADMIN, 'Admin'),
+        (INTERVIEWER, 'Interviewer'),
+    )
+    status = models.CharField(
+        max_length=2,
+        choices=STATUS_CHOISES,
+        default=NOT_EVALUATED,
+    )
+
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
@@ -49,6 +71,9 @@ class User(AbstractBaseUser):
 
     def get_full_name(self):
         return self.first_name + " " + self.last_name
+
+    def get_status(self):
+        return self.status
 
     def get_short_name(self):
         return self.first_name
