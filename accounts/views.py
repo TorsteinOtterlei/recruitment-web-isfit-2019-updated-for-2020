@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 #from django.views import generic
 #from django.views.generic import View
 from django.contrib.auth import authenticate, login, logout
@@ -44,3 +44,9 @@ def logout_view(request):
     logout(request)
     # Redirect to a success page.
     render(request, 'accounts/logout.html')
+
+def manage_profile(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    return render(request, 'accounts/manage_profile.html', {
+        'user': user,
+    })

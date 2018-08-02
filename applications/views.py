@@ -73,13 +73,7 @@ def set_dates(request):
 
 
 def manage_applications(request):
-    applicants = Application.objects.all()
+    applications = Application.objects.all()
     return render(request, 'applications/manage_applications.html', {
-        'applicants': applicants,
-    })
-
-def manage_profile(request, user_id):
-    user = get_object_or_404(User, id=user_id)
-    return render(request, 'applications/manage_profile.html', {
-        'user': user,
+        'applications': applications,
     })

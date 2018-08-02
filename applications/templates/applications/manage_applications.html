@@ -10,11 +10,9 @@
 <div class="col container">
     <div class="col-md-3" title="Ikke vurdert" style="color: crimson">
 
-        {% for app in applicants %}
-        <a href="{% url 'applications:manage_profile' app.applicant.id %}">
-
-            {{ app.applicant.first_name }}<br />
-
+        {% for application in applications %}
+        <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
+            {{ application.applicant.get_full_name }}<br/>
         </a>
         {% endfor %}
 
