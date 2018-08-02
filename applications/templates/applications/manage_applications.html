@@ -3,60 +3,7 @@
 
 
 {% block head %}
-  <style media="screen">
-      ul {
-          list-style-type: none;
-      }
-      .container {
-          max-width: 1000px;
-      }
-      .options {
-          cursor: pointer;
-          color: gray;
-          line-height: 2rem;
-      }
-      .sections {
-          font-size: 1.5rem;
-          line-height: 3rem;
 
-      }
-      .gangs {
-          font-size: 1.3rem;
-          line-height: 2rem;
-
-      }
-      .positions {
-          padding-left: 15px;
-          padding-right: 15px;
-      }
-      .positions li:hover {
-          color: orange;
-      }
-      .dropzone {
-          border-radius: 20px;
-          border: solid;
-          border-style: inset;
-          border-color: orange;
-          height: 250px;
-          max-width: 400px;
-      }
-      #chosenList li {
-          border-radius: 5px;
-          border-style: solid;
-          border-width: 1px;
-          color: gray;
-          line-height: 1rem;
-          margin-top: 1rem;
-          margin-right: 50px;
-          padding: 8px 8px 8px 20px;
-          list-style-position: inside;
-      }
-      #chosenList li:hover {
-          cursor: move;
-          color: orange;
-      }
-
-  </style>
 {% endblock %}
 
 {% block body %}
@@ -64,7 +11,7 @@
     <div class="col-md-3" title="Ikke vurdert" style="color: crimson">
 
         {% for app in applicants %}
-        <form method="post" name="view" type="submit" action="{% url 'applications:manage_profile' %}">
+        <form method="post" name="view" type="submit" action="{% url 'applications:manage_applications' %}">
 
             {{ app.applicant.first_name }}<br />
 

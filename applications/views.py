@@ -6,28 +6,9 @@ from applications.forms import ApplicationForm
 from applications.models import Application
 # other apps
 from jobs.models import Section, Gang, Position
+from accounts.models import User
 
 # Create your views here.
-
-def applications(request):
-    return render(request, 'applications/applications.html', {
-        'gangs': Gang.objects.all(),
-    })
-
-def view_applications(request):
-    return render(request, 'applications/view_applications.html', {
-        'applications': Application.objects.all(),
-        'sections': Section.objects.all(),
-        'gangs': Gang.objects.all(),
-        'pos': Position.objects.all(),
-    })
-
-
-def all_applications(request):
-    return render(request, 'applications/all_applications.html', {
-        'applications': Application.objects.all(),
-    })
-
 
 class ApplicationDetail(generic.DetailView):
     model = Application
@@ -98,8 +79,9 @@ def manage_applications(request):
         #app.applicant = request.user
         return redirect('application/' + str(app.applicant.id))
     print("Getting")
+    print(request)
     return render(request, 'applications/manage_applications.html', {
-        'applicants': Application.objects.all(),
+        'applicants': Application.objects.all()
     })
 
 def manage_profile(request, user_id):
@@ -107,10 +89,10 @@ def manage_profile(request, user_id):
     print(user_id)
     print("2---")
     print(type(user_id))
-    u = User.objects.get(id=user_id)
+    u = Application.objects.get(applicant.id=user_id)
     print("3---")
     print(u)
-    user = get_object_or_404(User, id=user_id)
+    user = get_object_or_404(Application, applicant.id=user_id)
     print("4---")
     print(user)
     print("5---")
