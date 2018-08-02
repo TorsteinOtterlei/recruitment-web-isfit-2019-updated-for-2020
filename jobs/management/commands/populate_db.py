@@ -36,10 +36,9 @@ class Command(BaseCommand):
         print()
 
     def migrate(self):
+        print("Applying migrations")
         management.call_command('migrate')
-        spinner = Halo("Migrating")
-        #spinner.start()
-        spinner.succeed()
+        print()
 
     def createsu(self):
         spinner = Halo("Creating superuser")

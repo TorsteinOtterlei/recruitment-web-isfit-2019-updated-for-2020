@@ -20,7 +20,6 @@
             <input class="input-button" type="submit" value="See profile"><br>
         </form>
         <form action="{% url 'applications:apply' %}" method="get">
-            {% csrf_token %}
             <input class="input-button" type="submit" value="Edit application"><br>
         </form>
         <form action="{% url 'accounts:logout' %}" method="post">
@@ -37,7 +36,6 @@
             <input class="input-button" type="submit" value="Login"><br>
         </form>
         <form action="{% url 'jobs:information' %}" method="get">
-            {% csrf_token %}
             <input class="input-button" type="submit" value="Se all available positions"><br>
         </form>
     {% endif %}

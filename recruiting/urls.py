@@ -16,7 +16,6 @@ Including another URLconf
 from django.urls import include, path
 from django.contrib import admin
 from jobs import views as jobs_views
-#from django.contrib.auth.views import login, logout
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,6 +23,4 @@ urlpatterns = [
     path('position/', include('jobs.urls')),
     path('account/', include('accounts.urls')),
     path('application/', include('applications.urls')),
-    #path('rankTest', jobs_views.rankTest, name='rankTest'),
-    #path('application_form/<int:position_id>/', jobs_views.PositionDetailView.as_view(), name='position_details'),
 ]

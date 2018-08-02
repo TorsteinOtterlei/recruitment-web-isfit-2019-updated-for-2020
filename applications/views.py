@@ -38,6 +38,7 @@ class ApplicationDetail(generic.DetailView):
         context['text'] = Application.text
         return context
 
+# BUG: Unable to handle less than 3 positions
 @login_required
 def apply(request):
     application = Application.objects.filter(applicant=request.user).first()
@@ -83,7 +84,7 @@ def set_dates(request):
     if request.method == 'POST':
         # TODO: Replace user_dates
         times = request.POST.get('times')
-        application = Application.objects.filter(applicant=request.user).first()
+        application = Application.objects.get(applicant=request.user)
         application.dates = times
         application.save()
         return redirect('../../account')

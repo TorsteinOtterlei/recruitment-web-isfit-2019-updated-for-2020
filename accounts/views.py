@@ -12,20 +12,12 @@ from applications.models import Application
 # Create your views here.
 @login_required
 def profile(request):
-    positions = None
+    application = Application.objects.filter(applicant=request.user).first()
+    if application != None:
+        positions = application.get_positions()
 
-    if Application.objects.filter(applicant=request.user).first():
-        user_application = Application.objects.filter(applicant=request.user).first()
-
-        positions = [user_application.first]
-
-        if user_application.second is not None:
-            positions.append(user_application.second)
-            if user_application.third is not None:
-                positions.append(user_application.third)
-
-    return render(request, 'accounts/profile.html',
-        {'positions':positions},
+    return render(request, 'accounts/profile.html', {
+        'positions':positions},
     )
 
 # BUG: Oppdateres siden med get request får man error
@@ -47,6 +39,7 @@ def signup(request):
 
 
 def logout_view(request):
+    print("==================================================")
     logout(request)
     # Redirect to a success page.
     render(request, 'accounts/logout.html')
