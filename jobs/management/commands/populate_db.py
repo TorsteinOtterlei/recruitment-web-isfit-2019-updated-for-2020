@@ -68,7 +68,7 @@ class Command(BaseCommand):
         ragnhild = User.objects.create_user(email="ragnhild@test.no", first_name="Ragnhild", password=USER_PW)
         # Create simple users
         for i in range(USER_AMOUNT):
-            User.objects.create_user(email="pers"+str(i)+"@test.no", password=USER_PW)
+            User.objects.create_user(email="pers"+str(i)+"@test.no", first_name="Yolo"+str(i), last_name="Swag", password=USER_PW)
         spinner.succeed("Creating users. Over {} users generated. Password: {}".format(USER_AMOUNT, USER_PW))
 
     def create_sections(self):
