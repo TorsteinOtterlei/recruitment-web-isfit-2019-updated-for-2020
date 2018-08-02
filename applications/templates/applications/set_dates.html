@@ -55,6 +55,7 @@
 {% endblock %}
 
 {% block body %}
+    <h4>Please choose the times when you are unable to have an interview</h4>
 
     <div class="calendar">
         <div class="topleft">Time / Day</div>
@@ -96,9 +97,7 @@
             {% csrf_token %}
             <input id="timestring" name="times"></input>
         </form>
-        <button onclick="submit()" style="width: 60%; margin: 20px 0 10px 0;" class="btn button-form">Save</button>
-
-
+    <button onclick="submit()" style="width: 100%; margin: 20px 0 10px 0;" class="btn button-form">Save</button>
     </div>
 {% endblock %}
 
