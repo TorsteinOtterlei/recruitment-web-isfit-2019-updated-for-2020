@@ -6,6 +6,7 @@ from halo import Halo
 from accounts.models import User
 from applications.models import Application
 from jobs.models import Section, Gang, Position, Project
+from django.core import management
 
 # Settings:
 USER_AMOUNT = 200
@@ -30,20 +31,15 @@ class Command(BaseCommand):
     Ranks
     Applications
     """
+    def reset_db(self):
+        management.call_command('reset_db')
+        print()
 
-    def flush(self):
-        spinner = Halo("Flushing database")
-        spinner.start()
-        try:
-            User.objects.all().delete()
-            Section.objects.all().delete()
-            Gang.objects.all().delete()
-            Position.objects.all().delete()
-            Project.objects.all().delete()
-            Application.objects.all().delete()
-            spinner.succeed()
-        except Exception as e:
-            spinner.fail()
+    def migrate(self):
+        management.call_command('migrate')
+        spinner = Halo("Migrating")
+        #spinner.start()
+        spinner.succeed()
 
     def createsu(self):
         spinner = Halo("Creating superuser")
@@ -330,7 +326,9 @@ class Command(BaseCommand):
     """
 
     def handle(self, *args, **options):
-        self.flush()
+        #self.flush()
+        self.reset_db()
+        self.migrate()
         self.createsu()
         self.create_users()
         self.create_sections()

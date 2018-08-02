@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['localhost']
 # Application definition
 
 INSTALLED_APPS = [
+    'django_extensions',
     'accounts.apps.AccountsConfig',
     'applications.apps.ApplicationsConfig',
     'jobs.apps.JobsConfig',

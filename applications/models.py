@@ -13,10 +13,11 @@ class Application(models.Model):
     interview_time = models.DateTimeField(null=True, blank=True, default=None)
     dates = models.TextField(max_length=2000, default="", blank=True) # 1,2,43,68 possible dates
 
+    def get_positions(self):
+        positions = [self.first, self.second, self.third]
+        return [pos for pos in positions if pos != None]
+
     def dates_list(self):
-        print(self.dates)
-        print("=====================")
-        print(int(x) for x in self.dates.split(',') if x != "")
         return [int(x) for x in self.dates.split(',') if x != ""]
 
     def pretty_date(self):
