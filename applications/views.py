@@ -45,21 +45,18 @@ def apply(request):
     applied_to = None
     if application is not None:
         form = ApplicationForm(instance=application)
-        applied_to = application.first.title
-        if application.second is not None:
-            applied_to += ',' + application.second.title
-            if application.third is not None:
-                applied_to += ',' + application.third.title
+        applied_to = [pos.title for pos in application.get_positions()]
+        print(applied_to)
     else:
         form = ApplicationForm(request.POST, instance=application)
     if request.method == 'POST':
         selected_positions = request.POST.get('selected_positions', '').split('||')
-        print(selected_positions)
         form = ApplicationForm(request.POST, instance=application)
-        if (len(request.POST.get('selected_positions', '')) != 0): # if any jobs were selected
+        if (selected_positions[0] != ''): # if any jobs were selected
             if form.is_valid():
-
                 application = form.save(commit=False)
+                application.second = None
+                application.third = None
 
                 application.first = Position.objects.get(title = selected_positions[0])
                 if len(selected_positions) > 1:

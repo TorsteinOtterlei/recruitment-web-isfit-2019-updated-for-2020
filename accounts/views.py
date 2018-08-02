@@ -13,6 +13,7 @@ from applications.models import Application
 @login_required
 def profile(request):
     application = Application.objects.filter(applicant=request.user).first()
+    positions = None
     if application != None:
         positions = application.get_positions()
 
