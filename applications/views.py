@@ -73,32 +73,13 @@ def set_dates(request):
 
 
 def manage_applications(request):
-    if request.method == 'POST':
-        print("Posting")
-        app = Application()
-        #app.applicant = request.user
-        return redirect('application/' + str(app.applicant.id))
-    print("Getting")
-    print(request)
+    applicants = Application.objects.all()
     return render(request, 'applications/manage_applications.html', {
-        'applicants': Application.objects.all()
+        'applicants': applicants,
     })
 
 def manage_profile(request, user_id):
-    print("1---")
-    print(user_id)
-    print("2---")
-    print(type(user_id))
-    u = Application.objects.get(applicant.id=user_id)
-    print("3---")
-    print(u)
-    user = get_object_or_404(Application, applicant.id=user_id)
-    print("4---")
-    print(user)
-    print("5---")
-    print(user_id)
-    #if request.method == 'POST':
-    #    redirect('#')
+    user = get_object_or_404(User, id=user_id)
     return render(request, 'applications/manage_profile.html', {
         'user': user,
     })

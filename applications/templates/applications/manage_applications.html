@@ -11,11 +11,11 @@
     <div class="col-md-3" title="Ikke vurdert" style="color: crimson">
 
         {% for app in applicants %}
-        <form method="post" name="view" type="submit" action="{% url 'applications:manage_applications' %}">
+        <a href="{% url 'applications:manage_profile' app.applicant.id %}">
 
             {{ app.applicant.first_name }}<br />
 
-        </form>
+        </a>
         {% endfor %}
 
     </div>
