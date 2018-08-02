@@ -107,7 +107,7 @@
             // Retrieve Django variable, user_dates, from views.py
             // and convert string into list
             //var user_dates = "{{ user_dates }}".split(",")
-            var user_dates = {{ user_dates }}
+            var user_dates = {{ user_dates }} // {{ myVar | safe}} if myList contains strings
             console.log(user_dates);
             var filler = "X";
             $("#timestring").val(user_dates);
