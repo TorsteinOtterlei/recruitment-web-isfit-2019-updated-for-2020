@@ -26,3 +26,10 @@ class SignUpForm(UserCreationForm):
         self.fields['password1'].widget.attrs.update({'class': 'form-control'})
         self.fields['password1'].help_text = 'Your password cant be too similar to your other personal information. Your password must contain atleast 8 characters. Your password cant be a commonly used password and cant be entierly numeric.'
         self.fields['password2'].widget.attrs.update({'class': 'form-control'})
+
+class StatusForm(forms.ModelForm):
+    menu = forms.ChoiceField(choices=User.STATUS_CHOISES)
+
+    class Meta:
+        model = User
+        fields = ('menu',)

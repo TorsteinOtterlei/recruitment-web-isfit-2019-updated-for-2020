@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 #from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from accounts.forms import SignUpForm
+from accounts.forms import SignUpForm, StatusForm
 from accounts.models import User
 from applications.models import Application
 
@@ -47,6 +47,13 @@ def logout_view(request):
 
 def manage_profile(request, application_id):
     application = get_object_or_404(Application, applicant_id=application_id)
+    form = StatusForm(request.POST)
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+
+    #stat = User.objects.get('status')
     return render(request, 'accounts/manage_profile.html', {
         'application': application,
+        'form': form,
     })

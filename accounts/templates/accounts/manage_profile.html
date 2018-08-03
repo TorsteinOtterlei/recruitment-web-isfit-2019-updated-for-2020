@@ -22,6 +22,17 @@ Dates: {{ application.dates_list }}
 <br />
 <br />
 Interviewers: {{ application.first.interviewer.get_full_name }} and {{ application.second.interviewer.get_full_name }}
+<br />
+<br />
+{{ application.applicant.status }}
+
+<form method="post" action="{% url 'accounts:manage_profile' application.applicant.id %}">
+    {{ form }}
+    {% csrf_token %}
+    <br />
+    <input type="submit" value="Set status">
+</form>
+
 
 {% endblock %}
 
