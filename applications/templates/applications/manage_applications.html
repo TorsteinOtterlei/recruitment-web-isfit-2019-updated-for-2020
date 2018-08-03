@@ -12,6 +12,13 @@
             border: 2px solid gray;
             padding: 3px 5px 3px 5px;
             text-align: left;
+            border-radius: 3%;
+        }
+
+        .column-header{
+            line-height: 1.5em;
+            height: 3em;
+            margin-top: 4em;
         }
 
         #selector{
@@ -36,7 +43,7 @@
         </div>
 
         <div class="col-sm user_column">
-            Not Evaluated
+            <div class="column-header">Not Evaluated</div>
             <div class="users-div">
                 {% for application in applications %}
                     <div  class="{{ application.applicant.id }}">
@@ -50,7 +57,7 @@
             </div>
         </div>
         <div class="col-sm user_column">
-            Interview Set
+            <div class="column-header">Interview Set</div>
             <div class="users-div">
                 {% for application in applications %}
                     <div  class="{{ application.applicant.id }}">
@@ -64,7 +71,7 @@
             </div>
         </div>
         <div class="col-sm user_column">
-            Interview Confirmed
+            <div class="column-header">Interview Confirmed</div>
             <div class="users-div">
                 {% for application in applications %}
                     <div  class="{{ application.applicant.id }}">
@@ -78,7 +85,7 @@
             </div>
         </div>
         <div class="col-sm user_column">
-            Interviewed
+            <div class="column-header">Interviewed</div>
             <div class="users-div">
                 {% for application in applications %}
                     <div  class="{{ application.applicant.id }}">
@@ -92,7 +99,7 @@
             </div>
         </div>
         <div class="col-sm user_column">
-            Accepted
+            <div class="column-header">Accepted</div>
             <div class="users-div">
                 {% for application in applications %}
                     <div  class="{{ application.applicant.id }}">
