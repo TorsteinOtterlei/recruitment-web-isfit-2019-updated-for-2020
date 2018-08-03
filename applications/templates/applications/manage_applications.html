@@ -23,11 +23,11 @@
 {% endblock %}
 
 {% block body %}
-Manage applications
+<h3>Manage applications</h3>
 <div class="container">
     <div class="row">
         <div class="col-sm selector-div">
-            <select id='selector'>
+            <select id='selector' onchange="sortOut(this.value)">
                 <option value="All">All</option>
                 {% for section in sections %}
                     <option value="{{ section }}">{{ section }}</option>
@@ -39,11 +39,13 @@ Manage applications
             Not Evaluated
             <div class="users-div">
                 {% for application in applications %}
-                    {% if application.applicant.get_status == 'NE'%}
-                        <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
-                            {{ application.applicant.get_full_name }}<br/>
-                        </a>
-                    {% endif %}
+                    <div  class="{{ application.applicant.id }}">
+                        {% if application.applicant.get_status == 'NE'%}
+                            <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
+                                {{ application.applicant.get_full_name }}<br>
+                            </a>
+                        {% endif %}
+                    </div>
                 {% endfor %}
             </div>
         </div>
@@ -51,11 +53,13 @@ Manage applications
             Interview Set
             <div class="users-div">
                 {% for application in applications %}
-                    {% if application.applicant.get_status == 'IS'%}
-                        <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
-                            {{ application.applicant.get_full_name }}<br/>
-                        </a>
-                    {% endif %}
+                    <div  class="{{ application.applicant.id }}">
+                        {% if application.applicant.get_status == 'IS'%}
+                            <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
+                                {{ application.applicant.get_full_name }}<br>
+                            </a>
+                        {% endif %}
+                    </div>
                 {% endfor %}
             </div>
         </div>
@@ -63,11 +67,13 @@ Manage applications
             Interview Confirmed
             <div class="users-div">
                 {% for application in applications %}
-                    {% if application.applicant.get_status == 'IC'%}
-                        <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
-                            {{ application.applicant.get_full_name }}<br/>
-                        </a>
-                    {% endif %}
+                    <div  class="{{ application.applicant.id }}">
+                        {% if application.applicant.get_status == 'IC'%}
+                            <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
+                                {{ application.applicant.get_full_name }}<br>
+                            </a>
+                        {% endif %}
+                    </div>
                 {% endfor %}
             </div>
         </div>
@@ -75,11 +81,13 @@ Manage applications
             Interviewed
             <div class="users-div">
                 {% for application in applications %}
-                    {% if application.applicant.get_status == 'ID'%}
-                        <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
-                            {{ application.applicant.get_full_name }}<br/>
-                        </a>
-                    {% endif %}
+                    <div  class="{{ application.applicant.id }}">
+                        {% if application.applicant.get_status == 'ID'%}
+                            <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
+                                {{ application.applicant.get_full_name }}<br>
+                            </a>
+                        {% endif %}
+                    </div>
                 {% endfor %}
             </div>
         </div>
@@ -87,11 +95,13 @@ Manage applications
             Accepted
             <div class="users-div">
                 {% for application in applications %}
-                    {% if application.applicant.get_status == 'AC'%}
-                        <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
-                            {{ application.applicant.get_full_name }}<br/>
-                        </a>
-                    {% endif %}
+                    <div  class="{{ application.applicant.id }}">
+                        {% if application.applicant.get_status == 'AC'%}
+                            <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
+                                {{ application.applicant.get_full_name }}<br>
+                            </a>
+                        {% endif %}
+                    </div>
                 {% endfor %}
             </div>
         </div>
@@ -101,11 +111,32 @@ Manage applications
 
 {% block scriptblock %}
     <script>
-    // TODO:
-        var test = [];
+    var sections_map = new Map()
+    sections_map.set("All", new Map());
+
+    {% for section in sections %}
+        sections_map.set("{{section}}", new Map());
+    {% endfor %}
+
         {% for application in applications %}
-            test.push(["{{ application.applicant.get_full_name }}", "{{ application.first.gang.section }}"])
+            sections_map.get('All').set(parseInt("{{ application.applicant.id }}"), null);
+
+            for (var [key, value] of sections_map) {
+                if ("{{ application.get_position_sections | safe}}".includes(key)){
+                    value.set(parseInt("{{ application.applicant.id }}"), null)
+                }
+            }
         {% endfor %}
-        console.log(test[0]);
+
+        function sortOut(section){
+            for (var [key, value] of sections_map.get('All')) {
+                if (!sections_map.get(section).has(key)){
+                    $('.' + key).css('display','none');
+                }
+                else{
+                    $('.' + key).css('display','block');
+                }
+            }
+        }
     </script>
 {% endblock %}

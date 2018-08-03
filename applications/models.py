@@ -16,6 +16,13 @@ class Application(models.Model):
         positions = [self.first, self.second, self.third]
         return [pos for pos in positions if pos != None]
 
+    def get_position_sections(self):
+        positions = [self.first, self.second, self.third]
+        return [pos.gang.section.name for pos in positions if pos != None]
+
+    def dates_list(self):
+        return [int(x) for x in self.dates.split(',') if x != ""]
+
     def pretty_date(self):
         if self.interview_time != None:
             return self.interview_time.strftime('%a %b %Y %H:%M') # day month year hour:min
