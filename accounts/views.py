@@ -8,6 +8,7 @@ from django.utils.decorators import method_decorator
 from accounts.forms import SignUpForm, StatusForm
 from accounts.models import User
 from applications.models import Application
+from jobs.models import *
 
 # Create your views here.
 @login_required
@@ -45,8 +46,9 @@ def logout_view(request):
     # Redirect to a success page.
     render(request, 'accounts/logout.html')
 
-def manage_profile(request, application_id):
-    application = get_object_or_404(Application, applicant_id=application_id)
+def manage_profile(request, user_id):
+    application = get_object_or_404(Application, applicant_id=user_id)
+    dates = Date.objects.get_or_create(user=request.user)
     form = StatusForm(request.POST)
     if request.method == 'POST':
         if form.is_valid():
@@ -55,5 +57,6 @@ def manage_profile(request, application_id):
     #stat = User.objects.get('status')
     return render(request, 'accounts/manage_profile.html', {
         'application': application,
+        'dates': dates,
         'form': form,
     })
