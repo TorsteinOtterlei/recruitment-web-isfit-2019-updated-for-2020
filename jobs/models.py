@@ -40,6 +40,16 @@ class Position(models.Model):
     def __str__(self):
         return str(self.title) + ', ' + str(self.gang)
 
+class Date(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    dates = models.TextField(max_length=2000, default="", blank=True) # 1,2,43,68 possible dates
+
+    def __str__(self):
+        return "Dates for {}".format(self.user.email)
+
+    def dates_list(self):
+        return [int(x) for x in self.dates.split(',') if x != ""]
+
 class Calendar(models.Model):
     gangleader = models.OneToOneField(User, on_delete=models.CASCADE)
     dict = models.TextField(max_length=2000, default=None) # user:1,user:2

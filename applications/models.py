@@ -5,20 +5,16 @@ from accounts.models import User
 
 # Create your models here.
 class Application(models.Model):
-    first = models.ForeignKey(Position, on_delete=models.CASCADE, default=None, related_name="first")
+    first = models.ForeignKey(Position, on_delete=models.CASCADE, default=None, null=True, related_name="first")
     second = models.ForeignKey(Position, on_delete=models.CASCADE, default=None, null=True, blank=True, related_name="second")
     third = models.ForeignKey(Position, on_delete=models.CASCADE, default=None, null=True, blank=True, related_name="third")
     applicant = models.OneToOneField(User, on_delete=models.CASCADE)
     text = models.TextField(max_length=2000)
     interview_time = models.DateTimeField(null=True, blank=True, default=None)
-    dates = models.TextField(max_length=2000, default="", blank=True) # 1,2,43,68 possible dates
 
     def get_positions(self):
         positions = [self.first, self.second, self.third]
         return [pos for pos in positions if pos != None]
-
-    def dates_list(self):
-        return [int(x) for x in self.dates.split(',') if x != ""]
 
     def pretty_date(self):
         if self.interview_time != None:

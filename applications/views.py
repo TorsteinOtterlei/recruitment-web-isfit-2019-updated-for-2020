@@ -5,11 +5,11 @@ from django.contrib.auth.decorators import login_required
 from applications.forms import ApplicationForm
 from applications.models import Application
 # other apps
-from jobs.models import Section, Gang, Position
+from jobs.models import Section, Gang, Position, Date
 from accounts.models import User
 
 # Create your views here.
-
+"""
 class ApplicationDetail(generic.DetailView):
     model = Application
     template_name = 'applications/applicant_text.html'
@@ -18,11 +18,11 @@ class ApplicationDetail(generic.DetailView):
         context = super().get_context_data(**kwargs)
         context['text'] = Application.text
         return context
+"""
 
-# BUG: Unable to handle less than 3 positions
 @login_required
 def apply(request):
-    application = Application.objects.filter(applicant=request.user).first()
+    application, created = Application.objects.get_or_create(applicant=request.user)
     applied_to = None
     if application is not None:
         form = ApplicationForm(instance=application)
@@ -60,21 +60,20 @@ def apply(request):
 @login_required
 def set_dates(request):
     if request.method == 'POST':
-        # TODO: Replace user_dates
         times = request.POST.get('times')
-        application = Application.objects.get(applicant=request.user)
-        application.dates = times
-        application.save()
+        date = Date.objects.get(user=request.user)
+        date.dates = times
+        date.save()
         return redirect('../../account')
     else:
+        date, created = Date.objects.get_or_create(user=request.user)
         return render(request, 'applications/set_dates.html', {
-            'user_dates': Application.objects.get(applicant=request.user).dates_list()
+            'user_dates': date.dates_list()
         })
 
-
+@login_required
 def manage_applications(request):
-    applications = Application.objects.all()
     return render(request, 'applications/manage_applications.html', {
-        'applications': applications,
+        'applications': Application.objects.all(),
         'sections': Section.objects.all()
     })

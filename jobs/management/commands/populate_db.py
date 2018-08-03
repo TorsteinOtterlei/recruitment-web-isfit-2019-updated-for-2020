@@ -5,17 +5,16 @@ from halo import Halo
 # from hopcroftkarp import HopcroftKarp
 from accounts.models import User
 from applications.models import Application
-from jobs.models import Section, Gang, Position, Project
+from jobs.models import Section, Gang, Position, Project, Date
 from django.core import management
 
 # Settings:
-USER_AMOUNT = 200
+USER_AMOUNT = 50
 USER_PW = "Django123"
-USERS_WITH_APPLICATION = 180
-RANKING_AMOUNT = 180 # <= USERS_WITH_APPLICATION
+USERS_WITH_APPLICATION = 30
+USERS_WITH_DATES = 30
 DATES_RANGE = 70
 DATES_SAMPLE = 40
-USERS_WITH_DATES = 180
 
 class Command(BaseCommand):
     args = '<foo bar ...>'
@@ -271,18 +270,30 @@ class Command(BaseCommand):
         users = list(User.objects.all())
         application_amount = min(USERS_WITH_APPLICATION, len(users))
 
-        for i in range(application_amount): # Dependent on number of rankings available
+        for i in range(application_amount):
             pos_sample = random.sample(positions, 3)
             Application.objects.create( applicant=users[i],
                                         text="dummy",
                                         first=pos_sample.pop(),
                                         second=pos_sample.pop(),
                                         third=pos_sample.pop(),
-                                        dates=",".join(str(x) for x in sorted(random.sample(range(DATES_RANGE), DATES_SAMPLE))),
                                         interview_time=timezone.now()
                                         )
         spinner.succeed("Creating applications. Over {} applications generated".format(application_amount))
         # End of create_applications
+
+    def create_dates(self):
+        global USERS_WITH_DATES, DATES_RANGE, DATES_SAMPLE
+        spinner = Halo("Creating dates")
+        spinner.start()
+        users = list(User.objects.all())
+        date_amount = min(USERS_WITH_DATES, len(users))
+        for i in range(date_amount):
+            d = Date()
+            d.user = users.pop()
+            d.dates = ",".join(str(x) for x in sorted(random.sample(range(DATES_RANGE), DATES_SAMPLE)))
+            d.save()
+        spinner.succeed()
 
     """
     def create_calendars(self):
@@ -293,10 +304,6 @@ class Command(BaseCommand):
         print(gangleader_dates)
 
         applications = list(Application.objects.filter(ranking.first=))
-
-
-
-
 
         # Genererer 200 søkere med 20 tilfeldige tider som passer for dem
         graph = {}
@@ -335,5 +342,6 @@ class Command(BaseCommand):
         self.create_projects()
         self.create_positions()
         self.create_applications()
+        self.create_dates()
         print("  ==  Dummydata inserted  ==  ")
         # End of handle
