@@ -45,8 +45,8 @@ def logout_view(request):
     # Redirect to a success page.
     render(request, 'accounts/logout.html')
 
-def manage_profile(request, user_id):
-    user = get_object_or_404(User, id=user_id)
+def manage_profile(request, application_id):
+    application = get_object_or_404(Application, applicant_id=application_id)
     return render(request, 'accounts/manage_profile.html', {
-        'user': user,
+        'application': application,
     })

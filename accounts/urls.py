@@ -9,6 +9,6 @@ urlpatterns = [
     path('signup/', views.signup, name='signup'),
     path('login/', login, {'template_name':'accounts/login.html'}, name='login'),
     path('logout/', logout, {'template_name':'jobs/home.html'}, name='logout'),
-    path('<int:user_id>', views.manage_profile, name='manage_profile'),
+    path('<int:application_id>', views.manage_profile, name='manage_profile'),
 
 ]

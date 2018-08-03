@@ -6,8 +6,23 @@
 {% endblock %}
 
 {% block body %}
-<h1>profile</h1>
-{{ user.email }} {{ user.id }}
+
+Email address: {{ application.applicant.email }} <h1>{{ application.applicant.get_full_name }}</h1> Person nr. {{ application.applicant.id }}
+<br />
+Application text: {{ application.text}}
+<br />
+Dates: {{ application.dates_list }}
+<br />
+<br />
+1: {{application.first.title}}
+<br />
+2: {{ application.second.title }}
+<br />
+3: {{ application.third.title }}
+<br />
+<br />
+Interviewers: {{ application.first.interviewer.get_full_name }} and {{ application.second.interviewer.get_full_name }}
+
 {% endblock %}
 
 {% block scriptblock %}
