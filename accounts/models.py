@@ -70,7 +70,11 @@ class User(AbstractBaseUser):
         return self.email
 
     def get_full_name(self):
-        return self.first_name + " " + self.last_name
+        # Quickfix
+        try:
+            return self.first_name + " " + self.last_name
+        except:
+            return self.first_name
 
     def get_status(self):
         return self.status

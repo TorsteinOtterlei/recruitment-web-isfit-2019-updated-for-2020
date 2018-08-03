@@ -76,4 +76,5 @@ def manage_applications(request):
     applications = Application.objects.all()
     return render(request, 'applications/manage_applications.html', {
         'applications': applications,
+        'sections': Section.objects.all()
     })
