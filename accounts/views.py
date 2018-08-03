@@ -1,14 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
-#from django.views import generic
-#from django.views.generic import View
 from django.contrib.auth import authenticate, login, logout
-#from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
+# local:
 from accounts.forms import SignUpForm, StatusForm
 from accounts.models import User
+# other apps:
 from applications.models import Application
-from jobs.models import *
+from jobs.models import Section, Gang, Position, Date
 
 # Create your views here.
 @login_required

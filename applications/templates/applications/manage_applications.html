@@ -60,7 +60,7 @@
             <div class="column-header">Interview Set</div>
             <div class="users-div">
                 {% for application in applications %}
-                    <div  class="{{ application.applicant.id }}">
+                    <div class="{{ application.applicant.id }}">
                         {% if application.applicant.get_status == 'IS'%}
                             <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
                                 {{ application.applicant.get_full_name }}<br>

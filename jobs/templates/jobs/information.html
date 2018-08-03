@@ -1,10 +1,16 @@
 {% extends 'jobs/base.html' %}
 
+{% block head %}
+    <style media="screen">
+        .positions-overview div {
+            color: white;
+        }
+    </style>
+{% endblock head %}
+
 {% block body %}
-    <div class="container" style="color: black">
-        <div class="row space-below">
-            <div class="col-xl-12 space-above">
-                <div class="white-box" id="text-box">
+        <div class="container row">
+            <div class="col-xl-12">
                     <h1>Sections<br></h1>
                     {% for section in sections %}
                         <div class="flex-horizontal">
@@ -36,14 +42,13 @@
                                                     </h5>
                                                 </div>
                                                 <div class="collapse" id="{{ position.title }}">
-                                                    <div class="dropdown-item">
-                                                        <p class="">{{ position.description }}</p>
+                                                        <p>{{ position.description }}</p>
                                                         <h5>Contact Information</h5>
-                                                        <p><b>Name:</b> {{ position.name_of_interviewer }} <br>
-                                                            <b>Phone:</b> {{ position.phone_number }} <br>
-                                                            <b>Email:</b> <a href="">{{ position.email }}</a>
+                                                        <p>
+                                                            <b>Name:</b>&emsp;{{ position.interviewer.get_full_name }} <br>
+                                                            <b>Phone:</b>&emsp;{{ position.interviewer.phone_number }} <br>
+                                                            <b>Email:</b>&emsp;{{ position.interviewer.email }}
                                                         </p>
-                                                    </div>
                                                 </div>
                                             {% endfor %}
                                         </div>
@@ -52,8 +57,6 @@
                             </div>
                         </div>
                     {% endfor %}
-                </div>
             </div>
         </div>
-    </div>
 {% endblock %}
