@@ -7,6 +7,7 @@ from accounts.models import User
 from applications.models import Application
 from jobs.models import Section, Gang, Position, Project, Date
 from django.core import management
+from accounts.choices import *
 
 # Settings:
 USER_AMOUNT = 50

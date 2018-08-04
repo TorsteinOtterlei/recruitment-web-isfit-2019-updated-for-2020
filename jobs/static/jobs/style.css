@@ -1,149 +1,152 @@
 @font-face {
-  font-family: "MyriadPro";
-  src: url("fonts/MyriadPro-Regular.otf") format("truetype"), local("abc");
+    font-family: "MyriadPro";
+    src: url("fonts/MyriadPro-Regular.otf") format("truetype"), local("abc");
 }
-
+/* color seem to have no effect */
 body {
-  /*background: white url("images/background.jpg");*/
-  font-family: MyriadPro !important;
-  background-color: black;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-  color: white;
+    /*background: white url("images/background.jpg");*/
+    font-family: MyriadPro !important;
+    background-color: black;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    color: white;
 }
-
+/* Problematic to add in a base styling. All extended documents inherits this */
 h3 {
-  margin-top: 10px;
+    margin-top: 10px;
 }
-
+/* Needed? */
 a {
-  text-decoration: none;
+    text-decoration: none;
 }
+/* Needed? */
 a:hover {
-  text-decoration: none;
+    text-decoration: none;
 }
 
 small {
-  display: inline-block !important;
+    display: inline-block !important;
 }
-
+/* OBS: Overrides bootstrap container */
 .container {
-  max-width: 90%;
+    max-width: 90%;
 }
 
+/* Needed? */
 .text-area {
-  margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 
 .navbar-nav > a,
 .navbar-nav > li a {
-  color: white;
+    color: white;
 }
 
 .dropdown-nav {
-  background-color: black;
+    background-color: black;
 }
 
 .dropdown-item {
-  white-space: normal;
+    white-space: normal;
 }
 
+/* What is this for? Just curious :) */
 .media {
-  flex-direction: column;
-  align-items: center;
-  background-color: white;
-  color: black;
-  margin: 10px;
-  padding: 25px;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    color: black;
+    margin: 10px;
+    padding: 25px;
 }
 
 /* ------ Buttons ------ */
 button {
-  display: flex;
-  height: auto;
-  background-color: #cc8102;
-  border: 1px solid gray;
+    display: flex;
+    height: auto;
+    background-color: #cc8102;
+    border: 1px solid gray;
 }
 
 .input-button {
-  background-color: #cc8102;
-  margin: 7px;
-  width: 180px;
-  border: 1px solid gray;
-  border-radius: 3%;
-  cursor: pointer;
+    background-color: #cc8102;
+    margin: 7px;
+    width: 180px;
+    border: 1px solid gray;
+    border-radius: 3%;
+    cursor: pointer;
 }
 
 .input-button:hover, button:hover {
-  background-color: #f79b00;
-  border-color: lightgray;
+    background-color: #f79b00;
+    border-color: lightgray;
 }
-
+/* Maybe not necessary to have style on visited links */
 a:link, a:visited{
-  color: #cc8102;
+    color: #cc8102;
 }
-a:link:hover, a:visited:hover, span:hover{
-  color: orange;
+a:link:hover, a:visited:hover{
+    color: orange;
 }
 
 #page-content-wrapper {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-top: 5vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5vh;
 }
 
 .navbar {
-  padding-top: 20px;
+    padding-top: 20px;
 }
 
 .navbar-header {
-  display: flex;
+    display: flex;
 }
 
 .navbar-brand {
-  margin: 0;
+    margin: 0;
 }
 
 .navbar-toggle {
-  display: flex;
-  flex-direction: column;
-  align-self: center;
-  height: 30px;
-  width: 40px;
-  padding: 5px;
-  align-items: center;
-  justify-content: space-around;
-  border-radius: 15%;
-  background-color: black;
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    height: 30px;
+    width: 40px;
+    padding: 5px;
+    align-items: center;
+    justify-content: space-around;
+    border-radius: 15%;
+    background-color: black;
 }
 
 .navbar-toggle:focus {
-  outline: none;
+    outline: none;
 }
 
 .navbar-header .icon-bar {
-  width: 100px;
-  height: 5px;
+    width: 100px;
+    height: 5px;
 }
 
 #footprints_long {
-  border-width: 3px;
-  background: url("images/footprints_long.png");
-  background-size: cover;
-  width: -webkit-fill-available;
-  height: 80px;
-  margin-bottom: 0;
-  margin: 10px 0 0 20px;
+    border-width: 3px;
+    background: url("images/footprints_long.png");
+    background-size: cover;
+    width: -webkit-fill-available;
+    height: 80px;
+    margin-bottom: 0;
+    margin: 10px 0 0 20px;
 }
 
 #main-logo {
-  background: url("images/isfit_logo72-22.png");
-  width: 200px;
-  height: 80px;
+    background: url("images/isfit_logo72-22.png");
+    width: 200px;
+    height: 80px;
 }
 
 #main-logo,
@@ -151,78 +154,81 @@ a:link:hover, a:visited:hover, span:hover{
 #footprint-2,
 #footprint-3,
 #footprint-4 {
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
-  margin: 0;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    margin: 0;
 }
 
 .main-logo-footprints {
-  display: flex;
-  justify-content: space-between;
+    display: flex;
+    justify-content: space-between;
 }
 
 .navbar-default .navbar-toggle .icon-bar {
-  background-color: white;
-  width: 25px;
-  height: 2px;
+    background-color: white;
+    width: 25px;
+    height: 2px;
 }
 
 .clearfix {
-  display: block;
-  width: 100%;
-  height: 0;
-  clear: both;
+    display: block;
+    width: 100%;
+    height: 0;
+    clear: both;
 }
-
+/* Needed? */
 .space-above {
-  margin-top: 15px;
+    margin-top: 15px;
 }
-
+/* Needed? */
 .space-below {
-  margin-bottom: 20px;
+    margin-bottom: 20px;
 }
-
+/* Needed? */
 .white-box {
-  background-color: #fff;
-  padding: 20px;
-  overflow: auto;
+    background-color: #fff;
+    padding: 20px;
+    overflow: auto;
 }
 
+/* Needed? */
 .unstyled-box {
-  padding: 20px;
+    padding: 20px;
 }
 
+/* Repeated */
 .clearfix {
-  overflow: auto;
+    overflow: auto;
 }
 
 .flex-horizontal {
-  display: flex;
+    display: flex;
 }
 
 .flex-horizontal > h3 {
-  margin: 0;
-  margin-top: 10px;
+    margin: 0;
+    margin-top: 10px;
 }
 
 .flex-vertical {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 
+/* More clear to have this styling in same documents where gangs are used */
 .gangs-div {
-  max-width: 70%;
-  margin-left: 10px;
-  position: relative;
-  top: 50px;
-  margin-bottom: 50px;
+    max-width: 70%;
+    margin-left: 10px;
+    position: relative;
+    top: 50px;
+    margin-bottom: 50px;
 }
-
+/* Needed? */
 .gangs-div > .flex-vertical > h5 {
-  margin: 0;
+    margin: 0;
 }
-
+/* Needed? */
 .positions-div {
-  margin-left: 10px;
+    margin-left: 10px;
 }

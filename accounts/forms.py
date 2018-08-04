@@ -1,16 +1,14 @@
-from accounts.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
-#from django.forms import inlineformset_factory
-from .models import *
-#from django.forms.widgets import CheckboxSelectMultiple
-#from django.forms.models import ModelMultipleChoiceField
+# local
+from accounts.models import User
+from accounts.choices import *
 
 class SignUpForm(UserCreationForm):
     email = forms.EmailField(max_length=250, required=True, help_text='Required')
     first_name = forms.CharField(max_length=50, required=True, help_text='Required')
     last_name = forms.CharField(max_length=50, required=True, help_text='Required')
-    phone_number = models.CharField(max_length=12)
+    phone_number = forms.CharField(max_length=12)
 
     class Meta:
         model = User
@@ -28,7 +26,7 @@ class SignUpForm(UserCreationForm):
         self.fields['password2'].widget.attrs.update({'class': 'form-control'})
 
 class StatusForm(forms.ModelForm):
-    menu = forms.ChoiceField(choices=User.STATUS_CHOISES)
+    menu = forms.ChoiceField(choices=STATUS_CHOISES)
 
     class Meta:
         model = User

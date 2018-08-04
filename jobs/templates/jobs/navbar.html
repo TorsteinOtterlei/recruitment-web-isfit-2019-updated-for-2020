@@ -35,6 +35,7 @@
                         <li><a href="{% url 'applications:apply' %}">Application</a>
                     {% endif %}
                     {% if user.is_staff %}
+                        <li><a href="{% url 'applications:set_dates' %}">Set Dates</a></li>
                         <li><a href="{% url 'applications:manage_applications' %}">Manage Applications</a>
                         <li><a href="{% url 'admin:index' %}">Administration</a>
                     {% endif %}

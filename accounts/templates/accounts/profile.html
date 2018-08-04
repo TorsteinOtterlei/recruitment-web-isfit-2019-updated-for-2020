@@ -1,7 +1,11 @@
 {% extends 'jobs/base.html' %}
 {% block title %}Welcome{% endblock %}
+{% load static %}
 
 {% block head %}
+
+    <meta name="icon-author" content="">
+
     <style media="screen">
         .application_positions {
             line-height: 1.5em;
@@ -10,11 +14,25 @@
             padding: 15px 15px 15px 15px;
             border-color: orange;
         }
+        #user-logo {
+            height: 150px;
+            margin-bottom: 10px;
+        }
+        #title > * {
+            display: inline-block;
+        }
+        #status, #status:hover {
+            color: blue;
+        }
     </style>
 {% endblock head %}
 
 {% block body %}
-    <h1>{{ user.get_full_name }}</h1>
+    <img id="user-logo" src="{% static 'accounts/user.png' %}" alt="User logo">
+    <div id="title">
+        <h1>{{ user.get_full_name }}</h1>
+        <span id=status>&emsp;Status: {{ user.get_status_display }} </span>
+    </div>
     {% if positions %}
         <h4>You have applied for these positions:</h4>
         <br>
@@ -38,4 +56,5 @@
     <form action="{% url 'accounts:logout' %}" method="get">
         <input class="input-button" type="submit" value="Log out"><br>
     </form>
+
 {% endblock %}

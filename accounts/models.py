@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+# local
 
 # Create your models here.
 
@@ -39,6 +40,7 @@ class User(AbstractBaseUser):
     ACCEPTED = 'AC'
     ADMIN = 'AD'
     INTERVIEWER = 'IN'
+
     STATUS_CHOISES = (
         (NOT_EVALUATED, 'Not evaluated'),
         (INTERVIEW_SET, 'Interview set'),
@@ -48,6 +50,7 @@ class User(AbstractBaseUser):
         (ADMIN, 'Admin'),
         (INTERVIEWER, 'Interviewer'),
     )
+
     status = models.CharField(
         max_length=2,
         choices=STATUS_CHOISES,
