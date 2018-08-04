@@ -24,6 +24,8 @@
         }
         .times div {
             border: hidden;
+            min-width: 6em;
+            padding-top: 0.25em;
         }
         .days {
             display: grid;
@@ -31,13 +33,14 @@
             border: hidden;
 
         }
-        .grid {
+        .grid1, .grid2 {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
             grid-template-rows: repeat(10, 1.9em);
             border: hidden;
             gap: 1em;
         }
+
         .gridcell {
             border: solid;
             border-radius: 6px;
@@ -51,11 +54,24 @@
             display: none;
         }
 
+        #bt0{
+            opacity: 0.5;
+        }
+
+        @media only screen and (max-width: 30em) {
+            .times{
+                font-size: small;
+                min-width: 5em;
+                padding-top: 0.1em;
+            }
+        }
+
     </style>
 {% endblock %}
 
 {% block body %}
-    <h4>Please choose the times when you are unable to have an interview</h4>
+    <h4>Please choose the times when you are unable to have an interview</h4><br>
+    <h5><div id="week-div">Week 33 (13th Aug - 19th Aug)</div></h5>
 
     <div class="calendar">
         <div class="topleft">Time / Day</div>
@@ -83,14 +99,20 @@
             <div>17:00 - 18:00</div>
         </div>
 
-        <div class="grid">
+        <div class="grid1">
+            <!-- cells inserted with javascript -->
+        </div> <!-- End: grid -->
+
+        <div class="grid2">
             <!-- cells inserted with javascript -->
         </div> <!-- End: grid -->
     </div> <!-- End: calendar -->
 
     <div>
+        <button type="button" class="btn" id="bt0" onclick="changeWeek(this, 0)">&#8678;</button>
         <button type="button" class="btn btn-outline-success" id="select_all">Select all</button>
         <button type="button" class="btn btn-outline-danger" id="unselect_all">Unselect all</button>
+        <button type="button" class="btn" id="bt1" onclick="changeWeek(this, 1)">&#8680;</button>
         <br />
 
         <form method="POST" name='dates_form'>
@@ -103,11 +125,16 @@
 
 {% block scriptblock %}
     <script>
+        var week, week_text, all_dates, user_dates_inverse, user_dates
         $(document).ready(function() {
-            // Retrieve Django variable, user_dates, from views.py
-            // and convert string into list
-            //var user_dates = "{{ user_dates }}".split(",")
-            var user_dates = {{ user_dates }} // {{ myVar | safe}} if myList contains strings
+            $('.grid2').css('display', 'none')
+            week = 0;
+            week_text = ['Week 33 (13th Aug - 19th Aug)', 'Week 34 (20th Aug - 26th Aug)'];
+            all_dates = [...Array(140).keys()];
+            user_dates_inverse = {{ user_dates }}
+            user_dates = all_dates.filter( function( el ) {
+                return !user_dates_inverse.includes( el );
+            } );
             console.log(user_dates);
             var filler = "X";
             $("#timestring").val(user_dates);
@@ -117,7 +144,15 @@
                 var div = document.createElement("div");  // Create with DOM
                 div.id = i; // Give each cell their id according to grid
                 div.className = "gridcell";
-                $(".grid").append(div);
+                $(".grid1").append(div);
+            } // End: cell-appending to grid
+
+            // Create divs inside grid. Easier than adding them manually
+            for (var i=70; i<140; i++) { // 70 because of temporary 0-69 grid
+                var div = document.createElement("div");  // Create with DOM
+                div.id = i; // Give each cell their id according to grid
+                div.className = "gridcell";
+                $(".grid2").append(div);
             } // End: cell-appending to grid
 
             // Display previously selected dates
@@ -152,7 +187,7 @@
 
             $("#select_all").click(function() {
                 $(".gridcell").html(filler);
-                for (var i = 0; i < 70; i++) {
+                for (var i = 0; i < 140; i++) {
                     user_dates[i] = i;
                     console.log(user_dates);
                 }
@@ -169,7 +204,21 @@
         }); // End: document ready
 
         function submit(){
-          document.dates_form.submit();
+             var save = all_dates.filter( function( el ) {
+                return !user_dates.includes( el );
+            } );
+            $("#timestring").val(save);
+            document.dates_form.submit();
+        }
+
+        function changeWeek(bt, num){
+            week = num;
+            $('.grid1').toggle();
+            $('.grid2').toggle();
+            $('#week-div').html(week_text[week]);
+            $('#bt' + num).css('opacity', 0.5);
+            $('#bt' + (num + 1) % 2).css('opacity', 1);
+
         }
     </script>
 {% endblock %}
