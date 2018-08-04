@@ -54,10 +54,6 @@
             display: none;
         }
 
-        #bt0{
-            opacity: 0.5;
-        }
-
         @media only screen and (max-width: 30em) {
             .times{
                 font-size: small;
@@ -127,15 +123,16 @@
     <script>
         var week, week_text, all_dates, user_dates_inverse, user_dates
         $(document).ready(function() {
-            $('.grid2').css('display', 'none')
+            $('.grid2').css('display', 'none');
+            $('#bt0').prop("disabled", true);
+
             week = 0;
-            week_text = ['Week 33 (13th Aug - 19th Aug)', 'Week 34 (20th Aug - 26th Aug)'];
+            week_text = ['Week 36 (3th Sept - 9th Sept)', 'Week 37 (10th Sept - 16th Sept)'];
             all_dates = [...Array(140).keys()];
             user_dates_inverse = {{ user_dates }}
             user_dates = all_dates.filter( function( el ) {
                 return !user_dates_inverse.includes( el );
             } );
-            console.log(user_dates);
             var filler = "X";
             $("#timestring").val(user_dates);
 
@@ -186,16 +183,23 @@
             });*/
 
             $("#select_all").click(function() {
-                $(".gridcell").html(filler);
-                for (var i = 0; i < 140; i++) {
-                    user_dates[i] = i;
+                for (var i = 0; i < 70; i++) {
+                    var j = i;
+                    if (week == 1) j = i + 70;
+                    user_dates[j] = j;
+                    $("#" + j).html(filler);
                     console.log(user_dates);
                 }
                 $("#timestring").val(user_dates);
             });
             $("#unselect_all").click(function() {
-                $(".gridcell").html("");
-                user_dates = [];
+                if (week == 0) user_dates.splice(0, 70);
+                else user_dates.splice(70, 140);
+                for (var i = 0; i < 70; i++) {
+                    var j = i;
+                    if (week == 1) j = i +70;
+                    $("#" + j).html("");
+                }
                 console.log(user_dates);
                 $("#timestring").val(user_dates);
             });
@@ -216,8 +220,8 @@
             $('.grid1').toggle();
             $('.grid2').toggle();
             $('#week-div').html(week_text[week]);
-            $('#bt' + num).css('opacity', 0.5);
-            $('#bt' + (num + 1) % 2).css('opacity', 1);
+            $('#bt' + num).prop("disabled",true);
+            $('#bt' + (num + 1) % 2).prop("disabled",false);
 
         }
     </script>
