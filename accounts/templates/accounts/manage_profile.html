@@ -11,7 +11,14 @@ Email address: {{ application.applicant.email }} <h1>{{ application.applicant.ge
 <br />
 Application text: {{ application.text}}
 <br />
-Dates: {{ date.dates_list }}
+{{ application.applicant.get_full_name }}'s available dates: {{ application.applicant.date.dates_list }}
+{% for interviewer in interviewers %}
+<p><a href="{% url 'accounts:manage_profile' interviewer.id %}">
+        {{ interviewer.get_full_name }}</a>'s available dates: {{ interviewer.date.dates_list }}
+</p>
+{% endfor %}
+
+
 <br />
 <br />
 {% for position in application.get_positions %}

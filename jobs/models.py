@@ -5,10 +5,7 @@ from django.db import models
 from accounts.models import User
 
 def makeDates(numb):
-    dates = ""
-    for i in range(numb):
-        dates += str(i) + ','
-    return dates[:-1]
+    return ",".join([str(i) for i in range(numb)])
 
 class Section(models.Model):
     name = models.CharField(max_length=50)
@@ -46,7 +43,7 @@ class Position(models.Model):
         return str(self.title) + ', ' + str(self.gang)
 
 class Date(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="date")
     dates = models.TextField(max_length=2000, default=makeDates(140), blank=True) # 1,2,43,68 possible dates
 
     def __str__(self):

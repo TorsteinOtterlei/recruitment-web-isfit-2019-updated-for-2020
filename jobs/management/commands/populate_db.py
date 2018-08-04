@@ -13,8 +13,8 @@ USER_AMOUNT = 50
 USER_PW = "Django123"
 USERS_WITH_APPLICATION = 30
 USERS_WITH_DATES = 40
-DATES_RANGE = 70
-DATES_SAMPLE = 40
+DATES_RANGE = 140
+DATES_SAMPLE = 120
 
 class Command(BaseCommand):
     args = '<foo bar ...>'
@@ -358,6 +358,6 @@ class Command(BaseCommand):
         self.create_projects()
         self.create_positions()
         self.create_applications()
-        self.create_dates()
+        #self.create_dates()
         print("  ==  Dummydata inserted  ==  ")
         # End of handle

@@ -46,17 +46,19 @@ def logout_view(request):
 
 def manage_profile(request, userID):
     application = get_object_or_404(Application, applicant_id=userID)
-    date, created = Date.objects.get_or_create(user_id=userID)
+    applicant = application.applicant
+    date, created = Date.objects.get_or_create(user=applicant)
+    interviewers = [pos.interviewer for pos in application.get_positions()]
     form = StatusForm(request.POST)
     if request.method == 'POST':
         if form.is_valid():
-            user = get_object_or_404(User, id=userID)
-            user.status = form.cleaned_data.get('menu')
-            user.save()
+            applicant.status = form.cleaned_data.get('menu')
+            applicant.save()
             form.save()
     #stat = User.objects.get('status')
     return render(request, 'accounts/manage_profile.html', {
         'application': application,
         'date': date,
         'form': form,
+        'interviewers': interviewers,
     })
