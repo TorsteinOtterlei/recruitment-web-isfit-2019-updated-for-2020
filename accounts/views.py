@@ -44,19 +44,19 @@ def logout_view(request):
     # Redirect to a success page.
     render(request, 'accounts/logout.html')
 
-def manage_profile(request, user_id):
-    application = get_object_or_404(Application, applicant_id=user_id)
-    user = get_object_or_404(User, id=user_id)
-    dates = Date.objects.get_or_create(user=request.user)
+def manage_profile(request, userID):
+    application = get_object_or_404(Application, applicant_id=userID)
+    date, created = Date.objects.get_or_create(user_id=userID)
     form = StatusForm(request.POST)
     if request.method == 'POST':
         if form.is_valid():
+            user = get_object_or_404(User, id=userID)
             user.status = form.cleaned_data.get('menu')
             user.save()
-
+            form.save()
     #stat = User.objects.get('status')
     return render(request, 'accounts/manage_profile.html', {
         'application': application,
-        'dates': dates,
+        'date': date,
         'form': form,
     })

@@ -11,14 +11,13 @@ Email address: {{ application.applicant.email }} <h1>{{ application.applicant.ge
 <br />
 Application text: {{ application.text}}
 <br />
-Dates: {{ dates.dates_list }}
+Dates: {{ date.dates_list }}
 <br />
 <br />
-1: {{application.first.title}}
-<br />
-2: {{ application.second.title }}
-<br />
-3: {{ application.third.title }}
+{% for position in application.get_positions %}
+    <p>{{forloop.counter}}: {{ position.title }} </p>
+{% endfor %}
+
 <br />
 <br />
 Interviewers: {{ application.first.interviewer.get_full_name }} and {{ application.second.interviewer.get_full_name }}

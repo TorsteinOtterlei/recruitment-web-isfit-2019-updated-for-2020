@@ -7,13 +7,12 @@ from accounts.models import User
 from applications.models import Application
 from jobs.models import Section, Gang, Position, Project, Date
 from django.core import management
-from accounts.choices import *
 
 # Settings:
 USER_AMOUNT = 50
 USER_PW = "Django123"
 USERS_WITH_APPLICATION = 30
-USERS_WITH_DATES = 30
+USERS_WITH_DATES = 40
 DATES_RANGE = 70
 DATES_SAMPLE = 40
 
@@ -33,6 +32,11 @@ class Command(BaseCommand):
     """
     def reset_db(self):
         management.call_command('reset_db')
+        print()
+
+    def make_migrations(self):
+        print("Making migrations")
+        management.call_command('makemigrations')
         print()
 
     def migrate(self):
@@ -301,7 +305,7 @@ class Command(BaseCommand):
         date_amount = min(USERS_WITH_DATES, len(users))
         for i in range(date_amount):
             d = Date()
-            d.user = users.pop()
+            d.user = users[i]
             d.dates = ",".join(str(x) for x in sorted(random.sample(range(DATES_RANGE), DATES_SAMPLE)))
             d.save()
         spinner.succeed()
@@ -345,6 +349,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         #self.flush()
         self.reset_db()
+        self.make_migrations()
         self.migrate()
         self.createsu()
         self.create_users()

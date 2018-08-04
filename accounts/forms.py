@@ -2,7 +2,6 @@ from django.contrib.auth.forms import UserCreationForm
 from django import forms
 # local
 from accounts.models import User
-from accounts.choices import *
 
 class SignUpForm(UserCreationForm):
     email = forms.EmailField(max_length=250, required=True, help_text='Required')
@@ -26,7 +25,7 @@ class SignUpForm(UserCreationForm):
         self.fields['password2'].widget.attrs.update({'class': 'form-control'})
 
 class StatusForm(forms.ModelForm):
-    menu = forms.ChoiceField(choices=STATUS_CHOISES)
+    menu = forms.ChoiceField(choices=User.STATUS_CHOISES)
 
     class Meta:
         model = User
