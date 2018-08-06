@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.core.mail import send_mail
 # local
 
 # Create your models here.
@@ -47,8 +48,6 @@ class User(AbstractBaseUser):
         (INTERVIEW_CONFIRMED, 'Interview confirmed'),
         (INTERVIEWED, 'Interviewed'),
         (ACCEPTED, 'Accepted'),
-        (ADMIN, 'Admin'),
-        (INTERVIEWER, 'Interviewer'),
     )
 
     status = models.CharField(

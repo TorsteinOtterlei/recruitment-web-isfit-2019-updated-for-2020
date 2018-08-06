@@ -25,8 +25,10 @@ class SignUpForm(UserCreationForm):
         self.fields['password2'].widget.attrs.update({'class': 'form-control'})
 
 class StatusForm(forms.ModelForm):
-    menu = forms.ChoiceField(choices=User.STATUS_CHOISES)
+    status = forms.ChoiceField(choices=User.STATUS_CHOISES)
+    # Only giving class name for CSS access
+    status.widget.attrs.update({'class': 'status-field'})
 
     class Meta:
         model = User
-        fields = ('menu',)
+        fields = (['status'])
