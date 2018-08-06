@@ -36,7 +36,7 @@
         border: solid;
         border-style: inset;
         border-color: orange;
-        height: 250px;
+        height: 280px;
         max-width: 400px;
     }
     #chosenList li {
@@ -49,10 +49,21 @@
         margin-right: 50px;
         padding: 8px 8px 8px 20px;
         list-style-position: inside;
+        width: 90%;
     }
     #chosenList li:hover {
         cursor: url(https://ssl.gstatic.com/ui/v1/icons/mail/images/2/openhand.cur), default !important;
         color: orange;
+    }
+
+    .remove{
+        display:inline;
+        float:right;
+    }
+
+    .remove:hover{
+        color: red;
+        cursor: pointer;
     }
 
     </style>
@@ -103,6 +114,7 @@
                 </li>
                 {% endfor %}
             </ul>
+            <a href={% url 'jobs:information' %} target="_blank">View position information</a>
         </div>
         <div class="col-md-5 dropzone">
             <h2>Chosen:</h2>
@@ -126,7 +138,7 @@
             for (i in rankings){
                 chosen[rankings[i]] = 'chosen'
                 li = document.createElement("li");
-                li.innerHTML = rankings[i];
+                li.innerHTML = rankings[i] + '<div class="remove">&times;</div>';
                 li.id = rankings[i];
                 document.getElementById("chosenList").appendChild(li);
             }
@@ -151,7 +163,7 @@
                 if ($("#chosenList li").length < 3 && chosen[this.id] == null) {
                     chosen[this.id] = "chosen";
                     li = document.createElement("li");
-                    li.innerHTML = this.innerHTML;
+                    li.innerHTML = this.innerHTML + '<div class="remove">&times;</div>';
                     li.id = this.id;
                     document.getElementById("chosenList").appendChild(li);
                 }

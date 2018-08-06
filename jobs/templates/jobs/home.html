@@ -3,7 +3,9 @@
 
 {% block body %}
     <div class="text-area container" id="intro-text">
-          <h1>We are now recruiting!</h1>
+          <h1>We are now recruiting volunteers!</h1>
+          <p><i>Applications to participate in ISFiT19 will open August 31st.
+          This is to volunteer with ISFiT. To volunteer, you must be a student in Trondheim.</i></p>
           Do you want to be a link between Trondheim and the rest of the world? Would
           you like to get to know students from all over the world and help bring them
           to Trondheim for ten days of the world’s biggest International Student
@@ -11,7 +13,7 @@
           departments, from economy and administration to culture and theme! Press,
           Concerts and Accounting are only some of the groups looking for fresh
           volunteers. If you want to learn more about the different positions, go to
-          <a href={% url 'jobs:information' %}>information</a> and explore all the options.
+          <a href={% url 'jobs:information' %}>positions</a> and explore all the options.
     </div>
 
     {% if user.is_authenticated %}

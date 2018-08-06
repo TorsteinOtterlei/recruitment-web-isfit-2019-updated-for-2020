@@ -54,6 +54,13 @@
             display: none;
         }
 
+        #buttons-div{
+            text-align: center;
+        }
+        #bt0, #bt1{
+            margin-top: 10px;
+        }
+
         @media only screen and (max-width: 30em) {
             .times{
                 font-size: small;
@@ -66,7 +73,7 @@
 {% endblock %}
 
 {% block body %}
-    <h4>Please choose the times when you are unable to have an interview</h4><br>
+    <h4>Please choose the times when you are UNABLE to have an interview</h4><br>
     <h5><div id="week-div">Week 33 (13th Aug - 19th Aug)</div></h5>
 
     <div class="calendar">
@@ -104,18 +111,20 @@
         </div> <!-- End: grid -->
     </div> <!-- End: calendar -->
 
-    <div>
-        <button type="button" class="btn" id="bt0" onclick="changeWeek(this, 0)">&#8678;</button>
+    <div id="buttons-div">
         <button type="button" class="btn btn-outline-success" id="select_all">Select all</button>
         <button type="button" class="btn btn-outline-danger" id="unselect_all">Unselect all</button>
-        <button type="button" class="btn" id="bt1" onclick="changeWeek(this, 1)">&#8680;</button>
         <br />
+        <button type="button" class="btn" id="bt0" onclick="changeWeek(this, 0)">&#8678; 1st Week</button>
+        <button type="button" class="btn" id="bt1" onclick="changeWeek(this, 1)">2nd Week &#8680;</button>
+
+
 
         <form method="POST" name='dates_form'>
             {% csrf_token %}
             <input id="timestring" name="times"></input>
         </form>
-    <button onclick="submit()" style="width: 100%; margin: 20px 0 10px 0;" class="btn button-form">Save</button>
+    <button onclick="submit()" style="width: 100%; margin: 20px 0 10px 0;" class="btn button-form">Save and apply</button>
     </div>
 {% endblock %}
 

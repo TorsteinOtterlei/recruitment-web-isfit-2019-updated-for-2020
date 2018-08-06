@@ -87,7 +87,7 @@ button {
 a:link, a:visited{
     color: #cc8102;
 }
-a:link:hover, a:visited:hover{
+a:link:hover, a:visited:hover, span:hover{
     color: orange;
 }
 
