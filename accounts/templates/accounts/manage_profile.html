@@ -69,14 +69,19 @@
                 padding-top: 0.1em;
             }
         }
+        .button-back{
+            position: absolute;
+            top: 100px;
+            left: 20px;
+        }
     </style>
 {% endblock %}
 
 {% block body %}
-    <div class="container">
+    <a class="button-back" href="{% url 'applications:manage_applications' %}">
         <img id="arrow-left" src="{% static 'applications/arrow_left.png' %}" alt="Arrow left">
-        <a href="{% url 'applications:manage_applications' %}">Manage applications</a>
-    </div>
+        Manage applications
+    </a>
 
     <div class="title">
         <h1>{{ application.applicant.get_full_name }}</h1>
