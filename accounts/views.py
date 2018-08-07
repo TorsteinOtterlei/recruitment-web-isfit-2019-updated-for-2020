@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 # local:
-from accounts.forms import SignUpForm, StatusForm
+from accounts.forms import SignUpForm, StatusForm, WidgetsForm
 from accounts.models import User
 # other apps:
 from applications.models import Application
@@ -49,12 +49,20 @@ def manage_profile(request, userID):
     applicant = application.applicant
     date, created = Date.objects.get_or_create(user=applicant)
     interviewers = [pos.interviewer for pos in application.get_positions()]
-    form = StatusForm(request.POST)
+    if applicant.email == "emil.telstad@live.no":
+        pass
+        #applicant.email_user(subject="Test", message="My msg", from_email="emilte@stud.ntnu.no")
+
     if request.method == 'POST':
+        form = StatusForm(request.POST)
         if form.is_valid():
-            applicant.status = form.cleaned_data.get('menu')
-            applicant.save()
             form.save()
+            print(form.cleaned_data.get('status'))
+            applicant.status = form.cleaned_data.get('status')
+            applicant.save()
+    else:
+        form = StatusForm()
+        form.fields['status'].initial = applicant.status
     #stat = User.objects.get('status')
     return render(request, 'accounts/manage_profile.html', {
         'application': application,
@@ -62,3 +70,7 @@ def manage_profile(request, userID):
         'form': form,
         'interviewers': interviewers,
     })
+
+def widgets(request):
+    form = WidgetsForm()
+    return render(request, 'accounts/widgets.html', {'form': form})

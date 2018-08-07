@@ -35,12 +35,12 @@ class Position(models.Model):
     title = models.CharField(max_length=50)
     gang = models.ForeignKey(Gang, on_delete=models.CASCADE, related_name="positions")
     description = models.TextField(max_length=20000)
-    interviewer = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    interviewer = models.OneToOneField(User, on_delete=models.CASCADE, null=True, related_name="position")
     #email = models.EmailField(max_length=200)
     #name_of_interviewer = models.CharField(max_length=100)
 
     def __str__(self):
-        return str(self.title) + ', ' + str(self.gang)
+        return "{} ({})".format(self.title, self.gang)
 
 class Date(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="date")

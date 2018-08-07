@@ -1,24 +1,155 @@
 {% extends 'jobs/base.html' %}
 {% block title %}Apply{% endblock %}
+{% load static %}
 
 {% block head %}
+    <style media="screen">
+        .status-field { /* classname given in StatusForm */
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            border: none;
+            background-color: black;
+            color: orange;
+            outline: none;
+            cursor: pointer;
+        }
+        .title * {
+            display: inline;
+        }
+        .calendar {
+            display: grid;
+            grid-template-columns: 1fr 6fr;
+            gap: 1em;
+            border: solid;
+            border-radius: 20px;
+            border-color: gray;
+            padding: 2em;
+            text-align: center;
+            color: DeepSkyBlue;
+        }
+        .topleft {
+            border: hidden;
+        }
+        .times {
+            display: grid;
+            border: hidden;
+            gap: 1em;
+        }
+        .times div {
+            border: hidden;
+            min-width: 6em;
+            padding-top: 0.25em;
+        }
+        .days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            border: hidden;
 
+        }
+        .grid1, .grid2 {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            grid-template-rows: repeat(10, 1.9em);
+            border: hidden;
+            gap: 1em;
+        }
+
+        .gridcell {
+            border: solid;
+            border-radius: 6px;
+        }
+        .gridcell:hover {
+            cursor: pointer;
+            color: orange;
+        }
+        @media only screen and (max-width: 30em) {
+            .times{
+                font-size: small;
+                min-width: 5em;
+                padding-top: 0.1em;
+            }
+        }
+        .button-back{
+            position: absolute;
+            top: 100px;
+            left: 20px;
+        }
+    </style>
 {% endblock %}
 
 {% block body %}
+
 {% if user.is_staff %}
-Email address: {{ application.applicant.email }} <h1>{{ application.applicant.get_full_name }}</h1> Person nr. {{ application.applicant.id }}
+
+    <a class="button-back" href="{% url 'applications:manage_applications' %}">
+        <img id="arrow-left" src="{% static 'applications/arrow_left.png' %}" alt="Arrow left">
+        Manage applications
+    </a>
+
+    <div class="title">
+        <h1>{{ application.applicant.get_full_name }}</h1>
+        <form id="statusForm" method="post">
+            {% csrf_token %}
+            &emsp;Status: {{ form.status }}
+        </form>
+    </div>
+    <br>
+    <div class="container info">
+        <h2>Personal information:</h2>
+        <div class="email">
+            <p>Email address: {{ application.applicant.email }}</p>
+        </div>
+        <p>Phone number: {{ application.applicant.phone_number }}</p>
+        Application text:
+        <p>{{ application.text}}</p>
+    </div>
+
+    {% comment %}
+    <div class="calendar">
+        <div class="topleft">Time / Day</div>
+<!--1>>>>>>> d46cf9f724def727e4fcac8ec1e99dc1d0df62b1-->
+
+        <div class="days">
+            <div>Mon</div>
+            <div>Tue</div>
+            <div>Wed</div>
+            <div>Thu</div>
+            <div>Fri</div>
+            <div>Sat</div>
+            <div>Sun</div>
+        </div>
+
+        <div class="times">
+            <div>08:15 - 09:00</div>
+            <div>09:15 - 10:00</div>
+            <div>10:15 - 11:00</div>
+            <div>11:15 - 12:00</div>
+            <div>12:15 - 13:00</div>
+            <div>13:15 - 14:00</div>
+            <div>14:15 - 15:00</div>
+            <div>15:15 - 16:00</div>
+            <div>16:15 - 17:00</div>
+            <div>17:15 - 18:00</div>
+            <div>18:15 - 19:00</div>
+            <div>19:15 - 20:00</div>
+            <div>20:15 - 21:00</div>
+        </div>
+
+        <div class="grid1">
+            <!-- cells inserted with javascript -->
+        </div> <!-- End: grid -->
+
+        <div class="grid2">
+            <!-- cells inserted with javascript -->
+        </div> <!-- End: grid -->
+    </div> <!-- End: calendar -->
+    {% endcomment %}
+
+
+    {{ application.applicant.get_full_name }}'s available dates: {{ application.applicant.date.dates_list }}
 <br />
-Application text: {{ application.text}}
 <br />
-<!--{{ application.applicant.get_full_name }}'s available dates: {{ application.applicant.date.dates_list }}
-{% for interviewer in interviewers %}
-<p><a href="{% url 'accounts:manage_profile' interviewer.id %}">
-        {{ interviewer.get_full_name }}</a>'s available dates: {{ interviewer.date.dates_list }}
-</p>
-{% endfor %}
--->
-<p>Compatible times for interviews:</p>
+Compatible times for interviews:
 {% for i in application.applicant.date.dates_list %}
     {% for j in application.first.interviewer.date.dates_list %}
         {% for k in application.second.interviewer.date.dates_list %}
@@ -29,31 +160,40 @@ Application text: {{ application.text}}
     {% endfor %}
 {% endfor %}
 
-
-<br />
-<br />
-{% for position in application.get_positions %}
-    <p>{{forloop.counter}}: {{ position.title }} </p>
-{% endfor %}
-
-<br />
-<br />
-Interviewers: {{ application.first.interviewer.get_full_name }} and {{ application.second.interviewer.get_full_name }}
-<br />
-<br />
-{{ application.applicant.status }}
-
-    <form method="post" action="{% url 'accounts:manage_profile' application.applicant.id %}">
-        {{ form }}
-        {% csrf_token %}
-        <br />
-        <input type="submit" value="Set status">
-    </form>
+    <br>
+    <br>
+    <br />
+    <br />
+    Positions applied for and their respective interviewer:
+    {% for position in application.get_positions %}
+        <p>{{forloop.counter}}: {{ position }}, interviewer: {{ position.interviewer.get_full_name }} </p>
+    {% endfor %}
+    <br>
 {% else %}
 You have no power here
 {% endif %}
-
-{% endblock %}
+{% endblock body %}
 
 {% block scriptblock %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#statusForm").change(function() {
+                $("#statusForm").submit()
+            }) // End: statusForm.change
+
+            // Create divs inside grid. Easier than adding them manually
+            for (var i=0; i<91; i++) { // 70 because of temporary 0-69 grid
+                var div = document.createElement("div");  // Create with DOM
+                div.id = i; // Give each cell their id according to grid
+                div.className = "gridcell";
+                $(".grid1").append(div);
+            } // End: cell-appending to grid
+
+            // Display previously selected dates
+            for (var i = 0; i < user_dates.length; i++) {
+                var cellid = "#" + user_dates[i];
+                $(cellid).html(filler);
+            } // End: Display previously selected dates
+        }) // End: document.ready
+    </script>
 {% endblock %}
