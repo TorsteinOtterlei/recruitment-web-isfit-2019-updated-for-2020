@@ -1,0 +1,62 @@
+{% extends 'jobs/base.html' %}
+
+{% block head %}
+    <style media="screen">
+        .positions-overview div {
+            color: white;
+        }
+    </style>
+{% endblock head %}
+
+{% block body %}
+        <div class="container row">
+            <div class="col-xl-12">
+                    <h1>Sections<br></h1>
+                    {% for section in sections %}
+                        <div class="flex-horizontal">
+                            <h3 class="column-1">
+                                <a class="dropdown-toggle" data-toggle="collapse" href="#{{ section.name }}" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                    {{ section.name }}
+                                </a>
+                            </h3>
+                            <div class="gangs-div collapse" id="{{ section.name }}">
+                                <h5>About</h5>
+                                <p>{{ section.information }}</p>
+                                <hr>
+                                <h5>Gangs</h5>
+                                {% for gang in section.gangs.all %}
+                                    <div class="flex-vertical">
+                                        <h5 class="column-2">
+                                            <a class="dropdown-toggle" data-toggle="collapse" href="#{{ gang.name }}" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                                {{ gang.name }}
+                                            </a>
+                                        </h5>
+                                        <div class="positions-div collapse" id="{{ gang.name }}">
+                                            <h5>Positions</h5>
+                                            {% for position in gang.positions.all %}
+                                                <div class="flex-horizontal">
+                                                    <h5 href="">
+                                                        <a class="dropdown-toggle" data-toggle="collapse" href="#{{ position.title }}" role="button" aria-expanded="false" aria-controls="collapseExample" for="{{ position.pk }}">
+                                                            {{ position.title }}
+                                                        </a>
+                                                    </h5>
+                                                </div>
+                                                <div class="collapse" id="{{ position.title }}">
+                                                        <p>{{ position.description }}</p>
+                                                        <h5>Contact Information</h5>
+                                                        <p>
+                                                            <b>Name:</b>&emsp;{{ position.interviewer.get_full_name }} <br>
+                                                            <b>Phone:</b>&emsp;{{ position.interviewer.phone_number }} <br>
+                                                            <b>Email:</b>&emsp;{{ position.interviewer.email }}
+                                                        </p>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+            </div>
+        </div>
+{% endblock %}

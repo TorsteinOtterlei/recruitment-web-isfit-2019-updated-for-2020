@@ -1,0 +1,60 @@
+{% extends 'jobs/base.html' %}
+{% block title %}Welcome{% endblock %}
+{% load static %}
+
+{% block head %}
+
+    <meta name="icon-author" content="">
+
+    <style media="screen">
+        .application_positions {
+            line-height: 1.5em;
+            border: solid;
+            border-radius: 15px;
+            padding: 15px 15px 15px 15px;
+            border-color: orange;
+        }
+        #user-logo {
+            height: 150px;
+            margin-bottom: 10px;
+        }
+        #title > * {
+            display: inline-block;
+        }
+        #status, #status:hover {
+            color: blue;
+        }
+    </style>
+{% endblock head %}
+
+{% block body %}
+    <img id="user-logo" src="{% static 'accounts/user.png' %}" alt="User logo">
+    <div id="title">
+        <h1>{{ user.get_full_name }}</h1>
+        <span id=status>&emsp;Status: {{ user.get_status_display }} </span>
+    </div>
+    {% if positions %}
+        <h4>You have applied for these positions:</h4>
+        <br>
+        <div class="application_positions">
+            {% for position in positions %}
+            <div>
+                <a href="{% url 'jobs:position_detail' position.pk %}">{{ forloop.counter }} - {{ position.title }}</a>
+            </div>
+            {% endfor %}
+        </div>
+        <br>
+        <form action="{% url 'applications:apply' %}" method="get">
+            <input class="input-button" type="submit" value="Edit application"><br>
+        </form>
+    {% else %}
+        <h2>You have not yet applied for any positions.</h2>
+        <form action="{% url 'applications:apply' %}" method="get">
+            <input class="input-button" type="submit" value="Apply for a position now!"><br>
+        </form>
+    {% endif %}
+    <form action="{% url 'accounts:logout' %}" method="get">
+        <input class="input-button" type="submit" value="Log out"><br>
+    </form>
+
+{% endblock %}

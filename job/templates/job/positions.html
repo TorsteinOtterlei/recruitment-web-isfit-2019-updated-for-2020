@@ -1,9 +1,0 @@
-{% extends 'job/base.html' %}
-{% block title %}Positions{% endblock %}
-{% block body %}
-<ul>
-    {% for position in all_positions %}
-    <li><a href="{% url 'position:position_details' position.id %}">{{ position.position_title }}></a></li>
-    {% endfor %}
-</ul>
-{% endblock %}

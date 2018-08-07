@@ -1,0 +1,149 @@
+{% extends 'jobs/base.html' %}
+{% block title %}Manage applications{% endblock %}
+
+
+{% block head %}
+    <style media="screen">
+        .user_column{
+            margin: 1px;
+            text-align: center;
+        }
+        .users-div{
+            border: 2px solid gray;
+            padding: 3px 5px 3px 5px;
+            text-align: left;
+            border-radius: 3%;
+        }
+
+        .column-header{
+            line-height: 1.5em;
+            height: 3em;
+            margin-top: 4em;
+        }
+
+        #selector{
+            width: 90%;
+            background-color: whitesmoke;
+        }
+
+    </style>
+{% endblock %}
+
+{% block body %}
+<h3>Manage applications</h3>
+<div class="container">
+    <div class="row">
+        <div class="col-sm selector-div">
+            <select id='selector' onchange="sortOut(this.value)">
+                <option value="All">All</option>
+                {% for section in sections %}
+                    <option value="{{ section }}">{{ section }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="col-sm user_column">
+            <div class="column-header">Not Evaluated</div>
+            <div class="users-div">
+                {% for application in applications %}
+                    <div  class="{{ application.applicant.id }}">
+                        {% if application.applicant.get_status == 'NE'%}
+                            <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
+                                {{ application.applicant.get_full_name }}<br>
+                            </a>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-sm user_column">
+            <div class="column-header">Interview Set</div>
+            <div class="users-div">
+                {% for application in applications %}
+                    <div class="{{ application.applicant.id }}">
+                        {% if application.applicant.get_status == 'IS'%}
+                            <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
+                                {{ application.applicant.get_full_name }}<br>
+                            </a>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-sm user_column">
+            <div class="column-header">Interview Confirmed</div>
+            <div class="users-div">
+                {% for application in applications %}
+                    <div  class="{{ application.applicant.id }}">
+                        {% if application.applicant.get_status == 'IC'%}
+                            <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
+                                {{ application.applicant.get_full_name }}<br>
+                            </a>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-sm user_column">
+            <div class="column-header">Interviewed</div>
+            <div class="users-div">
+                {% for application in applications %}
+                    <div  class="{{ application.applicant.id }}">
+                        {% if application.applicant.get_status == 'ID'%}
+                            <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
+                                {{ application.applicant.get_full_name }}<br>
+                            </a>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-sm user_column">
+            <div class="column-header">Accepted</div>
+            <div class="users-div">
+                {% for application in applications %}
+                    <div  class="{{ application.applicant.id }}">
+                        {% if application.applicant.get_status == 'AC'%}
+                            <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
+                                {{ application.applicant.get_full_name }}<br>
+                            </a>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scriptblock %}
+    <script>
+    var sections_map = new Map()
+    sections_map.set("All", new Map());
+
+    {% for section in sections %}
+        sections_map.set("{{section}}", new Map());
+    {% endfor %}
+
+        {% for application in applications %}
+            sections_map.get('All').set(parseInt("{{ application.applicant.id }}"), null);
+
+            for (var [key, value] of sections_map) {
+                if ("{{ application.get_position_sections | safe}}".includes(key)){
+                    value.set(parseInt("{{ application.applicant.id }}"), null)
+                }
+            }
+        {% endfor %}
+
+        function sortOut(section){
+            for (var [key, value] of sections_map.get('All')) {
+                if (!sections_map.get(section).has(key)){
+                    $('.' + key).css('display','none');
+                }
+                else{
+                    $('.' + key).css('display','block');
+                }
+            }
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,234 @@
+{% extends 'jobs/base.html' %}
+{% block title %}Register{% endblock %}
+
+{% block head %}
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+    <style>
+        body {font-family: Arial, Helvetica, sans-serif;}
+
+        /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            -webkit-animation-name: fadeIn; /* Fade in the background */
+            -webkit-animation-duration: 0.4s;
+            animation-name: fadeIn;
+            animation-duration: 0.4s
+        }
+
+        /* Modal Content */
+        .modal-content {
+            position: center;
+            bottom: 0;
+            background-color: #fefefe;
+            width: 70%;
+            -webkit-animation-name: slideIn;
+            -webkit-animation-duration: 0.4s;
+            animation-name: slideIn;
+            animation-duration: 0.4s;
+            margin-left: 15%;
+        }
+
+        /* The Close Button */
+        .close {
+            color: white;
+            float: right;
+            height: 100%;
+            font-weight: bold;
+            font-size: xx-large;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-header {
+            padding: 2px 16px;
+            background-color: orange;
+            color: white;
+        }
+
+        .modal-body {padding: 2px 16px;}
+
+        .modal-footer {
+            padding: 2px 16px;
+            background-color: orange;
+            color: white;
+        }
+
+        /* Add Animation */
+        @-webkit-keyframes slideIn {
+            from {bottom: -300px; opacity: 0}
+            to {bottom: 0; opacity: 1}
+        }
+
+        @keyframes slideIn {
+            from {bottom: -300px; opacity: 0}
+            to {bottom: 0; opacity: 1}
+        }
+
+        @-webkit-keyframes fadeIn {
+            from {opacity: 0}
+            to {opacity: 1}
+        }
+
+        @keyframes fadeIn {
+            from {opacity: 0}
+            to {opacity: 1}
+        }
+
+        #myBtn {
+            cursor: pointer;
+            color: #007bff
+        }
+        .error {
+            color: red;
+        }
+
+        .help_text {
+            color: gray;
+        }
+
+        #btn_submit {
+            width: 100%;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="media">
+                    <h2>Create account</h2>
+                    <form method="post">
+                        {% csrf_token %}
+                        {% for field in form %}
+                            <p>
+                                {{ field.label_tag }}<br>
+                                {{ field }}
+                                {% if field.help_text %}
+                                    <small class="help_text">{{ field.help_text }}</small>
+                                {% endif %}
+                                {% for error in field.errors %}
+                                    <p class="error">{{ error }}</p>
+                                {% endfor %}
+                            </p>
+                        {% endfor %}
+                        <p>By signing up you agree with ISFiT's Privacy Policy Statement.</p>
+                        <!-- Trigger/Open The Modal -->
+                        <a id="myBtn">View Privacy Policy</a>
+                        <br />
+                        <button id="btn_submit" type="submit" class="btn btn-primary">Sign up</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h3>Already have an account?</h3>
+    <form action="{% url 'accounts:login' %}" method="post">
+        {% csrf_token %}
+        <input type="submit" value="Login"><br>
+    </form>
+
+<!-- ------------------------- Here comes the modal for GDPR -------------------------------- -->
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+
+      <!-- Modal content -->
+      <div class="modal-content">
+        <div class="modal-header">
+            <h2>Privacy Policy Statement. ISFiT 2018</h2>
+            <span class="close">&times;</span>
+        </div>
+        <div class="modal-body">
+          <h1 style="color: black">How and when does the Privacy Policy Statement apply</h1>
+          <p style="color: black">This Privacy Policy Statement applies to ISFiT’s recruitment website and recruiting process. The Privacy Policy Statement provides information on how ISFiT treats your personal information and what personal information is being used.
+            Personal information includes name, address, Email address, phone number etc. Processing this information is necessary for recruiting new personnel.
+            Do not apply to ISFiT if you do not agree with the use of personal information according to this Privacy Policy Statement.
+            </p>
+            <h1 style="color: black">Who do we gather information about</h1>
+            <p style="color: black">We gather information on applicants using this website and staff within the ISFiT organization.</p>
+            <h1 style="color: black">How does ISFiT, as treatment manager, treat personal information</h1>
+            <p style="color: black">When ISFiT decides on how your personal information is treated and for what purpose, we become responsible the information.</p>
+            <h3 style="color: darkgray">Why do we need your information</h3>
+            <p style="color: black">We need your information to be able to evaluate your potential for working in the ISFiT organization. The legal basis for handling this information is your consent.</p>
+            <h3 style="color: darkgray">What kind of information do we need</h3>
+            <ul>
+                <li style="color: black">Basic information such as name, Email address and phone number</li>
+                <li style="color: black">Unique user information: username, password (encrypted) and user ID</li>
+                <li style="color: black">Positions you’ve applied for</li>
+                <li style="color: black">Your application text</li>
+            </ul>
+            <p style="color: black">ISFiT does not use or treat any sensitive information</p>
+            <h3 style="color: darkgray">How do we share your information</h3>
+            <ul>
+                <li><h4 style="color: black">Sharing within the organization</h4></li>
+                <li style="color: black">Your information may be shared among all volunteers within ISFiT for recruiting purposes.</li>
+                <li><h4 style="color: black">Sharing with external parties</h4></li>
+                <li style="color: black">Our only external parties are Amazon Web Services’ servers located in Ireland and Google's gsuite. This means that personal data will be received by these service providers. It does not mean that the service providers have access to your information.</li>
+            </ul>
+            <h1 style="color: black">What are your rights</h1>
+            <ul>
+                <li style="color: black">You have the right to view your own personal information and to ask for a full overview of the information we store about you.</li>
+                <li style="color: black">You have the right to ask for wrong personal information to be changed.</li>
+                <li style="color: black">You have the right to request the deletion of your personal information or limiting the extent to which we use your information.</li>
+                <li style="color: black">You have the right to send complaints to Data Protection regarding our treatment of your information. Their Email address is: postkasse@datatilsynet.no</li>
+            </ul>
+            <p style="color: black">All of this can be done by sending ISFiT an Email describing your request.</p>
+            <h1 style="color: black">How does ISFiT protect your information</h1>
+            <p style="color: black">ISFiT takes your privacy seriously. We are preventing unauthorized access and dissemination of your information with inbuilt Django security. Within the organization we are practicing strict confidentiality regarding applicants’ information.</p>
+            <h3 style="color: darkgray">For how long do we keep your information</h3>
+            <p style="color: black">We keep your information as long as it is necessary for your connection with ISFiT. When your information no longer is necessary for the organization, it will be deleted.</p>
+        </div>
+        <div class="modal-footer">
+          <h3>Privacy Policy Statement. ISFiT 2018</h3>
+        </div>
+      </div>
+
+    </div>
+
+    <script>
+    // Get the modal
+    var modal = document.getElementById('myModal');
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+    </script>
+
+    </body>
+    </html>
+{% endblock %}
