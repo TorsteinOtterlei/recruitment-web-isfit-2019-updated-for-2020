@@ -6,16 +6,27 @@
 {% endblock %}
 
 {% block body %}
-
+{% if user.is_staff %}
 Email address: {{ application.applicant.email }} <h1>{{ application.applicant.get_full_name }}</h1> Person nr. {{ application.applicant.id }}
 <br />
 Application text: {{ application.text}}
 <br />
-{{ application.applicant.get_full_name }}'s available dates: {{ application.applicant.date.dates_list }}
+<!--{{ application.applicant.get_full_name }}'s available dates: {{ application.applicant.date.dates_list }}
 {% for interviewer in interviewers %}
 <p><a href="{% url 'accounts:manage_profile' interviewer.id %}">
         {{ interviewer.get_full_name }}</a>'s available dates: {{ interviewer.date.dates_list }}
 </p>
+{% endfor %}
+-->
+<p>Compatible times for interviews:</p>
+{% for i in application.applicant.date.dates_list %}
+    {% for j in application.first.interviewer.date.dates_list %}
+        {% for k in application.second.interviewer.date.dates_list %}
+            {% if i == j and j == k %}
+                {{ i }},
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
 {% endfor %}
 
 
@@ -32,13 +43,15 @@ Interviewers: {{ application.first.interviewer.get_full_name }} and {{ applicati
 <br />
 {{ application.applicant.status }}
 
-<form method="post" action="{% url 'accounts:manage_profile' application.applicant.id %}">
-    {{ form }}
-    {% csrf_token %}
-    <br />
-    <input type="submit" value="Set status">
-</form>
-
+    <form method="post" action="{% url 'accounts:manage_profile' application.applicant.id %}">
+        {{ form }}
+        {% csrf_token %}
+        <br />
+        <input type="submit" value="Set status">
+    </form>
+{% else %}
+You have no power here
+{% endif %}
 
 {% endblock %}
 
