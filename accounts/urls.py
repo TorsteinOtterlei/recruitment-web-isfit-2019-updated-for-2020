@@ -10,5 +10,5 @@ urlpatterns = [
     path('login/', login, {'template_name':'accounts/login.html'}, name='login'),
     path('logout/', logout, {'template_name':'jobs/home.html'}, name='logout'),
     path('<int:userID>', views.manage_profile, name='manage_profile'),
-
+    path('widgets/', views.widgets, name='widgets')
 ]

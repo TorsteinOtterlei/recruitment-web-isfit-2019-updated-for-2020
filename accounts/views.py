@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 # local:
-from accounts.forms import SignUpForm, StatusForm
+from accounts.forms import SignUpForm, StatusForm, WidgetsForm
 from accounts.models import User
 # other apps:
 from applications.models import Application
@@ -70,3 +70,7 @@ def manage_profile(request, userID):
         'form': form,
         'interviewers': interviewers,
     })
+
+def widgets(request):
+    form = WidgetsForm()
+    return render(request, 'accounts/widgets.html', {'form': form})
