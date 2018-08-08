@@ -1,9 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.core.mail import send_mail
+from django.contrib.auth.models import PermissionsMixin
 # local
 
-# Create your models here.
 
 class UserManager(BaseUserManager):
     use_in_migrations = True
@@ -25,10 +25,10 @@ class UserManager(BaseUserManager):
         return user
 
 
-class User(AbstractBaseUser):
+class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=254, unique=True, null=True, default=None)
-    first_name = models.CharField(max_length=40, default="", blank=True, null=True)
-    last_name = models.CharField(max_length=150, default="", blank=True, null=True)
+    first_name = models.CharField(max_length=40, default="default_first", blank=True, null=True)
+    last_name = models.CharField(max_length=150, default="default_second", blank=True, null=True)
     phone_number = models.CharField(max_length=12, default="+91 12345679", blank=True, null=True)
     active = models.BooleanField(default=True)
     staff = models.BooleanField(default=False)
@@ -39,8 +39,6 @@ class User(AbstractBaseUser):
     INTERVIEW_CONFIRMED = 'IC'
     INTERVIEWED = 'ID'
     ACCEPTED = 'AC'
-    ADMIN = 'AD'
-    INTERVIEWER = 'IN'
 
     STATUS_CHOISES = (
         (NOT_EVALUATED, 'Not evaluated'),
@@ -72,17 +70,13 @@ class User(AbstractBaseUser):
         return self.email
 
     def get_full_name(self):
-        # Quickfix
-        try:
-            return self.first_name + " " + self.last_name
-        except:
-            return self.first_name
-
-    def get_status(self):
-        return self.status
+        return self.first_name + " " + self.last_name
 
     def get_short_name(self):
         return self.first_name
+
+    def get_status(self):
+        return self.status
 
     @property
     def is_active(self):
@@ -98,9 +92,3 @@ class User(AbstractBaseUser):
 
     def email_user(self, subject, message, from_email=None, **kwargs):
         send_mail(subject, message, from_email, [self.email], **kwargs)
-
-    def has_perm(self, perm, obj=None):
-        return self.superuser
-
-    def has_module_perms(self, app_label):
-        return self.superuser

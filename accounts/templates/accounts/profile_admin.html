@@ -1,0 +1,43 @@
+{% extends 'jobs/base.html' %}
+{% block title %}Welcome{% endblock %}
+{% load static %}
+
+{% block head %}
+    <meta name="icon-author" content="">
+
+    <style media="screen">
+        #user-logo {
+            height: 120px;
+            padding-bottom: 10px;
+        }
+        #title > * {
+            display: inline-block;
+        }
+        #status {
+            color: blue;
+        }
+    </style>
+{% endblock head %}
+
+{% block body %}
+    <img id="user-logo" src="{% static 'accounts/user.png' %}" alt="User logo">
+    <div id="title">
+        <h1>{{ user.get_full_name }}</h1>
+        <span id=status>&emsp;Status: Admin </span>
+    </div>
+
+    <div class="container info">
+        <h2>Personal information:</h2>
+        <p>Email address: {{ user.email }}</p>
+        <p>Phone number: {{ user.phone_number }}</p>
+        {% if user.section %}
+            <p>Section: {{ user.section }} </p>
+        {% endif %}
+
+    </div>
+
+    <form action="{% url 'accounts:logout' %}" method="get">
+        <input class="input-button" type="submit" value="Log out"><br>
+    </form>
+
+{% endblock %}

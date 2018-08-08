@@ -19,16 +19,8 @@ DATES_SAMPLE = 120
 class Command(BaseCommand):
     args = '<foo bar ...>'
     help = """No options or args needed.
-    Run this command to fill the database with dummydata:
-    OBS: It will flush the database first
-    Superuser
-    Users
-    Sections
-    Gangs
-    Positions
-    Projects
-    Ranks
-    Applications
+    Run this command to fill the database with dummydata.
+    OBS: This will drop the database, makemigrations and migrate.
     """
     def reset_db(self):
         management.call_command('reset_db')
@@ -49,32 +41,41 @@ class Command(BaseCommand):
         spinner.start()
         email = "admin@admin.com"
         pw = "admin"
-        if not User.objects.filter(email=email).exists():
-            User.objects.create_superuser(email=email,
-                                        password=pw,
-                                        first_name="Admin",
-                                        last_name="Adminsen",
-                                        status=User.ADMIN,
-                                        phone_number=12345678)
-            spinner.succeed("Creating superuser. email: {}, password: {}".format(email, pw))
-        else:
-            spinner.fail("Superuser already exists")
+        User.objects.create_superuser(email=email,
+                                    password=pw,
+                                    first_name="Admin",
+                                    last_name="Adminsen",
+                                    phone_number="12345678")
+        spinner.succeed("Creating superuser. email: {}, password: {}".format(email, pw))
+
+    def create_staff(self):
+        spinner = Halo("Creating a staff user")
+        spinner.start()
+        email = "staff@staff.com"
+        pw = "staff"
+        User.objects.create_user(email=email,
+                                password=pw,
+                                first_name="Staff",
+                                last_name="Staffski",
+                                staff=True,
+                                phone_number="87654321")
+        spinner.succeed("Creating staff user. email: {}, password: {}".format(email, pw))
 
     def create_users(self):
         global USER_AMOUNT
         global USER_PW
         spinner = Halo(text="Creating users", color="magenta")
         spinner.start()
-        kristian = User.objects.create_user(email="kris@test.no", first_name="Kristian", status=User.INTERVIEWER, password=USER_PW)
-        camilla = User.objects.create_user(email="camilla@test.no", first_name="Camilla", status=User.INTERVIEWER, password=USER_PW)
-        johan = User.objects.create_user(email="johan@test.no", first_name="Johan", status=User.INTERVIEWER, password=USER_PW)
-        peder = User.objects.create_user(email="peder@test.no", first_name="Peder", status=User.INTERVIEWER, password=USER_PW)
-        sofie = User.objects.create_user(email="sofie@test.no", first_name="Sofie", status=User.INTERVIEWER, password=USER_PW)
-        synnove = User.objects.create_user(email="synnove@test.no", first_name="Synnove", status=User.INTERVIEWER, password=USER_PW)
-        ola = User.objects.create_user(email="ola@test.no", first_name="Ola", status=User.INTERVIEWER, password=USER_PW)
-        mona = User.objects.create_user(email="mona@test.no", first_name="Mona", status=User.INTERVIEWER, password=USER_PW)
-        ellen = User.objects.create_user(email="ellen@test.no", first_name="Ellen", status=User.INTERVIEWER, password=USER_PW)
-        ragnhild = User.objects.create_user(email="ragnhild@test.no", first_name="Ragnhild", status=User.INTERVIEWER, password=USER_PW)
+        kristian = User.objects.create_user(email="kris@test.no", first_name="Kristian", password=USER_PW)
+        camilla = User.objects.create_user(email="camilla@test.no", first_name="Camilla", password=USER_PW)
+        johan = User.objects.create_user(email="johan@test.no", first_name="Johan", password=USER_PW)
+        peder = User.objects.create_user(email="peder@test.no", first_name="Peder", password=USER_PW)
+        sofie = User.objects.create_user(email="sofie@test.no", first_name="Sofie", password=USER_PW)
+        synnove = User.objects.create_user(email="synnove@test.no", first_name="Synnove", password=USER_PW)
+        ola = User.objects.create_user(email="ola@test.no", first_name="Ola", password=USER_PW)
+        mona = User.objects.create_user(email="mona@test.no", first_name="Mona", password=USER_PW)
+        ellen = User.objects.create_user(email="ellen@test.no", first_name="Ellen", password=USER_PW)
+        ragnhild = User.objects.create_user(email="ragnhild@test.no", first_name="Ragnhild", password=USER_PW)
         # Create simple users
         for i in range(USER_AMOUNT):
             choices = [i[0] for i in User.STATUS_CHOISES]
@@ -211,8 +212,22 @@ class Command(BaseCommand):
     def create_positions(self):
         spinner = Halo("Creating positions")
         spinner.start()
-        # Economy
         users = list(User.objects.all())
+
+        # Economy
+        p = Position()
+        p.title = "Accounting position 1"
+        p.gang = Gang.objects.get(name="Accounting")
+        p.description = "dummy"
+        p.interviewer = users.pop()
+        p.save()
+
+        p = Position()
+        p.title = "Finance position 1"
+        p.gang = Gang.objects.get(name="Finance")
+        p.description = "dummy"
+        p.interviewer = users.pop()
+        p.save()
 
         p = Position()
         p.title = "Web App Developer"
@@ -282,7 +297,7 @@ class Command(BaseCommand):
 
         global USERS_WITH_APPLICATION, DATES_RANGE, DATES_SAMPLE
         positions = list(Position.objects.all())
-        users = list(User.objects.all())
+        users = list(User.objects.filter(staff=False))
         application_amount = min(USERS_WITH_APPLICATION, len(users))
 
         for i in range(application_amount):
@@ -352,6 +367,7 @@ class Command(BaseCommand):
         self.make_migrations()
         self.migrate()
         self.createsu()
+        self.create_staff()
         self.create_users()
         self.create_sections()
         self.create_gangs()
