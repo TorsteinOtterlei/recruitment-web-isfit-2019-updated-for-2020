@@ -58,16 +58,17 @@ def manage_profile(request, userID):
         #applicant.email_user(subject="Test", message="My msg", from_email="emilte@stud.ntnu.no")
 
     if request.method == 'POST':
-        form = StatusForm(request.POST)
+        form = StatusForm(request.POST, instance=applicant)
         if form.is_valid():
-            form.save()
-            print(form.cleaned_data.get('status'))
-            applicant.status = form.cleaned_data.get('status')
-            applicant.save()
+            form.save() # Lagrer status direkte på user fordi instance er gitt
+            # Kan droppe form.save() for å endre objekt manuelt med form-data. men HUSK: save objektet etterpå
+            # Example:
+                #applicant.status = form.cleaned_data.get('status')
+                #applicant.save()
     else:
-        form = StatusForm()
-        form.fields['status'].initial = applicant.status
-    #stat = User.objects.get('status')
+        form = StatusForm(instance=applicant) # Ved å gi instance fyller den inn current status
+        # Lages det en tom StatusForm, kan Select-box settes til user current status slik:
+            #form.fields['status'].initial = applicant.status
     return render(request, 'accounts/manage_profile.html', {
         'application': application,
         'date': date,

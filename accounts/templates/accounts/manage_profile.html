@@ -78,7 +78,6 @@
 {% endblock %}
 
 {% block body %}
-
     <a class="button-back" href="{% url 'applications:manage_applications' %}">
         <img id="arrow-left" src="{% static 'applications/arrow_left.png' %}" alt="Arrow left">
         Manage applications
@@ -86,7 +85,7 @@
 
     <div class="title">
         <h1>{{ application.applicant.get_full_name }}</h1>
-        <form id="statusForm" method="post">
+        <form id="statusForm" method="post" action="#">
             {% csrf_token %}
             &emsp;Status: {{ form.status }}
         </form>
