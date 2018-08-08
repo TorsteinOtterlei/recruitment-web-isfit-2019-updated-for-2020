@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 # local:
 from accounts.forms import SignUpForm, StatusForm, WidgetsForm
 from accounts.models import User
@@ -44,14 +45,15 @@ def logout_view(request):
     # Redirect to a success page.
     render(request, 'accounts/logout.html')
 
+@staff_member_required
 def manage_profile(request, userID):
     application = get_object_or_404(Application, applicant_id=userID)
     applicant = application.applicant
     date, created = Date.objects.get_or_create(user=applicant)
     interviewers = [pos.interviewer for pos in application.get_positions()]
     if applicant.email == "emil.telstad@live.no":
-        pass
-        #applicant.email_user(subject="Test", message="My msg", from_email="emilte@stud.ntnu.no")
+        #pass
+        applicant.email_user(subject="Test", message="My msg", from_email="emilte@stud.ntnu.no")
 
     if request.method == 'POST':
         form = StatusForm(request.POST)

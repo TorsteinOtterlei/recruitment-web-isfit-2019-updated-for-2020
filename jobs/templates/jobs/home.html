@@ -18,12 +18,23 @@
 
     {% if user.is_authenticated %}
         <form action="{% url 'accounts:profile' %}" method="post">
-            {% csrf_token %}
             <input class="input-button" type="submit" value="See profile"><br>
         </form>
-        <form action="{% url 'applications:apply' %}" method="get">
-            <input class="input-button" type="submit" value="Edit application"><br>
-        </form>
+        {% if user.is_staff %}
+            <form action="{% url 'applications:set_dates' %}" method="get">
+                <input class="input-button" type="submit" value="Set dates"><br>
+            </form>
+            <form action="{% url 'applications:manage_applications' %}" method="get">
+                <input class="input-button" type="submit" value="Manage applications"><br>
+            </form>
+        {% else %}
+            <form action="{% url 'applications:apply' %}" method="get">
+                <input class="input-button" type="submit" value="Edit application"><br>
+            </form>
+        {% endif %}
+
+
+
         <form action="{% url 'accounts:logout' %}" method="post">
             {% csrf_token %}
             <input class="input-button" type="submit" value="Log out"><br>

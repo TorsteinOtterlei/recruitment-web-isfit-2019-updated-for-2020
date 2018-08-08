@@ -49,7 +49,7 @@
                     <div  class="{{ application.applicant.id }}">
                         {% if application.applicant.get_status == 'NE'%}
                             <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
-                                {{ application.applicant.get_full_name }}<br>
+                                {{ application.applicant }}<br>
                             </a>
                         {% endif %}
                     </div>
@@ -63,7 +63,7 @@
                     <div class="{{ application.applicant.id }}">
                         {% if application.applicant.get_status == 'IS'%}
                             <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
-                                {{ application.applicant.get_full_name }}<br>
+                                {{ application.applicant }}<br>
                             </a>
                         {% endif %}
                     </div>
@@ -77,7 +77,7 @@
                     <div  class="{{ application.applicant.id }}">
                         {% if application.applicant.get_status == 'IC'%}
                             <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
-                                {{ application.applicant.get_full_name }}<br>
+                                {{ application.applicant }}<br>
                             </a>
                         {% endif %}
                     </div>
@@ -91,7 +91,7 @@
                     <div  class="{{ application.applicant.id }}">
                         {% if application.applicant.get_status == 'ID'%}
                             <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
-                                {{ application.applicant.get_full_name }}<br>
+                                {{ application.applicant }}<br>
                             </a>
                         {% endif %}
                     </div>
@@ -105,7 +105,7 @@
                     <div  class="{{ application.applicant.id }}">
                         {% if application.applicant.get_status == 'AC'%}
                             <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
-                                {{ application.applicant.get_full_name }}<br>
+                                {{ application.applicant }}<br>
                             </a>
                         {% endif %}
                     </div>

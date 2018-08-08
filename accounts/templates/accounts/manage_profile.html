@@ -1,5 +1,5 @@
 {% extends 'jobs/base.html' %}
-{% block title %}Apply{% endblock %}
+{% block title %} {{ application.applicant.get_full_name }} {% endblock %}
 {% load static %}
 
 {% block head %}
@@ -71,15 +71,13 @@
         }
         .button-back{
             position: absolute;
-            top: 100px;
+            top: 90px;
             left: 20px;
         }
     </style>
 {% endblock %}
 
 {% block body %}
-
-{% if user.is_staff %}
 
     <a class="button-back" href="{% url 'applications:manage_applications' %}">
         <img id="arrow-left" src="{% static 'applications/arrow_left.png' %}" alt="Arrow left">
@@ -103,6 +101,8 @@
         Application text:
         <p>{{ application.text}}</p>
     </div>
+
+    <p>PS: Denne siden er under utvikling (nettopp begynt)</p>
 
     {% comment %}
     <div class="calendar">
@@ -145,33 +145,30 @@
     </div> <!-- End: calendar -->
     {% endcomment %}
 
+    <p>{{ application.applicant.get_short_name }}'s available dates:<br>{{ application.applicant.date.dates_list }}</p>
+    <br />
+    <br />
 
-    {{ application.applicant.get_full_name }}'s available dates: {{ application.applicant.date.dates_list }}
-<br />
-<br />
-Compatible times for interviews:
-{% for i in application.applicant.date.dates_list %}
+    {% comment %}
+    Compatible times for interviews:
+    {% for i in application.applicant.date.dates_list %}
     {% for j in application.first.interviewer.date.dates_list %}
-        {% for k in application.second.interviewer.date.dates_list %}
-            {% if i == j and j == k %}
-                {{ i }},
-            {% endif %}
-        {% endfor %}
+    {% for k in application.second.interviewer.date.dates_list %}
+    {% if i == j and j == k %}
+    {{ i }},
+    {% endif %}
     {% endfor %}
-{% endfor %}
+    {% endfor %}
+    {% endfor %}
+{% endcomment %}
 
     <br>
     <br>
-    <br />
-    <br />
-    Positions applied for and their respective interviewer:
+    <p>Positions applied for and their respective interviewer:</p>
     {% for position in application.get_positions %}
         <p>{{forloop.counter}}: {{ position }}, interviewer: {{ position.interviewer.get_full_name }} </p>
     {% endfor %}
     <br>
-{% else %}
-You have no power here
-{% endif %}
 {% endblock body %}
 
 {% block scriptblock %}
