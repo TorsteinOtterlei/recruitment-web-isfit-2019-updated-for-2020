@@ -16,6 +16,10 @@ class Application(models.Model):
         positions = [self.first, self.second, self.third]
         return [pos for pos in positions if pos != None]
 
+    def get_position_gangs(self):
+        positions = [self.first, self.second, self.third]
+        return [pos.gang.name for pos in positions if pos != None]
+
     def get_position_sections(self):
         positions = [self.first, self.second, self.third]
         return [pos.gang.section.name for pos in positions if pos != None]
