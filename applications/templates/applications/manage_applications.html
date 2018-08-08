@@ -40,6 +40,13 @@
                     <option value="{{ section }}">{{ section }}</option>
                 {% endfor %}
             </select>
+
+            <select id='selector2' onchange="sortOutGang(this.value)">
+                <option value="All">All</option>
+                {% for gang in gangs %}
+                    <option value="{{ gang }}">{{ gang }}</option>
+                {% endfor %}
+            </select>
         </div>
 
         <div class="col-sm user_column">
@@ -49,7 +56,7 @@
                     <div  class="{{ application.applicant.id }}">
                         {% if application.applicant.get_status == 'NE'%}
                             <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
-                                {{ application.applicant.get_full_name }}<br>
+                                {{ application.applicant }}<br>
                             </a>
                         {% endif %}
                     </div>
@@ -63,7 +70,7 @@
                     <div class="{{ application.applicant.id }}">
                         {% if application.applicant.get_status == 'IS'%}
                             <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
-                                {{ application.applicant.get_full_name }}<br>
+                                {{ application.applicant }}<br>
                             </a>
                         {% endif %}
                     </div>
@@ -77,7 +84,7 @@
                     <div  class="{{ application.applicant.id }}">
                         {% if application.applicant.get_status == 'IC'%}
                             <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
-                                {{ application.applicant.get_full_name }}<br>
+                                {{ application.applicant }}<br>
                             </a>
                         {% endif %}
                     </div>
@@ -91,7 +98,7 @@
                     <div  class="{{ application.applicant.id }}">
                         {% if application.applicant.get_status == 'ID'%}
                             <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
-                                {{ application.applicant.get_full_name }}<br>
+                                {{ application.applicant }}<br>
                             </a>
                         {% endif %}
                     </div>
@@ -105,7 +112,7 @@
                     <div  class="{{ application.applicant.id }}">
                         {% if application.applicant.get_status == 'AC'%}
                             <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
-                                {{ application.applicant.get_full_name }}<br>
+                                {{ application.applicant }}<br>
                             </a>
                         {% endif %}
                     </div>
@@ -118,18 +125,32 @@
 
 {% block scriptblock %}
     <script>
-    var sections_map = new Map()
-    sections_map.set("All", new Map());
+        var sections_map = new Map()
+        sections_map.set("All", new Map());
 
-    {% for section in sections %}
-        sections_map.set("{{section}}", new Map());
-    {% endfor %}
+        var gangs_map = new Map()
+        gangs_map.set("All", new Map());
+
+        {% for section in sections %}
+            sections_map.set("{{section}}", new Map());
+        {% endfor %}
+
+        {% for gang in gangs %}
+            gangs_map.set("{{gang}}", new Map());
+        {% endfor %}
 
         {% for application in applications %}
             sections_map.get('All').set(parseInt("{{ application.applicant.id }}"), null);
+            gangs_map.get('All').set(parseInt("{{ application.applicant.id }}"), null);
+
 
             for (var [key, value] of sections_map) {
                 if ("{{ application.get_position_sections | safe}}".includes(key)){
+                    value.set(parseInt("{{ application.applicant.id }}"), null)
+                }
+            }
+            for (var [key, value] of gangs_map) {
+                if ("{{ application.get_position_gangs | safe}}".includes(key)){
                     value.set(parseInt("{{ application.applicant.id }}"), null)
                 }
             }
@@ -138,6 +159,30 @@
         function sortOut(section){
             for (var [key, value] of sections_map.get('All')) {
                 if (!sections_map.get(section).has(key)){
+                    $('.' + key).css('display','none');
+                }
+                else{
+                    $('.' + key).css('display','block');
+                }
+            }
+            // Change gang selector
+            console.log($('#selector2').val());
+            $('#selector2').find('option').remove().end().append('<option value="All">All</option>');
+
+            {% for gang in gangs %}
+                if ("{{ gang.section }}" == section){
+                    $('#selector2').append('<option value="{{ gang }}">{{ gang }}</option>');
+                }
+                else if (section == 'All'){
+                    $('#selector2').append('<option value="{{ gang }}">{{ gang }}</option>');
+                }
+            {% endfor %}
+        }
+
+        function sortOutGang(gang){
+            section = $('#selector').val();
+            for (var [key, value] of sections_map.get('All')) {
+                if (!gangs_map.get(gang).has(key)){
                     $('.' + key).css('display','none');
                 }
                 else{

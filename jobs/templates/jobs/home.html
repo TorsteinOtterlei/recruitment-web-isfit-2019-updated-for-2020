@@ -17,24 +17,34 @@
     </div>
 
     {% if user.is_authenticated %}
-        <form action="{% url 'accounts:profile' %}" method="post">
-            {% csrf_token %}
+        <!-- Profile -->
+        <form action="{% url 'accounts:profile' %}" method="get">
             <input class="input-button" type="submit" value="See profile"><br>
         </form>
-        <form action="{% url 'applications:apply' %}" method="get">
-            <input class="input-button" type="submit" value="Edit application"><br>
-        </form>
-        <form action="{% url 'accounts:logout' %}" method="post">
-            {% csrf_token %}
+        {% if user.is_staff %}
+            <!-- Set dates -->
+            <form action="{% url 'applications:set_dates' %}" method="get">
+                <input class="input-button" type="submit" value="Set dates"><br>
+            </form>
+            <!-- Manage applications -->
+            <form action="{% url 'applications:manage_applications' %}" method="get">
+                <input class="input-button" type="submit" value="Manage applications"><br>
+            </form>
+        {% else %} <!-- If normal user -->
+            <!-- Edit application -->
+            <form action="{% url 'applications:apply' %}" method="get">
+                <input class="input-button" type="submit" value="Edit application"><br>
+            </form>
+        {% endif %}
+        <!-- Logout -->
+        <form action="{% url 'accounts:logout' %}" method="get">
             <input class="input-button" type="submit" value="Log out"><br>
         </form>
     {% else %}
-        <form action="{% url 'accounts:signup' %}" method="post">
-            {% csrf_token %}
+        <form action="{% url 'accounts:signup' %}" method="get">
             <input class="input-button" type="submit" value="Create User"><br>
         </form>
-        <form action="{% url 'accounts:login' %}" method="post">
-            {% csrf_token %}
+        <form action="{% url 'accounts:login' %}" method="get">
             <input class="input-button" type="submit" value="Login"><br>
         </form>
         <form action="{% url 'jobs:information' %}" method="get">

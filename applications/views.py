@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 # local
 from applications.forms import ApplicationForm
 from applications.models import Application
@@ -72,8 +73,10 @@ def set_dates(request):
         })
 
 @login_required
+@staff_member_required
 def manage_applications(request):
     return render(request, 'applications/manage_applications.html', {
         'applications': Application.objects.all(),
-        'sections': Section.objects.all()
+        'sections': Section.objects.all(),
+        'gangs': Gang.objects.all()
     })

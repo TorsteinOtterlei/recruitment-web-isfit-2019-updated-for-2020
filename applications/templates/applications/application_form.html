@@ -2,189 +2,191 @@
 {% block title %}Apply{% endblock %}
 
 {% block head %}
-    <style media="screen">
-    ul {
-        list-style-type: none;
-    }
-    .container {
-        max-width: 1000px;
-    }
-    .options {
-        cursor: pointer;
-        color: gray;
-        line-height: 2rem;
-    }
-    .sections {
-        font-size: 1.5rem;
-        line-height: 3rem;
+<style media="screen">
+ul {
+    list-style-type: none;
+}
+.container {
+    max-width: 1000px;
+}
+.options {
+    cursor: pointer;
+    color: gray;
+    line-height: 2rem;
+}
+.sections {
+    font-size: 1.5rem;
+    line-height: 3rem;
 
-    }
-    .gangs {
-        font-size: 1.3rem;
-        line-height: 2rem;
+}
+.gangs {
+    font-size: 1.3rem;
+    line-height: 2rem;
 
-    }
-    .positions {
-        padding-left: 15px;
-        padding-right: 15px;
-    }
-    .positions li:hover {
-        color: orange;
-    }
-    .dropzone {
-        border-radius: 20px;
-        border: solid;
-        border-style: inset;
-        border-color: orange;
-        height: 280px;
-        max-width: 400px;
-    }
-    #chosenList li {
-        border-radius: 5px;
-        border-style: solid;
-        border-width: 1px;
-        color: gray;
-        line-height: 1rem;
-        margin-top: 1rem;
-        margin-right: 50px;
-        padding: 8px 8px 8px 20px;
-        list-style-position: inside;
-        width: 90%;
-    }
-    #chosenList li:hover {
-        cursor: url(https://ssl.gstatic.com/ui/v1/icons/mail/images/2/openhand.cur), default !important;
-        color: orange;
-    }
+}
+.positions {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+.positions li:hover {
+    color: orange;
+}
+.dropzone {
+    border-radius: 20px;
+    border: solid;
+    border-style: inset;
+    border-color: orange;
+    height: 280px;
+    max-width: 400px;
+}
+#chosenList li {
+    border-radius: 5px;
+    border-style: solid;
+    border-width: 1px;
+    color: gray;
+    line-height: 1rem;
+    margin-top: 1rem;
+    margin-right: 50px;
+    padding: 8px 8px 8px 20px;
+    list-style-position: inside;
+    width: 90%;
+}
+#chosenList li:hover {
+    cursor: url(https://ssl.gstatic.com/ui/v1/icons/mail/images/2/openhand.cur), default !important;
+    color: orange;
+}
 
-    .remove{
-        display:inline;
-        float:right;
-    }
+.remove{
+    display:inline;
+    float:right;
+}
 
-    .remove:hover{
-        color: red;
-        cursor: pointer;
-    }
-
-    </style>
+.remove:hover{
+    color: red;
+    cursor: pointer;
+}
+.error-field {
+    color: red;
+}
+</style>
 {% endblock %}
 
 {% block body %}
-    <h2>Your application</h2>
-    <form method="post" name='application_form'>
-        {% csrf_token %}
-        {% for field in form %}
-        <p>
-            {{ field.label_tag }}<br>
-            {{ field }}
-            {% if field.help_text %}
-            <small class="form-text text-muted">{{ field.help_text }}</small>
-            {% endif %}
-            {% for error in field.errors %}
-            <p style="color: red">{{ error }}</p>
-            {% endfor %}
-        </p>
+<h2>Your application</h2>
+<form method="post" name='application_form'>
+    {% csrf_token %}
+    {% for field in form %}
+    <p>
+        {{ field.label_tag }}<br>
+        {{ field }}
+        {% if field.help_text %}
+        <small class="form-text text-muted">{{ field.help_text }}</small>
+        {% endif %}
+        {% for error in field.errors %}
+        <p class="error-field">{{ error }}</p>
         {% endfor %}
-        <!-- Dummy method -->
-        <input id="selected_positions" name="selected_positions" style="display:none;">
-    </form>
+    </p>
+    {% endfor %}
+    <!-- Dummy method -->
+    <input id="selected_positions" name="selected_positions" style="display:none;">
+</form>
 
-    <div class="row container">
-        <div class="col-md-7">
-            <h2>Sections:</h2>
-            <ul class="options">
-                {% for section in sections %}
-                <li><span class="collapsable sections">{{section.name}}</span>
-                    <ul>
-                        <!--<h3>Gangs:</h3>-->
-                        {% for gang in gangs %}
-                        {% if gang.section == section %}
-                        <li><span class="collapsable gangs">{{gang.name}}</span>
-                            <ul class="positions">
-                                {% for position in positions %}
-                                {% if position.gang == gang %}
-                                <li id="{{position.title}}"><span>{{position.title}}</span></li>
-                                {% endif %}
-                                {% endfor %}
-                            </ul>
-                        </li>
-                        {% endif %}
-                        {% endfor %}
-                    </ul>
-                </li>
-                {% endfor %}
-            </ul>
-            <a href={% url 'jobs:information' %} target="_blank">View position information</a>
-        </div>
-        <div class="col-md-5 dropzone">
-            <h2>Chosen:</h2>
-            <p>Click to remove, drag to reorder.</p>
-            <ol id="chosenList"></ol>
-        </div>
+<div class="row container">
+    <div class="col-md-7">
+        <h2>Sections:</h2>
+        <ul class="options">
+            {% for section in sections %}
+            <li><span class="collapsable sections">{{section.name}}</span>
+                <ul>
+                    <!--<h3>Gangs:</h3>-->
+                    {% for gang in gangs %}
+                    {% if gang.section == section %}
+                    <li><span class="collapsable gangs">{{gang.name}}</span>
+                        <ul class="positions">
+                            {% for position in positions %}
+                            {% if position.gang == gang %}
+                            <li id="{{position.title}}"><span>{{position.title}}</span></li>
+                            {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </li>
+                    {% endif %}
+                    {% endfor %}
+                </ul>
+            </li>
+            {% endfor %}
+        </ul>
+        <a href={% url 'jobs:information' %} target="_blank">View position information</a>
     </div>
-    <button onclick="submit()" style="width: 60%; margin: 20px 0 10px 0;" class="btn button-form">Next</button>
+    <div class="col-md-5 dropzone">
+        <h2>Chosen:</h2>
+        <p>Click to remove, drag to reorder.</p>
+        <ol id="chosenList"></ol>
+    </div>
+</div>
+<button onclick="submit()" style="width: 60%; margin: 20px 0 10px 0;" class="btn button-form">Next</button>
 {% endblock %}
 
 {% block scriptblock %}
-    <script type="text/javascript" src="https://rubaxa.github.io/Sortable/Sortable.js">//https://github.com/RubaXa/Sortable</script>
+<script type="text/javascript" src="https://rubaxa.github.io/Sortable/Sortable.js">//https://github.com/RubaXa/Sortable</script>
 
-    <script>
+<script>
 
-        var chosen = {};
+    var chosen = {};
 
-        // Getting saved application
-        var rankings = {{ applied_to | safe }};
-        if (rankings[0] != 'None'){
-            for (i in rankings){
-                chosen[rankings[i]] = 'chosen'
-                li = document.createElement("li");
-                li.innerHTML = rankings[i] + '<div class="remove">&times;</div>';
-                li.id = rankings[i];
-                document.getElementById("chosenList").appendChild(li);
-            }
+    // Getting saved application
+    var rankings = {{ applied_to | safe }};
+    if (rankings[0] != 'None'){
+        for (i in rankings){
+            chosen[rankings[i]] = 'chosen'
+            li = document.createElement("li");
+            li.innerHTML = rankings[i] + '<div class="remove">&times;</div>';
+            li.id = rankings[i];
+            document.getElementById("chosenList").appendChild(li);
         }
+    }
 
 
-        Sortable.create(chosenList, {animation: 150 });
+    Sortable.create(chosenList, {animation: 150 });
 
-        $(function() {
-            $(".collapsable").click(function () {
-                $(this).parent().children().toggle();
-                $(this).toggle();
-            });
-
-            $(".collapsable").each(function(){
-                $(this).parent().children().toggle();
-                $(this).toggle();
-            });
-
-            $(".positions li").on("click", function (e) {
-                console.log(chosen);
-                if ($("#chosenList li").length < 3 && chosen[this.id] == null) {
-                    chosen[this.id] = "chosen";
-                    li = document.createElement("li");
-                    li.innerHTML = this.innerHTML + '<div class="remove">&times;</div>';
-                    li.id = this.id;
-                    document.getElementById("chosenList").appendChild(li);
-                }
-            });
-
-            $("#chosenList").on("click", "li", function (e) {
-                delete chosen[this.id];
-                this.parentNode.removeChild(this);
-            });
+    $(function() {
+        $(".collapsable").click(function () {
+            $(this).parent().children().toggle();
+            $(this).toggle();
         });
 
-        function submit(){
-            var pos = "";
-            var cl = $('#chosenList li');
-            for (var i = 0; i < cl.length; i++) {
-                pos += cl[i].id + "||";
-            }
-            pos = pos.slice(0, -2);
-            $('#selected_positions').val(pos);
-            document.application_form.submit();
-        }
+        $(".collapsable").each(function(){
+            $(this).parent().children().toggle();
+            $(this).toggle();
+        });
 
-    </script>
+        $(".positions li").on("click", function (e) {
+            console.log(chosen);
+            if ($("#chosenList li").length < 3 && chosen[this.id] == null) {
+                chosen[this.id] = "chosen";
+                li = document.createElement("li");
+                li.innerHTML = this.innerHTML + '<div class="remove">&times;</div>';
+                li.id = this.id;
+                document.getElementById("chosenList").appendChild(li);
+            }
+        });
+
+        $("#chosenList").on("click", "li", function (e) {
+            delete chosen[this.id];
+            this.parentNode.removeChild(this);
+        });
+    });
+
+    function submit(){
+        var pos = "";
+        var cl = $('#chosenList li');
+        for (var i = 0; i < cl.length; i++) {
+            pos += cl[i].id + "||";
+        }
+        pos = pos.slice(0, -2);
+        $('#selected_positions').val(pos);
+        document.application_form.submit();
+    }
+
+</script>
 {% endblock %}
