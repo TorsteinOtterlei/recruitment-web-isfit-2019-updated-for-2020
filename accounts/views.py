@@ -12,6 +12,9 @@ from jobs.models import Section, Gang, Position, Date
 # Create your views here.
 @login_required
 def profile(request):
+    if request.user.is_staff:
+        return render(request, 'accounts/profile_admin.html')
+        
     application = Application.objects.filter(applicant=request.user).first()
     positions = None
     if application != None:

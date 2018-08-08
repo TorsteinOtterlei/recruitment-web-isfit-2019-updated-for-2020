@@ -297,7 +297,7 @@ class Command(BaseCommand):
 
         global USERS_WITH_APPLICATION, DATES_RANGE, DATES_SAMPLE
         positions = list(Position.objects.all())
-        users = list(User.objects.all())
+        users = list(User.objects.filter(staff=False))
         application_amount = min(USERS_WITH_APPLICATION, len(users))
 
         for i in range(application_amount):
