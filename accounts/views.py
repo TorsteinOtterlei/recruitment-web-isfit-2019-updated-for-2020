@@ -24,21 +24,19 @@ def profile(request):
         'positions':positions},
     )
 
-# BUG: Oppdateres siden med get request får man error
 def signup(request):
-    form = SignUpForm(request.POST)
-    if form.is_valid():
-        form.save()
-        email = form.cleaned_data.get('email')
-        raw_password = form.cleaned_data.get('password1')
-        user = authenticate(email=email, password=raw_password)
-        login(request, user)
-        return redirect('home')
-    # So that error messages are not displayed at the first try
-    elif form.cleaned_data.get('first_name') == None:
+    if request.method == "POST":
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            form.save()
+            email = form.cleaned_data.get('email')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(email=email, password=raw_password)
+            login(request, user)
+            return redirect('home')
+    else:
         form = SignUpForm()
-
-    return render(request, 'accounts/registration_form.html', {'form':form})
+        return render(request, 'accounts/registration_form.html', {'form':form})
 
 
 def logout_view(request):
