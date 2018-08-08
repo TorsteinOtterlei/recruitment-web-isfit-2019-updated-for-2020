@@ -14,7 +14,7 @@ from jobs.models import Section, Gang, Position, Date
 def profile(request):
     if request.user.is_staff:
         return render(request, 'accounts/profile_admin.html')
-        
+
     application = Application.objects.filter(applicant=request.user).first()
     positions = None
     if application != None:
@@ -26,20 +26,19 @@ def profile(request):
 
 # BUG: Oppdateres siden med get request får man error
 def signup(request):
-    if request.method == 'POST':
-        form = SignUpForm(request.POST)
-        if form.is_valid():
-            form.save()
-            email = form.cleaned_data.get('email')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(email=email, password=raw_password)
-            login(request, user)
-            return redirect('home')
-        # So that error messages are not displayed at the first try
-        elif form.cleaned_data.get('first_name') == None:
-            form = SignUpForm()
+    form = SignUpForm(request.POST)
+    if form.is_valid():
+        form.save()
+        email = form.cleaned_data.get('email')
+        raw_password = form.cleaned_data.get('password1')
+        user = authenticate(email=email, password=raw_password)
+        login(request, user)
+        return redirect('home')
+    # So that error messages are not displayed at the first try
+    elif form.cleaned_data.get('first_name') == None:
+        form = SignUpForm()
 
-        return render(request, 'accounts/registration_form.html', {'form':form})
+    return render(request, 'accounts/registration_form.html', {'form':form})
 
 
 def logout_view(request):
@@ -54,9 +53,9 @@ def manage_profile(request, userID):
     applicant = application.applicant
     date, created = Date.objects.get_or_create(user=applicant)
     interviewers = [pos.interviewer for pos in application.get_positions()]
-    if applicant.email == "emil.telstad@live.no":
+    #if applicant.email == "emil.telstad@live.no":
         #pass
-        applicant.email_user(subject="Test", message="My msg", from_email="emilte@stud.ntnu.no")
+        #applicant.email_user(subject="Test", message="My msg", from_email="emilte@stud.ntnu.no")
 
     if request.method == 'POST':
         form = StatusForm(request.POST)

@@ -13,6 +13,8 @@ class Section(models.Model):
     information = models.TextField(max_length=20000)
 
     def __str__(self):
+        if self.name == None:
+            return 'error'
         return self.name
 
 class Gang(models.Model):
@@ -21,6 +23,8 @@ class Gang(models.Model):
     section = models.ForeignKey(Section, on_delete=models.CASCADE, related_name="gangs")
 
     def __str__(self):
+        if self.name == None:
+            return 'error'
         return self.name
 
 class Project(models.Model):
@@ -29,6 +33,8 @@ class Project(models.Model):
     gang = models.ForeignKey(Gang, on_delete=models.CASCADE, related_name="projects")
 
     def __str__(self):
+        if self.name == None:
+            return 'error'
         return self.name
 
 class Position(models.Model):
@@ -40,6 +46,8 @@ class Position(models.Model):
     #name_of_interviewer = models.CharField(max_length=100)
 
     def __str__(self):
+        if self.title == None or self.gang == None:
+            return 'error'
         return "{} ({})".format(self.title, self.gang)
 
 class Date(models.Model):
@@ -47,6 +55,8 @@ class Date(models.Model):
     dates = models.TextField(max_length=2000, default=makeDates(140), blank=True) # 1,2,43,68 possible dates
 
     def __str__(self):
+        if self.user.email == None:
+            return 'error'
         return "Dates for {}".format(self.user.email)
 
     def dates_list(self):
@@ -67,4 +77,6 @@ class Calendar(models.Model):
         return cal
 
     def __str__(self):
+        if self.gangleader == None:
+            return 'error'
         return "Calendar for " + self.gangleader

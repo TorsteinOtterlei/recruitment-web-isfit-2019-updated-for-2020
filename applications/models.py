@@ -34,5 +34,7 @@ class Application(models.Model):
             return "No time set"
 
     def __str__(self):
+        if self.applicant.get_full_name() == None:
+            return "error"
         interview_date = self.pretty_date()
         return "{}, Interview: {}".format(self.applicant.get_full_name(), interview_date)

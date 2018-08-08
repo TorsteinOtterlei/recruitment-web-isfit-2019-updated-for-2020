@@ -26,10 +26,10 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    email = models.EmailField(max_length=254, unique=True, null=True, default=None)
-    first_name = models.CharField(max_length=40, default="default_first", blank=True, null=True)
-    last_name = models.CharField(max_length=150, default="default_second", blank=True, null=True)
-    phone_number = models.CharField(max_length=12, default="+91 12345679", blank=True, null=True)
+    email = models.EmailField(max_length=254, unique=True, default="default@default.com")
+    first_name = models.CharField(max_length=40, default="default_first", blank=True)
+    last_name = models.CharField(max_length=150, default="default_second", blank=True)
+    phone_number = models.CharField(max_length=12, default="+91 12345679", blank=True)
     active = models.BooleanField(default=True)
     staff = models.BooleanField(default=False)
     superuser = models.BooleanField(default=False)
@@ -59,23 +59,27 @@ class User(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
-    def __str__(self):
-        return self.email
-
     class Meta:
         verbose_name = 'user'
         verbose_name_plural = 'users'
 
     def __str__(self):
+        if self.email == None:
+            return 'error'
         return self.email
 
     def get_full_name(self):
         return self.first_name + " " + self.last_name
+        return "Error"
 
     def get_short_name(self):
+        if self.first_name == None:
+            return 'error'
         return self.first_name
 
     def get_status(self):
+        if self.status == None:
+            return 'error'
         return self.status
 
     @property

@@ -110,7 +110,7 @@ class Command(BaseCommand):
         s4 = Section()
         s4.name = "Administration"
         s4.leader = User.objects.get(first_name='Ola')
-        s4.information = "Driver med kultur"
+        s4.information = "Driver med administrasjon"
         s4.save()
 
         spinner.succeed()
