@@ -29,10 +29,6 @@ a:hover {
 small {
     display: inline-block !important;
 }
-/* OBS: Overrides bootstrap container */
-.container {
-    max-width: 90%;
-}
 
 /* Needed? */
 .text-area {
@@ -87,7 +83,7 @@ button {
 a:link, a:visited{
     color: #cc8102;
 }
-a:link:hover, a:visited:hover, span:hover{
+a:link:hover, a:visited:hover {
     color: orange;
 }
 
