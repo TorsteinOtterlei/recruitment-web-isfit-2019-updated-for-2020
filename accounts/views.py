@@ -27,7 +27,6 @@ def profile(request):
 
 def signup(request):
     if request.method == "POST":
-        print("post")
         form = SignUpForm(request.POST)
         if form.is_valid():
             form.save()
@@ -37,7 +36,7 @@ def signup(request):
             login(request, user)
             print("{} has registered in!".format(user))
             return redirect('home')
-    print("else")
+    # GET or form failed:
     form = SignUpForm()
     return render(request, 'accounts/registration_form.html', {'form':form})
 

@@ -94,5 +94,5 @@ class User(AbstractBaseUser, PermissionsMixin):
     def is_superuser(self):
         return self.superuser
 
-    def email_user(self, subject, message, from_email=None, **kwargs):
+    def email_user(self, subject, message, from_email=None, to_list=[], **kwargs):
         send_mail(subject, message, from_email, [self.email], **kwargs)

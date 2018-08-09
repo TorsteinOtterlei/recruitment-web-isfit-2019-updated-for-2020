@@ -4,7 +4,7 @@
 {% block head %}
     <style media="screen">
         ul {
-            list-style-type: none;
+            list-style-type: none; /* Removes bullet */
         }
         .container {
             max-width: 1000px;
@@ -14,15 +14,16 @@
             color: gray;
             line-height: 2rem;
         }
+        .options span:hover {
+            color: orange;
+        }
         .sections {
             font-size: 1.5rem;
             line-height: 3rem;
-
         }
         .gangs {
             font-size: 1.3rem;
             line-height: 2rem;
-
         }
         .positions {
             padding-left: 15px;
@@ -53,6 +54,7 @@
         }
         #chosenList li:hover {
             cursor: url(https://ssl.gstatic.com/ui/v1/icons/mail/images/2/openhand.cur), default !important;
+            cursor: grabbing;
             color: orange;
         }
 
