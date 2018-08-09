@@ -23,40 +23,30 @@ class ApplicationDetail(generic.DetailView):
 
 @login_required
 def apply(request):
+    # vars
     application, created = Application.objects.get_or_create(applicant=request.user)
     applied_to = None
-    if application is not None:
-        form = ApplicationForm(instance=application)
+    if application.has_positions():
         applied_to = [pos.title for pos in application.get_positions()]
-        print(applied_to)
-    else:
+
+    if request.method == "POST":
         form = ApplicationForm(request.POST, instance=application)
-    if request.method == 'POST':
-        selected_positions = request.POST.get('selected_positions', '').split('||')
-        form = ApplicationForm(request.POST, instance=application)
-        if (selected_positions[0] != ''): # if any jobs were selected
-            if form.is_valid():
-                application = form.save(commit=False)
-                application.second = None
-                application.third = None
+        if form.is_valid(): # if any jobs were selected
+            selected_positions = request.POST.get('selected_positions', '').split('||')
+            application = form.save(commit=False)
+            application.set_positions(selected_positions)
+            application.save()
+            return redirect('applications:set_dates')
 
-                application.first = Position.objects.get(title = selected_positions[0])
-                if len(selected_positions) > 1:
-                    application.second = Position.objects.get(title = selected_positions[1])
-                if len(selected_positions) > 2:
-                    application.third = Position.objects.get(title = selected_positions[2])
-
-                application.applicant = request.user
-                application.save()
-                return redirect('applications:set_dates')
-
+    # request.method == 'GET'
     return render(request, 'applications/application_form.html', {
+        'form': ApplicationForm(instance=application),
         'positions': Position.objects.all(),
-        'form':form,
         'sections': Section.objects.all(),
         'gangs': Gang.objects.all(),
-        'applied_to':applied_to,
+        'applied_to': applied_to,
     })
+    # End: apply
 
 @login_required
 def set_dates(request):

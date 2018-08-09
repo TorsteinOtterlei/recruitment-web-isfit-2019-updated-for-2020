@@ -2,73 +2,73 @@
 {% block title %}Apply{% endblock %}
 
 {% block head %}
-<style media="screen">
-ul {
-    list-style-type: none;
-}
-.container {
-    max-width: 1000px;
-}
-.options {
-    cursor: pointer;
-    color: gray;
-    line-height: 2rem;
-}
-.sections {
-    font-size: 1.5rem;
-    line-height: 3rem;
+    <style media="screen">
+        ul {
+            list-style-type: none;
+        }
+        .container {
+            max-width: 1000px;
+        }
+        .options {
+            cursor: pointer;
+            color: gray;
+            line-height: 2rem;
+        }
+        .sections {
+            font-size: 1.5rem;
+            line-height: 3rem;
 
-}
-.gangs {
-    font-size: 1.3rem;
-    line-height: 2rem;
+        }
+        .gangs {
+            font-size: 1.3rem;
+            line-height: 2rem;
 
-}
-.positions {
-    padding-left: 15px;
-    padding-right: 15px;
-}
-.positions li:hover {
-    color: orange;
-}
-.dropzone {
-    border-radius: 20px;
-    border: solid;
-    border-style: inset;
-    border-color: orange;
-    height: 280px;
-    max-width: 400px;
-}
-#chosenList li {
-    border-radius: 5px;
-    border-style: solid;
-    border-width: 1px;
-    color: gray;
-    line-height: 1rem;
-    margin-top: 1rem;
-    margin-right: 50px;
-    padding: 8px 8px 8px 20px;
-    list-style-position: inside;
-    width: 90%;
-}
-#chosenList li:hover {
-    cursor: url(https://ssl.gstatic.com/ui/v1/icons/mail/images/2/openhand.cur), default !important;
-    color: orange;
-}
+        }
+        .positions {
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+        .positions li:hover {
+            color: orange;
+        }
+        .dropzone {
+            border-radius: 20px;
+            border: solid;
+            border-style: inset;
+            border-color: orange;
+            height: 280px;
+            max-width: 400px;
+        }
+        #chosenList li {
+            border-radius: 5px;
+            border-style: solid;
+            border-width: 1px;
+            color: gray;
+            line-height: 1rem;
+            margin-top: 1rem;
+            margin-right: 50px;
+            padding: 8px 8px 8px 20px;
+            list-style-position: inside;
+            width: 90%;
+        }
+        #chosenList li:hover {
+            cursor: url(https://ssl.gstatic.com/ui/v1/icons/mail/images/2/openhand.cur), default !important;
+            color: orange;
+        }
 
-.remove{
-    display:inline;
-    float:right;
-}
+        .remove{
+            display:inline;
+            float:right;
+        }
 
-.remove:hover{
-    color: red;
-    cursor: pointer;
-}
-.error-field {
-    color: red;
-}
-</style>
+        .remove:hover{
+            color: red;
+            cursor: pointer;
+        }
+        .error-field {
+            color: red;
+        }
+    </style>
 {% endblock %}
 
 {% block body %}

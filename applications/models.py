@@ -16,6 +16,21 @@ class Application(models.Model):
         positions = [self.first, self.second, self.third]
         return [pos for pos in positions if pos != None]
 
+    def set_positions(self, positions):
+        if positions[0] == '':
+            return
+        self.second = None
+        self.third = None
+
+        self.first = Position.objects.get(title = positions[0])
+        if len(positions) > 1:
+            self.second = Position.objects.get(title = positions[1])
+        if len(positions) > 2:
+            self.third = Position.objects.get(title = positions[2])
+
+    def has_positions(self):
+        return self.get_positions() != []
+
     def get_position_gangs(self):
         positions = [self.first, self.second, self.third]
         return [pos.gang.name for pos in positions if pos != None]

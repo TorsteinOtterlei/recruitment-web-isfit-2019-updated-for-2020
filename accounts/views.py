@@ -12,6 +12,7 @@ from jobs.models import Section, Gang, Position, Date
 # Create your views here.
 @login_required
 def profile(request):
+    print(request.user)
     if request.user.is_staff:
         return render(request, 'accounts/profile_admin.html')
 
@@ -33,6 +34,7 @@ def signup(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(email=email, password=raw_password)
             login(request, user)
+            print("{} has registered in!".format(user))
             return redirect('home')
     else:
         form = SignUpForm()
