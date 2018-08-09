@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
+import json
 # local
 from applications.forms import ApplicationForm
 from applications.models import Application
@@ -38,13 +39,14 @@ def apply(request):
             application.save()
             return redirect('applications:set_dates')
 
-    # request.method == 'GET'
+    # GET or form failed
+    print(json.dumps(applied_to))
     return render(request, 'applications/application_form.html', {
         'form': ApplicationForm(instance=application),
         'positions': Position.objects.all(),
         'sections': Section.objects.all(),
         'gangs': Gang.objects.all(),
-        'applied_to': applied_to,
+        'applied_to': json.dumps(applied_to),
     })
     # End: apply
 
@@ -55,7 +57,7 @@ def set_dates(request):
         date = Date.objects.get(user=request.user)
         date.dates = times
         date.save()
-        return redirect('../../account')
+        return redirect('../../account/')
     else:
         date, created = Date.objects.get_or_create(user=request.user)
         return render(request, 'applications/set_dates.html', {

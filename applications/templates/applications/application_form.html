@@ -136,7 +136,7 @@
 
     // Getting saved application
     var rankings = {{ applied_to | safe }};
-    if (rankings[0] != 'None'){
+    if (rankings != null){
         for (i in rankings){
             chosen[rankings[i]] = 'chosen'
             li = document.createElement("li");
