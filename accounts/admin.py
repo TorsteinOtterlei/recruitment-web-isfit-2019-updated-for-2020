@@ -1,8 +1,39 @@
 from django.contrib import admin
+from django.contrib.auth import admin as auth_admin
+# local:
 from accounts.models import User
+from accounts.forms import SignUpForm
+
+class UserAdmin(auth_admin.UserAdmin):
+    fieldsets = (
+        (None, {'fields': ('email', 'password')}),
+        ('Personal info', {'fields': ('first_name', 'last_name', 'phone_number')}),
+        ('Permissions', {'fields': ('active', 'staff', 'superuser',
+                                       'groups', 'user_permissions')}),
+        ('Important dates', {'fields': ('last_login', 'date_joined')}),
+    )
+    limited_fieldsets = (
+        (None, {'fields': ('email',)}),
+        ('Personal info', {'fields': ('first_name', 'last_name', 'phone_number')}),
+        ('Important dates', {'fields': ('last_login', 'date_joined')}),
+    )
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('email', 'first_name', 'last_name', 'phone_number', 'password1', 'password2')}
+        ),
+    )
+    add_form = SignUpForm
+    change_password_form = auth_admin.AdminPasswordChangeForm
+    list_display = ('email', 'first_name', 'last_name', 'staff', 'superuser')
+    list_filter = ('staff', 'superuser', 'active', 'groups')
+    search_fields = ('first_name', 'last_name', 'email', 'phone_number')
+    ordering = ('email',)
+    readonly_fields = ('last_login', 'date_joined',)
 
 # Register your models here.
-admin.site.register(User)
+admin.site.register(User, UserAdmin)
+
 
 """
 from django import forms

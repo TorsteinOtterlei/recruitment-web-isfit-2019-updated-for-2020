@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.core.mail import send_mail
 from django.contrib.auth.models import PermissionsMixin
@@ -33,6 +34,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     active = models.BooleanField(default=True)
     staff = models.BooleanField(default=False)
     superuser = models.BooleanField(default=False)
+    date_joined = models.DateTimeField(default=timezone.now, blank=True)
 
     NOT_EVALUATED = 'NE'
     INTERVIEW_SET = 'IS'
@@ -94,5 +96,5 @@ class User(AbstractBaseUser, PermissionsMixin):
     def is_superuser(self):
         return self.superuser
 
-    def email_user(self, subject, message, from_email=None, to_list=[], **kwargs):
+    def email_user(self, subject, message, from_email=None, **kwargs):
         send_mail(subject, message, from_email, [self.email], **kwargs)

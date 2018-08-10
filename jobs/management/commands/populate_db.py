@@ -375,5 +375,5 @@ class Command(BaseCommand):
         self.create_positions()
         self.create_applications()
         #self.create_dates()
-        print("  ==  Dummydata inserted  ==  ")
+        print("  ==  Dummydata inserted, REMEMBER to runserver  ==  ")
         # End of handle
