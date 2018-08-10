@@ -3,309 +3,314 @@
 {% load static %}
 
 {% block head %}
-<style media="screen">
-
-.title {
-    text-align: center;
-}
-.title * {
-
-    display: inline-block;
-}
-.status-field { /* classname given in StatusForm */
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    border: none;
-    background-color: black;
-    color: orange;
-    outline: none;
-    cursor: pointer;
-}
-.button-back {
-    position: absolute;
-    top: 80px;
-    left: 20px;
-}
-.collapsing-field {
-    background-color: #23272b;
-    border: 1px solid #343a40;
-    border-top-style: none;
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-    padding: 10px;
-}
-hr {
-    border: 1px solid #343a40;
-}
-
-/*-------------------------------------------*/
-.calendar {
-    display: grid;
-    grid-template-columns: 1fr 6fr;
-    gap: 1em;
-    border: solid;
-    border-radius: 20px;
-    border-color: gray;
-    padding: 2em;
-    text-align: center;
-    color: DeepSkyBlue;
-}
-.topleft {
-    border: hidden;
-}
-.times {
-    display: grid;
-    border: hidden;
-    gap: 1em;
-}
-.times div {
-    border: hidden;
-    min-width: 6em;
-    padding-top: 0.25em;
-}
-.days {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    border: hidden;
-
-}
-.grid1, .grid2 {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    grid-template-rows: repeat(10, 1.9em);
-    border: hidden;
-    gap: 1em;
-}
-
-.gridcell {
-    border: solid;
-    border-radius: 6px;
-}
-.avail-gridcell:hover {
-    cursor: pointer;
-    color: orange;
-}
-.chosen-gridcell {
-    color: orange;
-}
-
-#interviewtime {
-    display: none;
-}
-
-#buttons-div{
-    text-align: center;
-}
-#bt0, #bt1{
-    margin-top: 10px;
-}
-
-#available-times-info{
-    text-align: center;
-}
-
-@media only screen and (max-width: 30em) {
-    .times, .topleft{
-        font-size: small;
-        min-width: 5em;
-        padding-top: 0.1em;
-        margin-left: -2.5em;
+    <style media="screen">
+    .title {
+        text-align: center;
     }
-    .grid1, .grid2, .days {
-        margin-right: -1.5em;
+    .title * {
+
+        display: inline-block;
     }
-    .days{
-        font-size: small;
+    .status-field { /* classname given in StatusForm */
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        border: none;
+        background-color: black;
+        color: orange;
+        outline: none;
+        cursor: pointer;
     }
-}
-</style>
+    .button-back {
+        position: absolute;
+        top: 80px;
+        left: 20px;
+    }
+    .smooth-wrapper {
+        background-color: #23272b;
+        border: 1px solid #343a40;
+        border-top-style: none;
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+        padding: 10px;
+    }
+    hr {
+        border: 1px solid #343a40;
+    }
+
+    /*-------------------------------------------*/
+    .calendar {
+        display: grid;
+        grid-template-columns: 1fr 6fr;
+        gap: 1em;
+        border: solid;
+        border-radius: 20px;
+        border-color: gray;
+        padding: 2em;
+        text-align: center;
+        color: DeepSkyBlue;
+    }
+    .topleft {
+        border: hidden;
+    }
+    .times {
+        display: grid;
+        border: hidden;
+        gap: 1em;
+    }
+    .times div {
+        border: hidden;
+        min-width: 6em;
+        padding-top: 0.25em;
+    }
+    .days {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        border: hidden;
+
+    }
+    .grid1, .grid2 {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        grid-template-rows: repeat(10, 1.9em);
+        border: hidden;
+        gap: 1em;
+    }
+
+    .gridcell {
+        border: solid;
+        border-radius: 6px;
+    }
+    .avail-gridcell:hover {
+        cursor: pointer;
+        color: orange;
+    }
+    .chosen-gridcell {
+        color: orange;
+    }
+
+    #interviewtime {
+        display: none;
+    }
+
+    #buttons-div{
+        text-align: center;
+    }
+    #bt0, #bt1{
+        margin-top: 10px;
+    }
+
+    #available-times-info{
+        text-align: center;
+    }
+
+    @media only screen and (max-width: 30em) {
+        .times, .topleft{
+            font-size: small;
+            min-width: 5em;
+            padding-top: 0.1em;
+            margin-left: -2.5em;
+        }
+        .grid1, .grid2, .days {
+            margin-right: -1.5em;
+        }
+        .days{
+            font-size: small;
+        }
+    }
+    </style>
 {% endblock %}
 
 {% block body %}
-<div class="container">
+    <div class="container">
 
-    <!-- Back button -->
-    <a href="{% url 'applications:manage_applications' %}">
-        <img id="arrow-left" src="{% static 'applications/arrow_left.png' %}" alt="Arrow left">
-        Manage applications
-    </a>
+        <!-- Back button -->
+        <a href="{% url 'applications:manage_applications' %}">
+            <img id="arrow-left" src="{% static 'applications/arrow_left.png' %}" alt="Arrow left">
+            Manage applications
+        </a>
 
-    <!-- Title -->
-    <div class="title">
-        <h1>Applicant: {{ application.applicant.get_full_name }}</h1>
-        <form id="statusForm" method="post" action="#">
-            {% csrf_token %}
-            &emsp;Status: {{ form.status }}
-        </form>
-    </div>
-    <br>
-    <!-- Button: Information collapse -->
-    <button class="btn btn-dark btn-block" type="button" data-toggle="collapse" data-target="#info-box" aria-expanded="false">
-        Applicant information:
-    </button>
-    <!-- Information-box collapsible -->
-    <div class="collapse collapsing-field" id="info-box">
-        <p>Email address: {{ application.applicant.email }}</p>
-        <p>Phone number: {{ application.applicant.phone_number }}</p>
-    </div>
-    <br>
+        <!-- Title -->
+        <div class="title">
+            <h1>Applicant: {{ application.applicant.get_full_name }}</h1>
+            <form id="statusForm" method="post" action="#">
+                {% csrf_token %}
+                &emsp;Status: {{ form.status }}
+            </form>
+        </div>
+        <br>
 
-    <!-- Button: Application-text collapse -->
-    <button class="btn btn-dark btn-block" type="button" data-toggle="collapse" data-target="#application-text-box" aria-expanded="false">
-        Application text:
-    </button>
-    <!-- Application-text collapsible -->
-    <div class="collapse collapsing-field" id="application-text-box">
-        <p>{{ application.text}}</p>
-    </div>
-    <br>
+        <!-- Collapsing fields -->
+        <div class="container">
+            <!-- Button: Information collapse -->
+            <button class="btn btn-dark btn-block" type="button" data-toggle="collapse" data-target="#info-box" aria-expanded="false">
+                Applicant information:
+            </button>
+            <!-- Information-box collapsible -->
+            <div class="collapse" id="info-box">
+                <div class="smooth-wrapper">
+                    <p>Email address: {{ application.applicant.email }}</p>
+                    <p>Phone number: {{ application.applicant.phone_number }}</p>
+                </div>
+            </div>
+            <br>
 
-    <!-- Button: Applied-positions collapse -->
-    <button class="btn btn-dark btn-block" type="button" data-toggle="collapse" data-target="#applied-positions" aria-expanded="false">
-        Positions and interviewers:
-    </button>
-    <!-- Application-text collapsible -->
-    <div class="collapse collapsing-field" id="applied-positions">
-        {% for position in application.get_positions %}
-            <p>{{ forloop.counter }}. {{ position }},&emsp; Interviewer: {{ position.interviewer }}</p>
-            <hr>
-        {% endfor %}
-    </div>
-    <br>
+            <!-- Button: Application-text collapse -->
+            <button class="btn btn-dark btn-block" type="button" data-toggle="collapse" data-target="#application-text-box" aria-expanded="false">
+                Application text:
+            </button>
+            <!-- Application-text collapsible -->
+            <div class="collapse" id="application-text-box">
+                <div class="smooth-wrapper">
+                    <p>{{ application.text}}</p>
+                </div>
+            </div>
+            <br>
 
+            <!-- Button: Applied-positions collapse -->
+            <button class="btn btn-dark btn-block" type="button" data-toggle="collapse" data-target="#applied-positions" aria-expanded="false">
+                Positions and interviewers:
+            </button>
+            <!-- Application-text collapsible -->
+            <div class="collapse" id="applied-positions">
+                <div class="smooth-wrapper">
+                    {% for position in application.get_positions %}
+                    <p>{{ forloop.counter }}. {{ position }},&emsp; Interviewer: {{ position.interviewer }}</p>
+                    <hr>
+                    {% endfor %}
+                </div>
+            </div>
+            <br>
 
-    <!-- Button: available-times collapse -->
-    <button class="btn btn-dark btn-block" type="button" data-toggle="collapse" data-target="#available-times" aria-expanded="false">
-        Available times for interview
-    </button>
-    <!-- available-times collapsible -->
-    <div class="collapse collapsing-field" id="available-times">
-        <div id='available-times-info'>
-        <h5>Interview times when applicant and both interviewers are available</h5>
-      <h6><div id="week-div">Week 33 (13th Aug - 19th Aug)</div></h6>
-      </div>
+            <!-- Button: Available-times collapse -->
+            <button class="btn btn-dark btn-block" type="button" data-toggle="collapse" data-target="#available-times" aria-expanded="false">
+                Available times for interview
+            </button>
+            <!-- Available-times collapsible -->
+            <div class="collapse" id="available-times">
+                <div class="smooth-wrapper">
+                    <div id='available-times-info'>
+                        <h5>Interview times when applicant and both interviewers are available</h5>
+                        <h6><div id="week-div">Week 33 (13th Aug - 19th Aug)</div></h6>
+                    </div>
+                    <div class="calendar">
+                        <div class="topleft">Time / Day</div>
 
-      <div class="calendar">
-          <div class="topleft">Time / Day</div>
+                        <div class="days">
+                            <div>Mon</div>
+                            <div>Tue</div>
+                            <div>Wed</div>
+                            <div>Thu</div>
+                            <div>Fri</div>
+                            <div>Sat</div>
+                            <div>Sun</div>
+                        </div>
 
-          <div class="days">
-              <div>Mon</div>
-              <div>Tue</div>
-              <div>Wed</div>
-              <div>Thu</div>
-              <div>Fri</div>
-              <div>Sat</div>
-              <div>Sun</div>
-          </div>
+                        <div class="times">
+                            <div>08:00 - 09:00</div>
+                            <div>09:00 - 10:00</div>
+                            <div>10:00 - 11:00</div>
+                            <div>11:00 - 12:00</div>
+                            <div>12:00 - 13:00</div>
+                            <div>13:00 - 14:00</div>
+                            <div>14:00 - 15:00</div>
+                            <div>15:00 - 16:00</div>
+                            <div>16:00 - 17:00</div>
+                            <div>17:00 - 18:00</div>
+                        </div>
 
-          <div class="times">
-              <div>08:00 - 09:00</div>
-              <div>09:00 - 10:00</div>
-              <div>10:00 - 11:00</div>
-              <div>11:00 - 12:00</div>
-              <div>12:00 - 13:00</div>
-              <div>13:00 - 14:00</div>
-              <div>14:00 - 15:00</div>
-              <div>15:00 - 16:00</div>
-              <div>16:00 - 17:00</div>
-              <div>17:00 - 18:00</div>
-          </div>
+                        <div class="grid1">
+                            <!-- cells inserted with javascript -->
+                        </div>
 
-          <div class="grid1">
-              <!-- cells inserted with javascript -->
-          </div> <!-- End: grid -->
-
-          <div class="grid2">
-              <!-- cells inserted with javascript -->
-          </div> <!-- End: grid -->
-      </div> <!-- End: calendar -->
-
-      <div id="buttons-div">
-          <!-- <button type="button" class="btn btn-outline-success" id="select_all">Select all</button>
-          <button type="button" class="btn btn-outline-danger" id="unselect_all">Unselect all</button>
-          <br /> -->
-          <button type="button" class="btn" id="bt0" onclick="changeWeek(this, 0)">&#8678; 1st Week</button>
-          <button type="button" class="btn" id="bt1" onclick="changeWeek(this, 1)">2nd Week &#8680;</button>
-
-
-
-          <form method="POST" name='dates_form'  action="#">
-              {% csrf_token %}
-              <input id="interviewtime" name="interviewtime"></input>
-          </form>
-      <button onclick="submit()" style="width: 100%; margin: 20px 0 10px 0;" class="btn button-form">Set interview</button>
-      </div>
-    </div>
-
-</div>
+                        <div class="grid2">
+                            <!-- cells inserted with javascript -->
+                        </div>
+                    </div> <!-- End: calendar -->
+                    <!-- Buttons for calendar -->
+                    <div id="buttons-div">
+                        <!-- <button type="button" class="btn btn-outline-success" id="select_all">Select all</button>
+                        <button type="button" class="btn btn-outline-danger" id="unselect_all">Unselect all</button>
+                        <br /> -->
+                        <button type="button" class="btn" id="bt0" onclick="changeWeek(this, 0)">&#8678; 1st Week</button>
+                        <button type="button" class="btn" id="bt1" onclick="changeWeek(this, 1)">2nd Week &#8680;</button>
+                        <form method="POST" name='dates_form'  action="#">
+                            {% csrf_token %}
+                            <input id="interviewtime" name="interviewtime"></input>
+                            <button onclick="submit()" style="width: 100%; margin: 20px 0 10px 0;" class="btn button-form">Set interview</button>
+                        </form>
+                    </div> <!-- End: Buttons-div -->
+                </div> <!-- End: smooth-wrapper -->
+            </div> <!-- End: Available-times collapsible -->
+        </div> <!-- End: container collapsing fields -->
+    </div> <!-- End: container -->
 {% endblock body %}
 
 {% block scriptblock %}
-<script type="text/javascript">
-var week, week_text;
-var chosen_time;
-    $(document).ready(function() {
-        $("#statusForm").change(function() {
-            $("#statusForm").submit()
-        }) // End: statusForm.change
+    <script type="text/javascript">
+        var week, week_text;
+        var chosen_time;
+        $(document).ready(function() {
+            $("#statusForm").change(function() {
+                $("#statusForm").submit()
+            }) // End: statusForm.change
 
-    avail_times = "{{avail_times}}"
-    $('.grid2').css('display', 'none');
-    $('#bt0').prop("disabled", true);
+            avail_times = "{{avail_times}}"
+            $('.grid2').css('display', 'none');
+            $('#bt0').prop("disabled", true);
 
-    week = 0;
-    week_text = ['Week 36 (3th Sept - 9th Sept)', 'Week 37 (10th Sept - 16th Sept)'];
-    var filler = "X";
+            week = 0;
+            week_text = ['Week 36 (3th Sept - 9th Sept)', 'Week 37 (10th Sept - 16th Sept)'];
+            var filler = "X";
 
-    // Create divs inside grid. Easier than adding them manually
-    for (var i=0; i<70; i++) { // 70 because of temporary 0-69 grid
-        var div = document.createElement("div");  // Create with DOM
-        div.id = i; // Give each cell their id according to grid
-        div.className = "gridcell";
-        $(".grid1").append(div);
-    } // End: cell-appending to grid
+            // Create divs inside grid. Easier than adding them manually
+            for (var i=0; i<70; i++) { // 70 because of temporary 0-69 grid
+                var div = document.createElement("div");  // Create with DOM
+                div.id = i; // Give each cell their id according to grid
+                div.className = "gridcell";
+                $(".grid1").append(div);
+            } // End: cell-appending to grid
 
-    // Create divs inside grid. Easier than adding them manually
-    for (var i=70; i<140; i++) { // 70 because of temporary 0-69 grid
-        var div = document.createElement("div");  // Create with DOM
-        div.id = i; // Give each cell their id according to grid
-        div.className = "gridcell";
-        $(".grid2").append(div);
-    } // End: cell-appending to grid
+            // Create divs inside grid. Easier than adding them manually
+            for (var i=70; i<140; i++) { // 70 because of temporary 0-69 grid
+                var div = document.createElement("div");  // Create with DOM
+                div.id = i; // Give each cell their id according to grid
+                div.className = "gridcell";
+                $(".grid2").append(div);
+            } // End: cell-appending to grid
 
-    // Display previously selected dates
-    for (var i = 0; i < avail_times.length; i++) {
-        if (avail_times[i] == 3){
-            var cellid = "#" + i;
-            $(cellid).addClass('avail-gridcell')
-            $(cellid).html(filler);
-            $(cellid).click(function() {
-                $('#'+chosen_time).removeClass('chosen-gridcell');
-                $('#'+this.id).addClass('chosen-gridcell');
-                chosen_time = this.id;
-            });
+            // Display previously selected dates
+            for (var i = 0; i < avail_times.length; i++) {
+                if (avail_times[i] == 3){
+                    var cellid = "#" + i;
+                    $(cellid).addClass('avail-gridcell')
+                    $(cellid).html(filler);
+                    $(cellid).click(function() {
+                        $('#'+chosen_time).removeClass('chosen-gridcell');
+                        $('#'+this.id).addClass('chosen-gridcell');
+                        chosen_time = this.id;
+                    });
+                }
+            } // End: Display previously selected dates
+            $('#' + chosen_time).addClass('chosen-gridcell');
+
+        }) // End: document.ready
+
+        function submit(){
+            if (chosen_time != null){
+                console.log(chosen_time);
+                $("#interviewtime").val(chosen_time);
+                document.dates_form.submit();
+            }
         }
-    } // End: Display previously selected dates
-    $('#' + chosen_time).addClass('chosen-gridcell');
 
-    }) // End: document.ready
+        function changeWeek(bt, num){
+            week = num;
+            $('.grid1').toggle();
+            $('.grid2').toggle();
+            $('#week-div').html(week_text[week]);
+            $('#bt' + num).prop("disabled",true);
+            $('#bt' + (num + 1) % 2).prop("disabled",false);
 
-    function submit(){
-        if (chosen_time != null){
-            console.log(chosen_time);
-            $("#interviewtime").val(chosen_time);
-            document.dates_form.submit();
         }
-    }
-
-    function changeWeek(bt, num){
-        week = num;
-        $('.grid1').toggle();
-        $('.grid2').toggle();
-        $('#week-div').html(week_text[week]);
-        $('#bt' + num).prop("disabled",true);
-        $('#bt' + (num + 1) % 2).prop("disabled",false);
-
-    }
-</script>
+    </script>
 {% endblock %}
