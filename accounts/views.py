@@ -55,6 +55,7 @@ def manage_profile(request, userID):
     date, created = Date.objects.get_or_create(user=applicant)
     interviewers = [pos.interviewer for pos in application.get_positions()]
     userstatus = applicant.get_status()
+    interview_time = application.interview_time
 
     DATES_LENGTH = 140
     # BUG: Error if application doesn't have first or second positions. Possibly fixed
@@ -79,18 +80,19 @@ def manage_profile(request, userID):
         if not chosen_time: # quickfix
             chosen_time = 'none'
 
-        # TODO: set times as available/not available for interviewers
-
-        # if chosen_time != application.interview_time:
-        #     print(chosen_time)
-        #     for interviewer in interviewers:
-        #         Date.objects.get(user=interviewer).remove_time(chosen_time)
-        #         if application.interview_time != 'none':
-        #         print('-----------------------------------------------------------')
+        # Updating the interviewers availability
+        if chosen_time != application.interview_time:
+            for i in range(2):
+                i = Date.objects.get(user=interviewers[i])
+                if chosen_time != 'none':
+                    i.remove_time(chosen_time)
+                if application.interview_time != 'none':
+                    i.dates += ',' + interview_time
+                i.save()
+                print("Available times for interviewer %s are updated" %(i.user.email))
 
         application.interview_time = chosen_time
         application.save()
-        print(chosen_time)
         print('Interview time changed to ' + chosen_time)
 
 

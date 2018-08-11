@@ -62,11 +62,11 @@ class Date(models.Model):
     def dates_list(self):
         return [int(x) for x in self.dates.split(',') if x != ""]
 
-    # def remove_time(self, time):
-    #     tmp = self.dates.split(',')
-    #     tmp.remove(time)
-    #     self.dates = ",".join(tmp)
-    #     self.save()
+    def remove_time(self, time):
+        tmp = self.dates.split(',')
+        tmp.remove(time)
+        self.dates = ",".join(tmp)
+        self.save()
 
 class Calendar(models.Model):
     gangleader = models.OneToOneField(User, on_delete=models.CASCADE)
