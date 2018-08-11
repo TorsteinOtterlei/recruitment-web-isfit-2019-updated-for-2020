@@ -27,6 +27,7 @@ class Application(models.Model):
             self.second = Position.objects.get(title = positions[1])
         if len(positions) > 2:
             self.third = Position.objects.get(title = positions[2])
+        self.save()
 
     def has_positions(self):
         return self.get_positions() != []
@@ -45,7 +46,7 @@ class Application(models.Model):
             return self.interview_time # TODO: FIX
         else:
             return "No time set"
-
+        
     def __str__(self):
         if self.applicant.get_full_name() == None:
             return "error"

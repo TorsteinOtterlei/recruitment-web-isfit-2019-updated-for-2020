@@ -47,6 +47,19 @@ class Command(BaseCommand):
                                     last_name="Adminsen",
                                     phone_number="12345678")
         spinner.succeed("Creating superuser. email: {}, password: {}".format(email, pw))
+        # Emil
+        User.objects.create_superuser(email="emil.telstad@live.no",
+                                    password="Django123",
+                                    first_name="Emil",
+                                    last_name="Telstad",
+                                    phone_number="41325358")
+        # Peder Dueled
+        User.objects.create_superuser(email="pederduel@gmail.com",
+                                    password="Django123",
+                                    first_name="Peder",
+                                    last_name="Dueled",
+                                    phone_number="41760885")
+        # End: createsu
 
     def create_staff(self):
         spinner = Halo("Creating a staff user")
@@ -69,7 +82,6 @@ class Command(BaseCommand):
         kristian = User.objects.create_user(email="kris@test.no", first_name="Kristian", password=USER_PW)
         camilla = User.objects.create_user(email="camilla@test.no", first_name="Camilla", password=USER_PW)
         johan = User.objects.create_user(email="johan@test.no", first_name="Johan", password=USER_PW)
-        peder = User.objects.create_user(email="peder@test.no", first_name="Peder", password=USER_PW)
         sofie = User.objects.create_user(email="sofie@test.no", first_name="Sofie", password=USER_PW)
         synnove = User.objects.create_user(email="synnove@test.no", first_name="Synnove", password=USER_PW)
         ola = User.objects.create_user(email="ola@test.no", first_name="Ola", password=USER_PW)
