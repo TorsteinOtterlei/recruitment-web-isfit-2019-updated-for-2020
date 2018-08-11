@@ -238,6 +238,7 @@
                             <input id="interviewtime" name="interviewtime"></input>
                             <button onclick="submit()" style="width: 100%; margin: 20px 0 10px 0;" class="btn button-form">Set interview</button>
                         </form>
+                        <button type="button" id="btn-mail">Notify interview to {{ application.applicant }} </button>
                     </div> <!-- End: Buttons-div -->
                 </div> <!-- End: smooth-wrapper -->
             </div> <!-- End: Available-times collapsible -->
@@ -292,6 +293,26 @@
                 }
             } // End: Display previously selected dates
             $('#' + chosen_time).addClass('chosen-gridcell');
+
+            // Send interview time to user by mail:
+            $("#btn-mail").click(function() {
+                // Check if interview is actually set:
+                // if ( "{{ application.pretty_date | safe }}" != "No time set" ) {
+                if (true) { // Substitute for line over temporary
+                    // Confirm that admin wants to send a mail:
+                    if (confirm(`\n                    Are you sure?\n
+                        It would be unfortunate to send mail if
+                        the interview might change later.`)) {
+                            // Code to send mail
+                            console.log("ok")
+                            $.get("{% url 'accounts:send_mail' application.applicant.id %}")
+                    }
+                } // End: applicant has interview
+                // No interview set
+                else {
+                    alert("This user hasn't got an interview time yet")
+                }
+            })
 
         }) // End: document.ready
 

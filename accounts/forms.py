@@ -1,5 +1,6 @@
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django import forms
+from django.utils.translation import ugettext, ugettext_lazy as _
 # local:
 from accounts.models import User
 # other apps:
@@ -34,6 +35,20 @@ class StatusForm(forms.ModelForm):
     class Meta:
         model = User
         fields = (['status'])
+
+# Possible to customise login:
+class CustomAuthenticationForm(AuthenticationForm):
+    error_messages = dict(AuthenticationForm.error_messages) # Inherit from parent. invalid_login and inactive
+
+    def confirm_login_allowed(self, user):
+        if not user.is_active:
+            raise forms.ValidationError(self.error_messages['inactive'], code='inactive')
+
+        if not user.is_authenticated:
+            raise forms.ValidationError(self.error_messages['invalid_login'], code='invalid_login')
+
+
+
 
 class WidgetsForm(forms.Form):
     bool = forms.BooleanField()

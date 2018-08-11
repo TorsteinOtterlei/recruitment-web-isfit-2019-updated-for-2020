@@ -1,7 +1,7 @@
 {% extends 'jobs/base.html' %}
 {% load static %}
 {% block head %}
-    <link rel="stylesheet" type="text/css" href="{% static "accounts/login.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'accounts/login.css' %}">
 {% endblock %}
 
 {% block body %}
@@ -16,12 +16,22 @@
     {% else %}
     <div class="container">
         <div class="card card-container">
-            <p id="profile-name" class="profile-name-card"></p>
+            <h1>Login:</h1>
+            <br>
+            <br>
             <form class="form-signin" method="post">
                 {% csrf_token %}
                 {% for field in form %}
                     <div class="fieldWrapper">
-                        {{ field.label_tag }} {{ field }}
+                            <p>
+                                {{ field.label_tag }}<br>
+                                {{ field }}
+                            </p>
+                        </div>
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <div style="color:red">
+                        {{ error }}
                     </div>
                 {% endfor %}
                 <button class="btn btn-primary" type="submit">Sign in</button>
@@ -33,4 +43,12 @@
         </div>
     </div>
     {% endif %}
+{% endblock %}
+
+{% block scriptblock %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+        })
+    </script>
 {% endblock %}
