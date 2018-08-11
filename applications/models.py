@@ -10,7 +10,7 @@ class Application(models.Model):
     third = models.ForeignKey(Position, on_delete=models.CASCADE, default=None, null=True, blank=True, related_name="third")
     applicant = models.OneToOneField(User, on_delete=models.CASCADE, related_name="application")
     text = models.TextField(max_length=2000)
-    interview_time = models.DateTimeField(null=True, blank=True, default=None)
+    interview_time = models.TextField(max_length=4, default='none')
 
     def get_positions(self):
         positions = [self.first, self.second, self.third]
@@ -39,12 +39,10 @@ class Application(models.Model):
         positions = [self.first, self.second, self.third]
         return [pos.gang.section.name for pos in positions if pos != None]
 
-    def dates_list(self):
-        return [int(x) for x in self.dates.split(',') if x != ""]
 
     def pretty_date(self):
         if self.interview_time != None:
-            return self.interview_time.strftime('%a %b %Y %H:%M') # day month year hour:min
+            return self.interview_time # TODO: FIX
         else:
             return "No time set"
 

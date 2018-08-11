@@ -307,7 +307,7 @@ class Command(BaseCommand):
                                         first=pos_sample.pop(),
                                         second=pos_sample.pop(),
                                         third=pos_sample.pop(),
-                                        interview_time=timezone.now()
+                                        interview_time='none'
                                         )
         spinner.succeed("Creating applications. Over {} applications generated".format(application_amount))
         # End of create_applications

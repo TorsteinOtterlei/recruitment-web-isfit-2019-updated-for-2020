@@ -103,6 +103,12 @@
         text-align: center;
     }
 
+    #submit-error{
+        font-size: small;
+        color: red;
+        text-align: left;
+    }
+
     @media only screen and (max-width: 30em) {
         .times, .topleft{
             font-size: small;
@@ -233,10 +239,11 @@
                         <br /> -->
                         <button type="button" class="btn" id="bt0" onclick="changeWeek(this, 0)">&#8678; 1st Week</button>
                         <button type="button" class="btn" id="bt1" onclick="changeWeek(this, 1)">2nd Week &#8680;</button>
-                        <form method="POST" name='dates_form'  action="#">
+                        <form method="POST" name='dates_form'>
                             {% csrf_token %}
                             <input id="interviewtime" name="interviewtime"></input>
-                            <button onclick="submit()" style="width: 100%; margin: 20px 0 10px 0;" class="btn button-form">Set interview</button>
+                            <button onclick="submit_interview()" style="width: 100%; margin: 20px 0 10px 0;" id='submit-button' class="btn button-form">Set interview</button>
+                            <p id='submit-error'>Nothing to change</p>
                         </form>
                         <button type="button" id="btn-mail">Notify interview to {{ application.applicant }} </button>
                     </div> <!-- End: Buttons-div -->
@@ -249,7 +256,11 @@
 {% block scriptblock %}
     <script type="text/javascript">
         var week, week_text;
-        var chosen_time;
+        var interview_time = "{{interview_time}}";
+        var chosen_time = interview_time;
+        $('#submit-button').attr("disabled", "disabled");
+
+        console.log(chosen_time);
         $(document).ready(function() {
             $("#statusForm").change(function() {
                 $("#statusForm").submit()
@@ -286,9 +297,28 @@
                     $(cellid).addClass('avail-gridcell')
                     $(cellid).html(filler);
                     $(cellid).click(function() {
-                        $('#'+chosen_time).removeClass('chosen-gridcell');
-                        $('#'+this.id).addClass('chosen-gridcell');
-                        chosen_time = this.id;
+                        if (this.id == chosen_time){
+                            $('#'+chosen_time).removeClass('chosen-gridcell');
+
+                            if (interview_time != 'none')$('#submit-button').html('Remove interview');
+                            chosen_time = 'none';
+                        }
+                        else{
+                            $('#'+chosen_time).removeClass('chosen-gridcell');
+                            $('#'+this.id).addClass('chosen-gridcell');
+
+                            if (interview_time != 'none') $('#submit-button').html('Change interview');
+                            else $('#submit-button').html('Set interview');
+                            chosen_time = this.id;
+                        }
+                        if (interview_time == chosen_time){
+                            $('#submit-button').attr("disabled", "disabled");
+                            $('#submit-error').html('Nothing to change')
+                        }
+                        else{
+                            $('#submit-button').removeAttr("disabled");
+                            $('#submit-error').html('')
+                        }
                     });
                 }
             } // End: Display previously selected dates
@@ -316,13 +346,12 @@
 
         }) // End: document.ready
 
-        function submit(){
-            if (chosen_time != null){
-                console.log(chosen_time);
-                $("#interviewtime").val(chosen_time);
-                document.dates_form.submit();
-            }
+        function submit_interview(){
+            console.log(chosen_time);
+            $("#interviewtime").val(chosen_time);
+            document.dates_form.submit();
         }
+
 
         function changeWeek(bt, num){
             week = num;

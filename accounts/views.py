@@ -58,44 +58,50 @@ def manage_profile(request, userID):
 
     DATES_LENGTH = 140
     # BUG: Error if application doesn't have first or second positions. Possibly fixed
-    all_dates = application.applicant.date.dates_list()
-    if len(application.get_positions()) >= 1:
-        all_dates = all_dates + \
-                    application.first.interviewer.date.dates_list()
-    if len(application.get_positions()) >= 2:
-        all_dates = all_dates + \
-                    application.second.interviewer.date.dates_list()
 
-    avail_times = [0] * DATES_LENGTH
+    # Find available times that match both applicant and interview(ers)
+    all_dates = application.applicant.date.dates_list()
+    avail_times = [1] * DATES_LENGTH
+
+    if len(application.get_positions()) >= 1:
+        all_dates = all_dates + application.first.interviewer.date.dates_list()
+    if len(application.get_positions()) >= 2:
+        all_dates = all_dates + application.second.interviewer.date.dates_list()
+        avail_times = [0] * DATES_LENGTH
+
     for i in range(len(all_dates)):
         avail_times[all_dates[i]] += 1
+    # Available times found (reprecented as an array where the number 3 means an available time)
 
     if request.method == 'POST':
         form = StatusForm(instance=applicant)
-        chosen_time = request.POST.get('interviewtime')
+        chosen_time = request.POST.get('interviewtime') # Get the time marked on front-end
+        if not chosen_time: # quickfix
+            chosen_time = 'none'
 
-        if userstatus == User.NOT_EVALUATED: # It is not possible to manually change from NE to IS
-            if chosen_time != None:
-                print('ne')
-                # TODO: make interviewers busy
-                # TODO: set appliaction interview date (also using this in front-end to mark chosen-time)
-                applicant.status = User.INTERVIEW_SET
-                applicant.save() # Changing from NE to IS automatic when an interview is set
-                form = StatusForm(instance=applicant)
+        # TODO: set times as available/not available for interviewers
 
-        elif userstatus in ['IS', 'IC', 'ID', 'AC']: #TODO: More restrictions, what should
-                                                     # be automatic and what should be changed manually ?
-            form = StatusForm(request.POST, instance=applicant)
+        # if chosen_time != application.interview_time:
+        #     print(chosen_time)
+        #     for interviewer in interviewers:
+        #         Date.objects.get(user=interviewer).remove_time(chosen_time)
+        #         if application.interview_time != 'none':
+        #         print('-----------------------------------------------------------')
 
-            if form.is_valid():
-                # if (form.cleaned_data['status'] == 'NE'):
-                #     # TODO: Handle removing/changing interview
+        application.interview_time = chosen_time
+        application.save()
+        print(chosen_time)
+        print('Interview time changed to ' + chosen_time)
 
-                form.save() # Lagrer status direkte på user fordi instance er gitt
-                # TIPS: Kan droppe form.save() for å endre objekt manuelt med form-data. men HUSK: save objektet etterpå
-                # Example:
-                    #applicant.status = form.cleaned_data.get('status')
-                    #applicant.save()
+
+        form = StatusForm(request.POST, instance=applicant)
+
+        if form.is_valid():
+            form.save() # Lagrer status direkte på user fordi instance er gitt
+            # TIPS: Kan droppe form.save() for å endre objekt manuelt med form-data. men HUSK: save objektet etterpå
+            # Example:
+                #applicant.status = form.cleaned_data.get('status')
+                #applicant.save()
 
     # GET or form failed:
     else:
@@ -107,13 +113,14 @@ def manage_profile(request, userID):
         'date': date,
         'form': form,
         'interviewers': interviewers,
-        'avail_times': avail_times
+        'avail_times': avail_times,
+        'interview_time': application.interview_time
     })
 
 def send_mail(request, userID):
     emil, created = User.objects.get_or_create(email="twidex97@gmail.com")
     user = get_object_or_404(User, id=userID)
-    
+
     msg = """You have got an interview with ISFiT
             Your interview is {}
             Interviewer: {}
