@@ -266,12 +266,13 @@
                 $("#statusForm").submit()
             }) // End: statusForm.change
 
-            avail_times = "{{avail_times}}"
+            avail_times_tmp = "{{avail_times}}"
+            avail_times = avail_times_tmp.substring(1,avail_times_tmp.length -1).split(', ')
             $('.grid2').css('display', 'none');
             $('#bt0').prop("disabled", true);
 
             week = 0;
-            week_text = ['Week 36 (3th Sept - 9th Sept)', 'Week 37 (10th Sept - 16th Sept)'];
+            week_text = ['Week 36 (3rd Sept - 9th Sept)', 'Week 37 (10th Sept - 16th Sept)'];
             var filler = "X";
 
             // Create divs inside grid. Easier than adding them manually
@@ -292,7 +293,7 @@
 
             // Display previously selected dates
             for (var i = 0; i < avail_times.length; i++) {
-                if (avail_times[i] == 3){
+                if (avail_times[i] == "3"){
                     var cellid = "#" + i;
                     $(cellid).addClass('avail-gridcell')
                     $(cellid).html(filler);
