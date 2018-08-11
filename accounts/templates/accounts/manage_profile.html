@@ -266,7 +266,8 @@
                 $("#statusForm").submit()
             }) // End: statusForm.change
 
-            avail_times = "{{avail_times}}"
+            avail_times_tmp = "{{avail_times}}"
+            avail_times = avail_times_tmp.substring(1,avail_times_tmp.length -1).split(', ')
             $('.grid2').css('display', 'none');
             $('#bt0').prop("disabled", true);
 
@@ -292,7 +293,7 @@
 
             // Display previously selected dates
             for (var i = 0; i < avail_times.length; i++) {
-                if (avail_times[i] == 3){
+                if (avail_times[i] == "3"){
                     var cellid = "#" + i;
                     $(cellid).addClass('avail-gridcell')
                     $(cellid).html(filler);
