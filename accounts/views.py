@@ -72,33 +72,36 @@ def manage_profile(request, userID):
 
     for i in range(len(all_dates)):
         avail_times[all_dates[i]] += 1
+    if interview_time != 'none': # The time when the interview is set is also available
+        avail_times[int(interview_time)] = 3
     # Available times found (reprecented as an array where the number 3 means an available time)
 
     if request.method == 'POST':
         form = StatusForm(instance=applicant)
         chosen_time = request.POST.get('interviewtime') # Get the time marked on front-end
-        if not chosen_time: # quickfix
-            chosen_time = 'none'
+        if not chosen_time: # If chosen_time never is submitted (i.e. user click on something else that refreshes the page)
+            chosen_time = interview_time
 
         # Updating the interviewers availability
         if chosen_time != application.interview_time:
             for i in range(2):
                 i = Date.objects.get(user=interviewers[i])
-                if chosen_time != 'none':
+                if chosen_time != 'none': # If a new interview time is set
                     i.remove_time(chosen_time)
-                if application.interview_time != 'none':
+                if application.interview_time != 'none': # If there was no interview set in beforehand
                     i.dates += ',' + interview_time
                 i.save()
                 print("Available times for interviewer %s are updated" %(i.user.email))
 
-        application.interview_time = chosen_time
-        application.save()
-        print('Interview time changed to ' + chosen_time)
+            application.interview_time = chosen_time
+            application.save()
+            print('Interview time changed to ' + chosen_time)
 
-
+        print('request.POST, instance=applicant')
         form = StatusForm(request.POST, instance=applicant)
 
         if form.is_valid():
+            print('form valid')
             form.save() # Lagrer status direkte på user fordi instance er gitt
             # TIPS: Kan droppe form.save() for å endre objekt manuelt med form-data. men HUSK: save objektet etterpå
             # Example:

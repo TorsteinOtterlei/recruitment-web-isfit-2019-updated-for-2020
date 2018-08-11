@@ -255,21 +255,22 @@
 
 {% block scriptblock %}
     <script type="text/javascript">
-        var week, week_text;
-        var interview_time = "{{interview_time}}";
-        var chosen_time = interview_time;
-        $('#submit-button').attr("disabled", "disabled");
+        var week, week_text, interview_time, chosen_time, avail_times;
 
-        console.log(chosen_time);
         $(document).ready(function() {
             $("#statusForm").change(function() {
                 $("#statusForm").submit()
             }) // End: statusForm.change
 
-            avail_times_tmp = "{{avail_times}}"
-            avail_times = avail_times_tmp.substring(1,avail_times_tmp.length -1).split(', ')
+            interview_time = "{{interview_time}}";
+            chosen_time = interview_time;
+
+            avail_times = "{{avail_times}}".substring(1,"{{avail_times}}".length -1).split(', ')
+
             $('.grid2').css('display', 'none');
             $('#bt0').prop("disabled", true);
+            $('#submit-button').attr("disabled", "disabled");
+            console.log('Chosen time: ' + chosen_time)
 
             week = 0;
             week_text = ['Week 36 (3rd Sept - 9th Sept)', 'Week 37 (10th Sept - 16th Sept)'];
@@ -291,12 +292,13 @@
                 $(".grid2").append(div);
             } // End: cell-appending to grid
 
-            // Display previously selected dates
+            // ---------- Start: Display previously selected dates ---------- \\
             for (var i = 0; i < avail_times.length; i++) {
                 if (avail_times[i] == "3"){
                     var cellid = "#" + i;
                     $(cellid).addClass('avail-gridcell')
                     $(cellid).html(filler);
+                    // ---- Start: Define onclick function for grid boxex --- \\
                     $(cellid).click(function() {
                         if (this.id == chosen_time){
                             $('#'+chosen_time).removeClass('chosen-gridcell');
@@ -321,8 +323,9 @@
                             $('#submit-error').html('')
                         }
                     });
+                    // ----- End: Define click function for grid boxes ------ \\
                 }
-            } // End: Display previously selected dates
+            } // ---------- End: Display previously selected dates ---------- \\
             $('#' + chosen_time).addClass('chosen-gridcell');
 
             // Send interview time to user by mail:
