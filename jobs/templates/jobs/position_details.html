@@ -1,8 +1,65 @@
 {% extends 'jobs/base.html' %}
-{% block title %}Position description{% endblock %}
+{% block title %}{{position.title}}{% endblock %}
+{% load static %}
+{% block head %}
+    <meta name="icon-author" content="">
+
+    <style media="screen">
+        #position-logo {
+            height: 120px;
+            padding-bottom: 10px;
+        }
+        #details > * {
+            display: inline-block;
+        }
+        #leader {
+            color: orange;
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+        .detail {
+            column-width: auto;
+            background: #343a40;
+            border-color: orange;
+            border-style: dashed;
+            border-radius: 15px;
+            max-width: 700px;
+        }
+
+        #title {
+            color: white;
+            font-family: "Bitstream Vera Sans Mono", Monaco, "Courier New", Courier, monospace;
+            font-size: xx-large;
+            background: #343a40;
+            border-color: orange;
+            border-style: dashed;
+            border-radius: 15px;
+            alignment: center;
+        }
+
+    </style>
+{% endblock head %}
 
 {% block body %}
-    <br>
-    <br>
-    <h2>{{position.description}}</h2>
+<div class="container">
+    <a href="{% url 'accounts:profile' %}">
+        <img id="arrow-left" src="{% static 'applications/arrow_left.png' %}" alt="Arrow left">
+        Profile
+    </a>
+</div>
+
+<div id="title" class="col-lg-auto">
+    <b>{{position.title}}</b>
+</div>
+
+<div id="leader" class="col-lg-auto">
+    Leader: {{position.interviewer.get_full_name}}<br />
+    Email address: {{position.interviewer.email}}<br />
+    Phone: {{position.interviewer.phone_number}}
+</div>
+
+<div class="col-lg-1 detail">
+    {{position.description|linebreaksbr}}
+</div>
+
 {% endblock %}
