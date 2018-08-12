@@ -4,6 +4,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
+from django.db.models import Q
+import json
 # local:
 from accounts.forms import SignUpForm, StatusForm, WidgetsForm, CustomAuthenticationForm
 from accounts.models import User
@@ -16,7 +18,19 @@ def profile(request):
     print(request.user)
     # Admin profile should look different
     if request.user.is_staff:
-        return render(request, 'accounts/profile_admin.html')
+        # Default: this staff/interviewer has no position, thus no applications applied for it
+        applications = []
+        # Get position or None
+        position = Position.objects.filter(interviewer=request.user).first()
+            # Check if user is an interviewer
+        if position != None:
+            applications = Application.objects.filter(
+                        ~Q(interview_time='none'),
+                        Q(first=position) | Q(second=position)
+                    )
+        return render(request, 'accounts/profile_admin.html', {
+            'applications': applications
+        })
     # Normal profile
     application, created = Application.objects.get_or_create(applicant=request.user)
     return render(request, 'accounts/profile.html', {
