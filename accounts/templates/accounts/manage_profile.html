@@ -122,10 +122,12 @@
         <!-- Title -->
         <div class="title">
             <h1>Applicant: {{ application.applicant.get_full_name }}</h1>
+            {% if user.is_superuser %}
             <form id="statusForm" method="post" action="#">
                 {% csrf_token %}
                 &emsp;Status: {{ form.status }}
             </form>
+            {% endif %}
         </div>
         <br>
 
@@ -140,6 +142,13 @@
                 <div class="smooth-wrapper">
                     <p>Email address: {{ application.applicant.email }}</p>
                     <p>Phone number: {{ application.applicant.phone_number }}</p>
+                    {% if user.is_superuser != True %}
+                        {% if application.interview_time %}
+                            <p>Interview time: {{ application.interview_time }}</p>
+                        {% else %}
+                            <p>No time set</p>
+                        {% endif %}
+                    {% endif %}
                 </div>
             </div>
             <br>
@@ -170,7 +179,7 @@
                 </div>
             </div>
             <br>
-
+            {% if user.is_superuser %}
             <!-- Button: Available-times collapse -->
             <button class="btn btn-dark btn-block" type="button" data-toggle="collapse" data-target="#available-times" aria-expanded="false">
                 Available times for interview
@@ -237,6 +246,7 @@
                                             <p id='submit-error'>Nothing to change</p>
                                         </form>
                                         <button type="button" id="btn-mail">Notify interview to {{ application.applicant }} </button>
+
                                     </div>
                                 </div>
                             </div>
@@ -245,6 +255,7 @@
                 </div> <!-- End: smooth-wrapper -->
             </div> <!-- End: Available-times collapsible -->
         </div> <!-- End: container collapsing fields -->
+            {% endif %}
 {% endblock body %}
 
 {% block scriptblock %}

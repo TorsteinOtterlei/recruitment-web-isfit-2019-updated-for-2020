@@ -82,7 +82,7 @@ class Date(models.Model):
         self.save()
 
     def pretty_dates_list(self):        # NOT TESTED
-        if dates == '':
+        if self.dates == '':
             return 'none'
         dates_range = 182
         all_times = ["08:15 - 09:00", "09:15 - 10:00", "10:15 - 11:00",

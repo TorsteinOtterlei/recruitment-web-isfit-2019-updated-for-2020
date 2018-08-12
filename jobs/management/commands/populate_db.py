@@ -313,10 +313,10 @@ class Command(BaseCommand):
         application_amount = min(USERS_WITH_APPLICATION, len(users))
 
         # Create list for interview options:
-        interview_times = []
+        '''interview_times = []
         for x in range(DATES_RANGE):
             interview_times.append(str(x))
-            interview_times.append('none') # 50% for no interview
+            interview_times.append('none') # 50% for no interview'''
 
         for i in range(application_amount):
             pos_sample = random.sample(positions, 3)
@@ -325,7 +325,6 @@ class Command(BaseCommand):
                                         first=pos_sample.pop(),
                                         second=pos_sample.pop(),
                                         third=pos_sample.pop(),
-                                        interview_time=interview_times[i]
                                         )
         spinner.succeed("Creating applications. Over {} applications generated".format(application_amount))
         # End of create_applications
