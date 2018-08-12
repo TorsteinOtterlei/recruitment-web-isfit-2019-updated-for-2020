@@ -81,6 +81,30 @@ class Date(models.Model):
         self.dates = ",".join(tmp)
         self.save()
 
+    def pretty_dates_list(self):        # NOT TESTED
+        if dates == '':
+            return 'none'
+        dates_range = 182
+        all_times = ["08:15 - 09:00", "09:15 - 10:00", "10:15 - 11:00",
+        "11:15 - 12:00", "12:15 - 13:00", "13:15 - 14:00", "14:15 - 15:00",
+        "15:15 - 16:00", "16:15 - 17:00", "17:15 - 18:00", "18:15 - 19:00",
+        "19:15 - 20:00", "20:15 - 21:00"]
+        all_days = ["Monday 27 Aug", "Tuesday 28 Aug", "Wednesday 29 Aug",
+         "Thursday 30 Aug", "Friday 31 Aug", "Saturday 1 Sept", "Sunday 2 Sept",
+         "Monday 3 Sept", "Tuesday 4 Sept", "Wednesday 5 Sept", "Thursday 6 Sept",
+         "Friday 7 Sept", "Saturday 8 Sept", "Sunday 9 Sept"]
+
+        res = []
+        for date in self.dates:
+            tmp = float(date)
+            if int(tmp) < dates_range//2:
+                res.append((first_week[int(tmp)%7] + ' - ' + all_times[int(math.trunc(tmp/7))]))
+            else:
+                tmp -= dates_range//2
+                res.append((second_week[int(tmp)%7] + ' - ' + all_times[int(math.trunc(tmp/7))]))
+        return res
+
+
 class Calendar(models.Model):
     gangleader = models.OneToOneField(User, on_delete=models.CASCADE)
     dict = models.TextField(max_length=2000, default=None) # user:1,user:2

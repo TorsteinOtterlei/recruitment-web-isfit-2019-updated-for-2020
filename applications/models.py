@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from jobs.models import Position
 from accounts.models import User
+import math
 
 # Create your models here.
 class Application(models.Model):
@@ -41,12 +42,27 @@ class Application(models.Model):
         return [pos.gang.section.name for pos in positions if pos != None]
 
 
-    def pretty_date(self):
-        if self.interview_time != None:
-            return self.interview_time # TODO: FIX
+    def pretty_interview_time(self):
+        if self.interview_time == 'none':
+            return 'none'
+        dates_range = 182
+        all_times = ["08:15 - 09:00", "09:15 - 10:00", "10:15 - 11:00",
+        "11:15 - 12:00", "12:15 - 13:00", "13:15 - 14:00", "14:15 - 15:00",
+        "15:15 - 16:00", "16:15 - 17:00", "17:15 - 18:00", "18:15 - 19:00",
+        "19:15 - 20:00", "20:15 - 21:00"]
+        first_week = ["Monday 27 Aug", "Tuesday 28 Aug", "Wednesday 29 Aug",
+         "Thursday 30 Aug", "Friday 31 Aug", "Saturday 1 Sept", "Sunday 2 Sept"]
+        second_week = ["Monday 3 Sept", "Tuesday 4 Sept", "Wednesday 5 Sept", "Thursday 6 Sept",
+         "Friday 7 Sept", "Saturday 8 Sept", "Sunday 9 Sept"]
+
+        tmp = float(self.interview_time)
+        if int(tmp) < dates_range//2:
+            return(first_week[int(tmp)%7] + ' - ' + all_times[int(math.trunc(tmp/7))])
         else:
-            return "No time set"
-        
+            tmp -= dates_range//2
+            return(second_week[int(tmp)%7] + ' - ' + all_times[int(math.trunc(tmp/7))])
+
+
     def __str__(self):
         if self.applicant.get_full_name() == None:
             return "error"

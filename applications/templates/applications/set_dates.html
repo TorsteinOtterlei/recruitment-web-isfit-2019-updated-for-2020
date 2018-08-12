@@ -204,14 +204,12 @@
                     this.innerHTML = "";
                     var index = user_dates.indexOf(parseInt(this.id));
                     user_dates.splice(index, 1);
-                    console.log(user_dates);
                     $("#timestring").val(user_dates);
-                    console.log($("#timestring").val());
+                    console.log(this.id);
                 }
                 else { // Select
                     this.innerHTML = filler;
                     user_dates.push(parseInt(this.id));
-                    console.log(user_dates);
                     $("#timestring").val(user_dates);
                     console.log($("#timestring").val());
                 }
@@ -228,7 +226,6 @@
                     if (week == 1) j = i + dates_range/2;
                     user_dates[j] = j;
                     $("#" + j).html(filler);
-                    console.log(user_dates);
                 }
                 $("#timestring").val(user_dates);
             });
@@ -240,7 +237,6 @@
                     if (week == 1) j = i + dates_range/2;
                     $("#" + j).html("");
                 }
-                console.log(user_dates);
                 $("#timestring").val(user_dates);
             });
 
