@@ -41,7 +41,7 @@ class Position(models.Model):
     title = models.CharField(max_length=50)
     gang = models.ForeignKey(Gang, on_delete=models.CASCADE, related_name="positions")
     description = models.TextField(max_length=20000)
-    interviewer = models.OneToOneField(User, on_delete=models.CASCADE, null=True, related_name="position")
+    interviewer = models.OneToOneField(User, on_delete=models.CASCADE, null=True, related_name="position", blank=True)
     #email = models.EmailField(max_length=200)
     #name_of_interviewer = models.CharField(max_length=100)
 
