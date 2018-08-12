@@ -52,7 +52,7 @@ class Position(models.Model):
 
 class Date(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="date")
-    dates = models.TextField(max_length=2000, default=makeDates(140), blank=True) # 1,2,43,68 possible dates
+    dates = models.TextField(max_length=2000, default=makeDates(182), blank=True) # 1,2,43,68 possible dates
 
     def __str__(self):
         if self.user.email == None:

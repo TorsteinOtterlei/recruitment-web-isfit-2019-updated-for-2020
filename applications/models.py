@@ -11,7 +11,20 @@ class Application(models.Model):
     third = models.ForeignKey(Position, on_delete=models.CASCADE, default=None, null=True, blank=True, related_name="third")
     applicant = models.OneToOneField(User, on_delete=models.CASCADE, related_name="application")
     text = models.TextField(max_length=2000)
-    interview_time = models.TextField(max_length=4, default='none')
+    interview_time = models.IntegerField(default=-1)
+
+    def get_interview_time(self):
+        if self.interview_time == -1:
+            return 'none'
+        return str(self.interview_time)
+
+    def set_interview_time(self, time):
+        if time == 'none':
+            self.interview_time = -1
+            self.save()
+        else:
+            self.interview_time = int(time)
+            self.save()
 
     def get_positions(self):
         positions = [self.first, self.second, self.third]

@@ -312,12 +312,6 @@ class Command(BaseCommand):
         users = list(User.objects.filter(staff=False))
         application_amount = min(USERS_WITH_APPLICATION, len(users))
 
-        # Create list for interview options:
-        '''interview_times = []
-        for x in range(DATES_RANGE):
-            interview_times.append(str(x))
-            interview_times.append('none') # 50% for no interview'''
-
         for i in range(application_amount):
             pos_sample = random.sample(positions, 3)
             Application.objects.create( applicant=users[i],

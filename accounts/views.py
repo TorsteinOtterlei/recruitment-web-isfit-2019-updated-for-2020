@@ -25,9 +25,9 @@ def profile(request):
             # Check if user is an interviewer
         if position != None:
             applications = Application.objects.filter(
-                        ~Q(interview_time='none'),
+                        ~Q(interview_time=-1),
                         Q(first=position) | Q(second=position)
-                    )
+                    ).order_by('interview_time')
         return render(request, 'accounts/profile_admin.html', {
             'applications': applications
         })
@@ -69,8 +69,7 @@ def manage_profile(request, userID):
     date, created = Date.objects.get_or_create(user=applicant)
     interviewers = [pos.interviewer for pos in application.get_positions()]
     userstatus = applicant.get_status()
-    interview_time = application.interview_time
-
+    interview_time = application.get_interview_time()
     DATES_LENGTH = 182
     # BUG: Error if application doesn't have first or second positions. Possibly fixed
 
@@ -97,17 +96,18 @@ def manage_profile(request, userID):
             chosen_time = interview_time
 
         # Updating the interviewers availability
-        if chosen_time != application.interview_time:
+        if chosen_time != application.get_interview_time():
             for i in range(2):
                 i = Date.objects.get(user=interviewers[i])
                 if chosen_time != 'none': # If a new interview time is set
+                    print(chosen_time)
                     i.remove_time(chosen_time)
-                if application.interview_time != 'none': # If there was no interview set in beforehand
+                if application.get_interview_time() != 'none': # If there was no interview set in beforehand
                     i.add_time(interview_time)
                 i.save()
-                print("Available times for interviewer %s are updated" %(i.user.email))
+                print("Available times for interviewer {} are updated".format(i.user.email))
 
-            application.interview_time = chosen_time
+            application.set_interview_time(chosen_time)
             application.save()
             print('Interview time changed to ' + chosen_time)
 
@@ -133,7 +133,7 @@ def manage_profile(request, userID):
         'form': form,
         'interviewers': interviewers,
         'avail_times': avail_times,
-        'interview_time': application.interview_time
+        'interview_time': application.get_interview_time()
     })
 
 def send_mail(request, userID):
