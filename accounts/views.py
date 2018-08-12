@@ -71,7 +71,7 @@ def manage_profile(request, userID):
     userstatus = applicant.get_status()
     interview_time = application.interview_time
 
-    DATES_LENGTH = 140
+    DATES_LENGTH = 182
     # BUG: Error if application doesn't have first or second positions. Possibly fixed
 
     # Find available times that match both applicant and interview(ers)
@@ -103,7 +103,7 @@ def manage_profile(request, userID):
                 if chosen_time != 'none': # If a new interview time is set
                     i.remove_time(chosen_time)
                 if application.interview_time != 'none': # If there was no interview set in beforehand
-                    i.dates += ',' + interview_time
+                    i.add_time(interview_time)
                 i.save()
                 print("Available times for interviewer %s are updated" %(i.user.email))
 

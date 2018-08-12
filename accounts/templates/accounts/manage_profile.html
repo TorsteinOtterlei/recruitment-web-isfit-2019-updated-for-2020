@@ -3,86 +3,91 @@
 {% load static %}
 
 {% block head %}
-    <style media="screen">
-    .title {
-        text-align: center;
-    }
-    .title * {
-
-        display: inline-block;
-    }
-    .status-field { /* classname given in StatusForm */
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        border: none;
-        background-color: black;
-        color: orange;
-        outline: none;
-        cursor: pointer;
-    }
-    .button-back {
-        position: absolute;
-        top: 80px;
-        left: 20px;
-    }
-    .smooth-wrapper {
-        background-color: #23272b;
-        border: 1px solid #343a40;
-        border-top-style: none;
-        border-bottom-left-radius: 8px;
-        border-bottom-right-radius: 8px;
-        padding: 10px;
-    }
-    hr {
-        border: 1px solid #343a40;
-    }
-
-    /*-------------------------------------------*/
+<style media="screen">
     .calendar {
         display: grid;
         grid-template-columns: 1fr 6fr;
-        gap: 1em;
+        gap: 0.8em;
         border: solid;
         border-radius: 20px;
         border-color: gray;
-        padding: 2em;
+        /*
+        */
+        padding: 0.7em;
         text-align: center;
         color: DeepSkyBlue;
     }
-    .topleft {
-        border: hidden;
-    }
     .times {
         display: grid;
-        border: hidden;
         gap: 1em;
+        padding-top: 0.25em;
+        padding-bottom: 0.5em;
     }
     .times div {
-        border: hidden;
         min-width: 6em;
+        /*
         padding-top: 0.25em;
+        */
     }
     .days {
         display: grid;
         grid-template-columns: repeat(7, 1fr);
-        border: hidden;
-
+        grid-gap: 0.2em;
     }
     .grid1, .grid2 {
         display: grid;
         grid-template-columns: repeat(7, 1fr);
         grid-template-rows: repeat(10, 1.9em);
-        border: hidden;
-        gap: 1em;
+        gap: 0.55em;
+    }
+    .gridcell {
+        height: 28px;
+        border: solid;
+        border-radius: 7px;
     }
 
-    .gridcell {
-        border: solid;
-        border-radius: 6px;
+    #timestring {
+        display: none;
     }
+    #buttons-div {
+        text-align: center;
+    }
+    #bt0, #bt1{
+        margin-top: 10px;
+    }
+    #cell-selecting, #changeWeek-div {
+        display: inline-block;
+    }
+    #buttons-div button {
+        min-width: 100px;
+    }
+    .buttons-col {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+    }
+
+    @media only screen and (max-width: 30em) {
+        .grid1, .grid2 {
+            gap: 0.13em;
+        }
+        .gridcell {
+            font-size: small;
+            height: 20px;
+        }
+        .times, .topleft {
+            font-size: small;
+            min-width: 5em;
+            padding-top: 0.1em;
+            /*
+            */
+        }
+    }
+
     .avail-gridcell:hover {
-        cursor: pointer;
-        color: orange;
+    cursor: pointer;
+    color: orange;
     }
     .chosen-gridcell {
         color: orange;
@@ -90,13 +95,6 @@
 
     #interviewtime {
         display: none;
-    }
-
-    #buttons-div{
-        text-align: center;
-    }
-    #bt0, #bt1{
-        margin-top: 10px;
     }
 
     #available-times-info{
@@ -109,20 +107,6 @@
         text-align: left;
     }
 
-    @media only screen and (max-width: 30em) {
-        .times, .topleft{
-            font-size: small;
-            min-width: 5em;
-            padding-top: 0.1em;
-            margin-left: -2.5em;
-        }
-        .grid1, .grid2, .days {
-            margin-right: -1.5em;
-        }
-        .days{
-            font-size: small;
-        }
-    }
     </style>
 {% endblock %}
 
@@ -195,62 +179,72 @@
             <div class="collapse" id="available-times">
                 <div class="smooth-wrapper">
                     <div id='available-times-info'>
-                        <h5>Interview times when applicant and both interviewers are available</h5>
-                        <h6><div id="week-div">Week 33 (13th Aug - 19th Aug)</div></h6>
-                    </div>
-                    <div class="calendar">
-                        <div class="topleft">Time / Day</div>
+                        <h5>Interview times when applicant and both interviewers are available</h5><br>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-9">
+                                    <h5><div id="week-div">Week 33 (29th Aug - 2nd Sep)</div></h5>
+                                    <div class="calendar">
+                                        <div class="topleft">Time / Day</div>
 
-                        <div class="days">
-                            <div>Mon</div>
-                            <div>Tue</div>
-                            <div>Wed</div>
-                            <div>Thu</div>
-                            <div>Fri</div>
-                            <div>Sat</div>
-                            <div>Sun</div>
+                                        <div class="days">
+                                            <div>Mon</div>
+                                            <div>Tue</div>
+                                            <div>Wed</div>
+                                            <div>Thu</div>
+                                            <div>Fri</div>
+                                            <div>Sat</div>
+                                            <div>Sun</div>
+                                        </div>
+
+                                        <div class="times">
+                                            <div>08:15 - 09:00</div>
+                                            <div>09:15 - 10:00</div>
+                                            <div>10:15 - 11:00</div>
+                                            <div>11:15 - 12:00</div>
+                                            <div>12:15 - 13:00</div>
+                                            <div>13:15 - 14:00</div>
+                                            <div>14:15 - 15:00</div>
+                                            <div>15:15 - 16:00</div>
+                                            <div>16:15 - 17:00</div>
+                                            <div>17:15 - 18:00</div>
+                                            <div>18:15 - 19:00</div>
+                                            <div>19:15 - 20:00</div>
+                                            <div>20:15 - 21:00</div>
+
+                                        </div>
+
+                                        <div class="grid1">
+                                            <!-- cells inserted with javascript -->
+                                        </div> <!-- End: grid -->
+
+                                        <div class="grid2">
+                                            <!-- cells inserted with javascript -->
+                                        </div> <!-- End: grid -->
+                                    </div> <!-- End: calendar -->
+                                </div>
+                                <div class="col-lg-3 buttons-col ">
+                                    <div class="" id="buttons-div">
+                                        <div class="changeWeek-div">
+                                            <button type="button" class="btn" id="bt0" onclick="changeWeek(this, 0)">&#8678; 1st Week</button>
+                                            <button type="button" class="btn" id="bt1" onclick="changeWeek(this, 1)">2nd Week &#8680;</button>
+                                        </div>
+
+                                        <form method="POST" name='dates_form'>
+                                            {% csrf_token %}
+                                            <input id="interviewtime" name="interviewtime"></input>
+                                            <button onclick="submit_interview()" style="width: 100%; margin: 20px 0 10px 0;" id='submit-button' class="btn button-form">Set interview</button>
+                                            <p id='submit-error'>Nothing to change</p>
+                                        </form>
+                                        <button type="button" id="btn-mail">Notify interview to {{ application.applicant }} </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="times">
-                            <div>08:00 - 09:00</div>
-                            <div>09:00 - 10:00</div>
-                            <div>10:00 - 11:00</div>
-                            <div>11:00 - 12:00</div>
-                            <div>12:00 - 13:00</div>
-                            <div>13:00 - 14:00</div>
-                            <div>14:00 - 15:00</div>
-                            <div>15:00 - 16:00</div>
-                            <div>16:00 - 17:00</div>
-                            <div>17:00 - 18:00</div>
-                        </div>
-
-                        <div class="grid1">
-                            <!-- cells inserted with javascript -->
-                        </div>
-
-                        <div class="grid2">
-                            <!-- cells inserted with javascript -->
-                        </div>
-                    </div> <!-- End: calendar -->
-                    <!-- Buttons for calendar -->
-                    <div id="buttons-div">
-                        <!-- <button type="button" class="btn btn-outline-success" id="select_all">Select all</button>
-                        <button type="button" class="btn btn-outline-danger" id="unselect_all">Unselect all</button>
-                        <br /> -->
-                        <button type="button" class="btn" id="bt0" onclick="changeWeek(this, 0)">&#8678; 1st Week</button>
-                        <button type="button" class="btn" id="bt1" onclick="changeWeek(this, 1)">2nd Week &#8680;</button>
-                        <form method="POST" name='dates_form'>
-                            {% csrf_token %}
-                            <input id="interviewtime" name="interviewtime"></input>
-                            <button onclick="submit_interview()" style="width: 100%; margin: 20px 0 10px 0;" id='submit-button' class="btn button-form">Set interview</button>
-                            <p id='submit-error'>Nothing to change</p>
-                        </form>
-                        <button type="button" id="btn-mail">Notify interview to {{ application.applicant }} </button>
-                    </div> <!-- End: Buttons-div -->
                 </div> <!-- End: smooth-wrapper -->
             </div> <!-- End: Available-times collapsible -->
         </div> <!-- End: container collapsing fields -->
-    </div> <!-- End: container -->
 {% endblock body %}
 
 {% block scriptblock %}
@@ -272,12 +266,13 @@
             $('#submit-button').attr("disabled", "disabled");
             console.log('Chosen time: ' + chosen_time)
 
+            dates_range = 182
             week = 0;
-            week_text = ['Week 36 (3rd Sept - 9th Sept)', 'Week 37 (10th Sept - 16th Sept)'];
+            week_text = ['Week 36 (29. Aug - 2. Sep)', 'Week 37 (3. Sep - 8. Sep)'];
             var filler = "X";
 
             // Create divs inside grid. Easier than adding them manually
-            for (var i=0; i<70; i++) { // 70 because of temporary 0-69 grid
+            for (var i=0; i<dates_range/2; i++) { // 70 because of temporary 0-69 grid
                 var div = document.createElement("div");  // Create with DOM
                 div.id = i; // Give each cell their id according to grid
                 div.className = "gridcell";
@@ -285,7 +280,7 @@
             } // End: cell-appending to grid
 
             // Create divs inside grid. Easier than adding them manually
-            for (var i=70; i<140; i++) { // 70 because of temporary 0-69 grid
+            for (var i=dates_range/2; i<dates_range; i++) { // 70 because of temporary 0-69 grid
                 var div = document.createElement("div");  // Create with DOM
                 div.id = i; // Give each cell their id according to grid
                 div.className = "gridcell";
@@ -300,6 +295,7 @@
                     $(cellid).html(filler);
                     // ---- Start: Define onclick function for grid boxex --- \\
                     $(cellid).click(function() {
+                        console.log(this.id);
                         if (this.id == chosen_time){
                             $('#'+chosen_time).removeClass('chosen-gridcell');
 
