@@ -9,12 +9,12 @@ from jobs.models import Section, Gang, Position, Project, Date
 from django.core import management
 
 # Settings:
-USER_AMOUNT = 50
+USER_AMOUNT = 20
 USER_PW = "Django123"
-USERS_WITH_APPLICATION = 30
-USERS_WITH_DATES = 40
-DATES_RANGE = 140
-DATES_SAMPLE = 120
+USERS_WITH_APPLICATION = 10
+USERS_WITH_DATES = 100
+DATES_RANGE = 182
+DATES_SAMPLE = 91
 
 class Command(BaseCommand):
     args = '<foo bar ...>'
@@ -89,8 +89,8 @@ class Command(BaseCommand):
         ellen = User.objects.create_user(email="ellen@test.no", first_name="Ellen", password=USER_PW)
         ragnhild = User.objects.create_user(email="ragnhild@test.no", first_name="Ragnhild", password=USER_PW)
         # Create simple users
+        choices = [i[0] for i in User.STATUS_CHOISES]
         for i in range(USER_AMOUNT):
-            choices = [i[0] for i in User.STATUS_CHOISES]
             User.objects.create_user(email="pers"+str(i)+"@test.no",
             first_name="Yolo"+str(i),
             last_name="Swag",
@@ -312,6 +312,12 @@ class Command(BaseCommand):
         users = list(User.objects.filter(staff=False))
         application_amount = min(USERS_WITH_APPLICATION, len(users))
 
+        # Create list for interview options:
+        interview_times = []
+        for x in range(DATES_RANGE):
+            interview_times.append(str(x))
+            interview_times.append('none') # 50% for no interview
+
         for i in range(application_amount):
             pos_sample = random.sample(positions, 3)
             Application.objects.create( applicant=users[i],
@@ -319,7 +325,7 @@ class Command(BaseCommand):
                                         first=pos_sample.pop(),
                                         second=pos_sample.pop(),
                                         third=pos_sample.pop(),
-                                        interview_time='none'
+                                        interview_time=interview_times[i]
                                         )
         spinner.succeed("Creating applications. Over {} applications generated".format(application_amount))
         # End of create_applications
@@ -331,9 +337,8 @@ class Command(BaseCommand):
         users = list(User.objects.all())
         date_amount = min(USERS_WITH_DATES, len(users))
         for i in range(date_amount):
-            d = Date()
-            d.user = users[i]
-            d.dates = ",".join(str(x) for x in sorted(random.sample(range(DATES_RANGE), DATES_SAMPLE)))
+            d, created = Date.objects.get_or_create(user=users.pop())
+            d.set_dates(sorted(random.sample(range(DATES_RANGE), DATES_SAMPLE)))
             d.save()
         spinner.succeed()
 
@@ -386,6 +391,6 @@ class Command(BaseCommand):
         self.create_projects()
         self.create_positions()
         self.create_applications()
-        #self.create_dates()
+        self.create_dates()
         print("  ==  Dummydata inserted, REMEMBER to runserver  ==  ")
         # End of handle
