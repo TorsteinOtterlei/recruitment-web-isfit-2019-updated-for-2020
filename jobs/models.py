@@ -62,6 +62,19 @@ class Date(models.Model):
     def dates_list(self):
         return [int(x) for x in self.dates.split(',') if x != ""]
 
+    def set_dates(self, list):
+        if (type(list) == type([])):
+            self.dates = ",".join([str(x) for x in list])
+            self.save()
+
+    def add_time(self, time):
+        try:
+            time = int(time)
+            self.dates += ',' + str(time)
+            self.save()
+        except:
+            print('Error: adding an invalid time')
+
     def remove_time(self, time):
         tmp = self.dates.split(',')
         tmp.remove(time)
