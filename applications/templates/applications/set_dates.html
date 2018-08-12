@@ -39,7 +39,7 @@
             grid-template-rows: repeat(10, 1.9em);
             gap: 0.55em;
         }
-        .gridcell {
+        .gridcell, .gridcell-disabled {
             height: 28px;
             border: solid;
             border-radius: 7px;
@@ -48,6 +48,10 @@
             cursor: pointer;
             color: orange;
         }
+        .gridcell-disabled:hover {
+            cursor: not-allowed;
+        }
+
         #timestring {
             display: none;
         }
@@ -74,7 +78,7 @@
             .grid1, .grid2 {
                 gap: 0.13em;
             }
-            .gridcell {
+            .gridcell, .gridcell-disabled {
                 font-size: small;
                 height: 20px;
             }
@@ -168,6 +172,7 @@
             dates_range = 182
             week = 0;
             week_text = ['Week 36 (29. Aug - 2. Sep)', 'Week 37 (3. Sep - 8. Sep)'];
+            closed_dates = [0,1,7,8,14,15,21,22,28,29,35,36,42,]
             all_dates = [...Array(dates_range).keys()];
             user_dates_inverse = {{ user_dates }}
             user_dates = all_dates.filter( function( el ) {
@@ -180,7 +185,12 @@
             for (var i=0; i<dates_range/2; i++) { // 70 because of temporary 0-69 grid
                 var div = document.createElement("div");  // Create with DOM
                 div.id = i; // Give each cell their id according to grid
-                div.className = "gridcell";
+
+                // if (i in closed_dates) div.className = "gridcell-disabled";
+                // else div.className = "gridcell";
+                var tmp = (i%7==0 || i%7==1) ? 'gridcell-disabled' : 'gridcell';
+                div.className = tmp;
+                if (tmp=='gridcell-disabled') div.innerHTML = filler;
                 $(".grid1").append(div);
             } // End: cell-appending to grid
 
@@ -188,7 +198,9 @@
             for (var i=dates_range/2; i<dates_range; i++) { // 70 because of temporary 0-69 grid
                 var div = document.createElement("div");  // Create with DOM
                 div.id = i; // Give each cell their id according to grid
-                div.className = "gridcell";
+                var tmp = (i%7==6) ? 'gridcell-disabled' : 'gridcell';
+                div.className = tmp;
+                if (tmp=='gridcell-disabled') div.innerHTML = filler;
                 $(".grid2").append(div);
             } // End: cell-appending to grid
 

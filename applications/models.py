@@ -79,5 +79,5 @@ class Application(models.Model):
     def __str__(self):
         if self.applicant.get_full_name() == None:
             return "error"
-        interview_date = self.pretty_date()
+        interview_date = self.pretty_interview_time()
         return "{}, Interview: {}".format(self.applicant.get_full_name(), interview_date)

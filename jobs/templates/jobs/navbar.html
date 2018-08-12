@@ -37,7 +37,7 @@
                     {% if user.is_staff %}
                         <li><a href="{% url 'applications:set_dates' %}">Set Dates</a></li>
                         <li><a href="{% url 'applications:manage_applications' %}">Manage Applications</a>
-                        <li><a href="{% url 'admin:index' %}">Administration</a>
+                        <li><a href="{% url 'admin:index' %}" target="_blank">Administration</a>
                     {% endif %}
 
                     <li class="dropdown">
