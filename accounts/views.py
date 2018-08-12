@@ -74,14 +74,20 @@ def manage_profile(request, userID):
     DATES_LENGTH = 182
     # BUG: Error if application doesn't have first or second positions. Possibly fixed
 
-    # Find available times that match both applicant and interview(ers)
+    # Find available times that match both applicant and interviewer(s)
     all_dates = application.applicant.date.dates_list()
     avail_times = [1] * DATES_LENGTH
 
     if len(application.get_positions()) >= 1:
-        all_dates = all_dates + application.first.interviewer.date.dates_list()
+        if application.first.interviewer != None:
+            all_dates = all_dates + application.first.interviewer.date.dates_list()
+        else:
+            all_dates += all_dates
     if len(application.get_positions()) >= 2:
-        all_dates = all_dates + application.second.interviewer.date.dates_list()
+        if application.second.interviewer != None:
+            all_dates = all_dates + application.second.interviewer.date.dates_list()
+        else:
+            all_dates += all_dates
         avail_times = [0] * DATES_LENGTH
 
     for i in range(len(all_dates)):
