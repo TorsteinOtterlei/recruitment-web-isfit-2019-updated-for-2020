@@ -115,6 +115,7 @@
 {% endblock %}
 
 {% block body %}
+{% if application.first.interviewer == user or application.second.interviewer == user or application.third.interviewer == user%}
     <div class="container">
 
         <!-- Back button -->
@@ -260,6 +261,9 @@
             </div> <!-- End: Available-times collapsible -->
         </div> <!-- End: container collapsing fields -->
             {% endif %}
+{% else %}
+            You cannot see this information
+{% endif %}
 {% endblock body %}
 
 {% block scriptblock %}
