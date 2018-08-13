@@ -2,6 +2,16 @@
 {% block title %}Welcome{% endblock %}
 {% block head %}
 <style media="screen">
+
+    .text-area{
+        text-align: center;
+    }
+
+    .input-button{
+        width: 15em;
+        height: 2em;
+    }
+
     #easteregg{
         position: fixed;
         right: 3px;
@@ -15,11 +25,11 @@
     <div class="text-area container" id="intro-text">
           <h1>We are now recruiting volunteers!</h1>
           <p><i>Applications to participate in ISFiT19 will open August 31st.
-          This is to volunteer with ISFiT. To volunteer, you must be a student in Trondheim.</i></p>
-          Do you want to be a link between Trondheim and the rest of the world? Would
-          you like to get to know students from all over the world and help bring them
-          to Trondheim for ten days of the world’s biggest International Student
-          Festival? ISFiT is now recruiting! We are looking for volunteers in all
+          This is to volunteer with ISFiT. To volunteer, you must be <b>a student in Trondheim</b>.</i></p>
+          Do you want to join us in welcoming the world to Trondheim in 2019? Would
+           you like to get to know students from all over the world and join them
+           for ten days at the world's largest international student festival?
+            ISFiT is now recruiting! We are looking for volunteers in all
           departments, from economy and administration to culture and theme! Press,
           Concerts and Accounting are only some of the groups looking for fresh
           volunteers. If you want to learn more about the different positions, go to
@@ -43,7 +53,11 @@
         {% else %} <!-- If normal user -->
             <!-- Edit application -->
             <form action="{% url 'applications:apply' %}" method="get">
+                {% if has_applied %}
                 <input class="input-button" type="submit" value="Edit application"><br>
+                {% else %}
+                <input class="input-button" type="submit" value="Apply now!"><br>
+                {% endif %}
             </form>
         {% endif %}
         <!-- Logout -->
@@ -52,13 +66,14 @@
         </form>
     {% else %}
         <form action="{% url 'accounts:signup' %}" method="get">
-            <input class="input-button" type="submit" value="Create User"><br>
+            <input class="input-button" type="submit" value="Create profile"><br>
         </form>
         <form action="{% url 'accounts:login' %}" method="get">
             <input class="input-button" type="submit" value="Login"><br>
         </form>
+        <!-- <br> -->
         <form action="{% url 'jobs:information' %}" method="get">
-            <input class="input-button" type="submit" value="Se all available positions"><br>
+            <input class="input-button" id='see-pos' type="submit" value="Browse all available positions"><br>
         </form>
     {% endif %}
     <div id='easteregg'>&#9854;</div>

@@ -7,7 +7,13 @@ from jobs.models import Section, Gang, Position, Project, Calendar
 from applications.models import Application
 
 def home(request):
-    return render(request, 'jobs/home.html')
+    try:
+        has_applied = Application.objects.get(applicant=request.user).first != None
+        return render(request, 'jobs/home.html', {
+            'has_applied': has_applied
+        })
+    except Exception as e: # if user not signed in
+        return render(request, 'jobs/home.html')
 
 def information(request):
     return render(request, 'jobs/information.html', {
