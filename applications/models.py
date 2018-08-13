@@ -56,7 +56,7 @@ class Application(models.Model):
 
 
     def pretty_interview_time(self):
-        if self.interview_time == 'none':
+        if self.get_interview_time() == 'none':
             return 'none'
         dates_range = 182
         all_times = ["08:15 - 09:00", "09:15 - 10:00", "10:15 - 11:00",
@@ -68,7 +68,7 @@ class Application(models.Model):
         second_week = ["Monday 3 Sept", "Tuesday 4 Sept", "Wednesday 5 Sept", "Thursday 6 Sept",
          "Friday 7 Sept", "Saturday 8 Sept", "Sunday 9 Sept"]
 
-        tmp = float(self.interview_time)
+        tmp = float(self.get_interview_time())
         if int(tmp) < dates_range//2:
             return(first_week[int(tmp)%7] + ' - ' + all_times[int(math.trunc(tmp/7))])
         else:
