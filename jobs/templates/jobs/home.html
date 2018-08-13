@@ -1,5 +1,15 @@
 {% extends 'jobs/base.html' %}
 {% block title %}Welcome{% endblock %}
+{% block head %}
+<style media="screen">
+    #easteregg{
+        position: fixed;
+        right: 3px;
+        bottom: 0;
+        opacity: 0.1;
+    }
+</style>
+{% endblock %}
 
 {% block body %}
     <div class="text-area container" id="intro-text">
@@ -51,4 +61,39 @@
             <input class="input-button" type="submit" value="Se all available positions"><br>
         </form>
     {% endif %}
+    <div id='easteregg'>&#9854;</div>
+{% endblock %}
+{% block scriptblock %}
+    <script type="text/javascript">
+        var DELAY = 700, clicks = 0, timer = null;
+        $("#easteregg").on("click", function(e){
+            clicks++;
+            timer = setTimeout(function() {
+                clicks = 0;
+            }, DELAY);
+            if (clicks > 2){
+                $('.text-area').css('font-size', 'xx-small')
+                var i = 0;
+                var interval = setInterval(function(){
+                    if (i == $('form').length) clearInterval(interval);
+                    move($('form')[i], dir = (i%2 == 0) ? 'margin-left' : 'margin-right')
+                    i++;
+                },
+                1000);
+            }
+        });
+        var colors = ['orange', 'white']
+        function move(obj, dir){
+            i = 0;
+            function glide() {
+                $('h1').css('color', colors[i%3])
+                i += 2;
+                $(obj).css(dir, i+'px');
+                $(obj).css('background-color', colors[i%3])
+               setTimeout(glide, 2);
+               i = (i > 1500) ? -1500 : i
+            }
+            setTimeout(glide, 5);
+        }
+    </script>
 {% endblock %}
