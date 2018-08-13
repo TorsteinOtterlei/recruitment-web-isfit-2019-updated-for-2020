@@ -8,18 +8,6 @@ from django.db.models import Q
 
 from jobs.models import Section, Gang
 
-
-
-# Register your models here.
-"""
-first = models.ForeignKey(Position, on_delete=models.CASCADE, default=None, null=True, related_name="first")
-second = models.ForeignKey(Position, on_delete=models.CASCADE, default=None, null=True, blank=True, related_name="second")
-third = models.ForeignKey(Position, on_delete=models.CASCADE, default=None, null=True, blank=True, related_name="third")
-applicant = models.OneToOneField(User, on_delete=models.CASCADE, related_name="application")
-text = models.TextField(max_length=2000)
-interview_time = models.IntegerField(default=-1)
-"""
-
 class ApplicationSectionFilter(admin.SimpleListFilter):
     title = _('section')
     parameter_name = 'section'
@@ -34,6 +22,7 @@ class ApplicationSectionFilter(admin.SimpleListFilter):
         for section in Gang.objects.all():
             if str(self.value()) == str(section.id):
                 return queryset.filter( Q(first__gang=section) | Q(second__gang=section) | Q(third__gang=section) )
+
 
 class ApplicationGangFilter(admin.SimpleListFilter):
     title = _('gang')
@@ -57,7 +46,6 @@ class ApplicationAdmin(admin.ModelAdmin):
         ('Positions', {'fields': ['first', 'second', 'third'] } ),
         ('Application information', {'fields': ['text', 'interview_time'] } ),
     )
-
     list_display = ['applicant', 'first', 'second', 'third', 'pretty_interview_time', 'interview_time']
     list_filter = [ApplicationSectionFilter, ApplicationGangFilter]
     search_fields = ['applicant__email', 'applicant__full_name', 'applicant__phone_number']
