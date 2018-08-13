@@ -8,7 +8,7 @@ def makeDates(numb):
     return ",".join([str(i) for i in range(numb)])
 
 class Section(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=100)
     leader = models.OneToOneField(User, on_delete=models.SET_NULL, null=True)
     information = models.TextField(max_length=20000)
 
@@ -18,7 +18,7 @@ class Section(models.Model):
         return self.name
 
 class Gang(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=100)
     #leader = models.OneToOneField(User, on_delete=models.SET_NULL, null=True)
     section = models.ForeignKey(Section, on_delete=models.CASCADE, related_name="gangs")
 
@@ -28,7 +28,7 @@ class Gang(models.Model):
         return self.name
 
 class Project(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=100)
     leader = models.OneToOneField(User, on_delete=models.SET_NULL, null=True)
     gang = models.ForeignKey(Gang, on_delete=models.CASCADE, related_name="projects")
 
@@ -38,7 +38,7 @@ class Project(models.Model):
         return self.name
 
 class Position(models.Model):
-    title = models.CharField(max_length=50)
+    title = models.CharField(max_length=100)
     gang = models.ForeignKey(Gang, on_delete=models.CASCADE, related_name="positions")
     description = models.TextField(max_length=20000)
     interviewer = models.OneToOneField(User, on_delete=models.CASCADE, null=True, related_name="position", blank=True)
