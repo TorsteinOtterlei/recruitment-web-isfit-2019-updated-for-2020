@@ -4,6 +4,59 @@
 
 {% block head %}
 <style media="screen">
+
+    .title {
+        text-align: center;
+    }
+    .title * {
+        display: inline-block;
+    }
+    .status-field { /* classname given in StatusForm */
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        border: none;
+        background-color: black;
+        color: orange;
+        outline: none;
+        cursor: pointer;
+    }
+    .button-back {
+        position: absolute;
+        top: 80px;
+        left: 20px;
+    }
+    .smooth-wrapper {
+        background-color: #23272b;
+        border: 1px solid #343a40;
+        border-top-style: none;
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+        padding: 10px;
+    }
+    hr {
+        border: 1px solid #343a40;
+    }
+
+    /**/
+
+    .button-back {
+        position: absolute;
+        top: 80px;
+        left: 20px;
+    }
+    .collapsing-field {
+        background-color: #23272b;
+        border: 1px solid #343a40;
+        border-top-style: none;
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+        padding: 10px;
+    }
+    hr {
+        border: 1px solid #343a40;
+    }
+
+
     .calendar {
         display: grid;
         grid-template-columns: 1fr 6fr;
@@ -86,8 +139,8 @@
     }
 
     .avail-gridcell:hover {
-    cursor: pointer;
-    color: orange;
+        cursor: pointer;
+        color: orange;
     }
     .chosen-gridcell {
         color: orange;
@@ -111,7 +164,7 @@
         cursor: not-allowed;
     }
 
-    </style>
+</style>
 {% endblock %}
 
 {% block body %}

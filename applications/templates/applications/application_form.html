@@ -74,7 +74,19 @@
 {% endblock %}
 
 {% block body %}
-<h2>Your application</h2>
+<h2>Your application:</h2>
+On this page you are required to write an application text
+and select the positions you would like to apply for.<br>
+On the next page you can select certain times where you're defininitely
+UNABLE to have an interview. <br>
+You can edit your application until 30. Aug. <br>
+Click the link down below to browse all positions with details. <br>
+<br>
+1. Write application text <br>
+2. Click to add positions (max 3) <br>
+3. Prioritize your positions with drag and drop <br>
+4. Click positions to remove <br>
+<br>
 <form method="post" name='application_form'>
     {% csrf_token %}
     {% for field in form %}
@@ -118,7 +130,7 @@
             </li>
             {% endfor %}
         </ul>
-        <a href={% url 'jobs:information' %} target="_blank">View position information</a>
+        <a href={% url 'jobs:information' %} target="_blank">Browse all positions</a>
     </div>
     <div class="col-md-5 dropzone">
         <h2>Chosen:</h2>
