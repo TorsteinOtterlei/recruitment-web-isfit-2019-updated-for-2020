@@ -67,7 +67,7 @@ class Date(models.Model):
 
     def add_time(self, time):
         try:
-            time = int(time)
+            time = int(time) # Check that time is actually an int
             self.dates += ',' + str(time)
             self.save()
         except:
@@ -75,7 +75,8 @@ class Date(models.Model):
 
     def remove_time(self, time):
         tmp = self.dates.split(',')
-        tmp.remove(time)
+        if time in tmp:
+            tmp.remove(time)
         self.dates = ",".join(tmp)
         self.save()
 

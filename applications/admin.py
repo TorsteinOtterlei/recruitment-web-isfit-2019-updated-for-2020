@@ -19,9 +19,9 @@ class ApplicationSectionFilter(admin.SimpleListFilter):
         if self.value() == None:
             return queryset
 
-        for section in Gang.objects.all():
+        for section in Section.objects.all():
             if str(self.value()) == str(section.id):
-                return queryset.filter( Q(first__gang=section) | Q(second__gang=section) | Q(third__gang=section) )
+                return queryset.filter( Q(first__gang__section=section) | Q(second__gang__section=section) | Q(third__gang__section=section) )
 
 
 class ApplicationGangFilter(admin.SimpleListFilter):
