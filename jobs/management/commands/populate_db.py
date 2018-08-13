@@ -14,7 +14,7 @@ USER_PW = "Django123"
 USERS_WITH_APPLICATION = 10
 USERS_WITH_DATES = 100
 DATES_RANGE = 182
-DATES_SAMPLE = 91
+DATES_SAMPLE = 70
 
 class Command(BaseCommand):
     args = '<foo bar ...>'

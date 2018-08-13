@@ -7,14 +7,7 @@ admin.site.register(Section)
 admin.site.register(Gang)
 admin.site.register(Project)
 #admin.site.register(Calendar)
-admin.site.register(Date)
 
-"""
-    title = models.CharField(max_length=50)
-    gang = models.ForeignKey(Gang, on_delete=models.CASCADE, related_name="positions")
-    description = models.TextField(max_length=20000)
-    interviewer = models.OneToOneField(User, on_delete=models.CASCADE, null=True, related_name="position", blank=True)
-"""
 
 class PositionAdmin(admin.ModelAdmin):
     fieldsets = (
@@ -30,5 +23,17 @@ class PositionAdmin(admin.ModelAdmin):
     def section(self, position):
         return position.gang.section.name
 
+class DateAdmin(admin.ModelAdmin):
+    fieldsets = (
+        ('User', {'fields': ['user'] } ),
+        ('List of available times for interview', {'fields': ['dates'] } ),
+    )
+    list_display = ['user', 'dates']
+    list_filter = []
+    search_fields = ['user__email', 'user__full_name', 'user__phone_number']
+    ordering = ['user']
+    readonly_fields = ['dates']
+
 
 admin.site.register(Position, PositionAdmin)
+admin.site.register(Date, DateAdmin)
