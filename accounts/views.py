@@ -32,10 +32,13 @@ def profile(request):
             'applications': applications
         })
     # Normal profile
-    application, created = Application.objects.get_or_create(applicant=request.user)
+    application = Application.objects.filter(applicant=request.user).first()
+    positions = []
+    if application != None:
+        positions = application.get_positions()
     return render(request, 'accounts/profile.html', {
-        'positions': application.get_positions(),
-        })
+        'positions': positions,
+    })
 
 def signup(request):
     if request.method == "GET":
