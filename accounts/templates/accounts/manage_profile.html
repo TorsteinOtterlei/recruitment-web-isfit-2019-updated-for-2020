@@ -168,7 +168,7 @@
 {% endblock %}
 
 {% block body %}
-{% if application.first.interviewer == user or application.second.interviewer == user or application.third.interviewer == user%}
+{% if user.is_superuser or application.first.interviewer == user or application.second.interviewer == user or application.third.interviewer == user %}
     <div class="container">
 
         <!-- Back button -->
@@ -200,13 +200,13 @@
                 <div class="smooth-wrapper">
                     <p>Email address: {{ application.applicant.email }}</p>
                     <p>Phone number: {{ application.applicant.phone_number }}</p>
-                    {% if user.is_superuser != True %}
+
                         {% if application.interview_time %}
                             <p>Interview time: {{ application.interview_time }}</p>
                         {% else %}
                             <p>No time set</p>
                         {% endif %}
-                    {% endif %}
+
                 </div>
             </div>
             <br>
