@@ -75,6 +75,9 @@ button {
     border-radius: 3%;
     cursor: pointer;
 }
+.have-user-button{
+    cursor: pointer;
+}
 
 .input-button:hover, button:hover {
     background-color: #f79b00;

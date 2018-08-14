@@ -233,8 +233,9 @@
             });*/
 
             $("#select_all").click(function() {
-                for (var i = 0; i < dates_range; i++) {
+                for (var i = 0; i < dates_range/2; i++) {
                     var j = i;
+                    if ((week == 0 && i%7==0)  || (week==0 && i%7==1) || (week==1 && i%7==6)) continue;//awesome code
                     if (week == 1) j = i + dates_range/2;
                     user_dates[j] = j;
                     $("#" + j).html(filler);
@@ -245,6 +246,7 @@
                 if (week == 0) user_dates.splice(0, dates_range/2);
                 else user_dates.splice(dates_range/2, dates_range);
                 for (var i = 0; i < dates_range/2; i++) {
+                    if ((week == 0 && i%7==0)  || (week==0 && i%7==1) || (week==1 && i%7==6)) continue;
                     var j = i;
                     if (week == 1) j = i + dates_range/2;
                     $("#" + j).html("");
