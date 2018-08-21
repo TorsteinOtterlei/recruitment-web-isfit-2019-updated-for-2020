@@ -16,6 +16,8 @@ Including another URLconf
 from django.urls import include, path
 from django.contrib import admin
 from jobs import views as jobs_views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -23,4 +25,4 @@ urlpatterns = [
     path('position/', include('jobs.urls')),
     path('account/', include('accounts.urls')),
     path('application/', include('applications.urls')),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -1,0 +1,50 @@
+#chooseDiv{
+  z-index: -1;
+  display: flex;              /* establish flex container */
+  flex-direction: row;     /* stack flex items vertically */
+  align-items: center;        /* center items horizontally, in this case */
+  border: 1px solid black;
+  overflow:auto;
+
+}
+
+#positionsDiv{
+  width: 50%;
+  margin: 10px 0 0 10px;
+}
+
+#rankingBox{
+  border: 1px solid lightgray;
+  width: 40%;
+  background: whitesmoke;
+  border-radius: 3%;
+}
+
+.positions{
+  background-color: whitesmoke;
+  border: 0.5px solid gray;
+  border-radius: 5%;
+  margin: 2px 0px 2px 0;
+  padding: 1px 10px 1px 10px;
+  cursor: pointer;
+}
+.positions:hover{
+  background-color: #d9d9d9;
+}
+
+.chosen{
+  background-color: #d9d9d9;
+  border: 0.5px solid gray;
+  border-radius: 5%;
+  margin: 5px 10px 5px 5px;
+  padding: 1px 10px 1px 10px;
+  opacity: 0;
+}
+
+.removeChoice{
+  cursor: pointer;
+}
+.removeChoice:hover{
+  font-size: 120%;
+  opacity: 0.8;
+}
