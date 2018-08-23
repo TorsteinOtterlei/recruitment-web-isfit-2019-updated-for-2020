@@ -4,7 +4,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.core.mail import send_mail
 from django.contrib.auth.models import PermissionsMixin
 # local
-
+# other apps:
 
 class UserManager(BaseUserManager):
     use_in_migrations = True

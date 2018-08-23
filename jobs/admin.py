@@ -14,9 +14,9 @@ class PositionAdmin(admin.ModelAdmin):
         (None, {'fields': ['title', 'description'] } ),
         ('Relations', {'fields': ['interviewer', 'gang'] } ),
     )
-    list_display = ['interviewer', 'title', 'section', 'gang']
+    list_display = ['title', 'section', 'gang', 'interviewer']
     list_filter = ['gang']
-    search_fields = ['interviewer__email', 'interviewer__full_name', 'interviewer__phone_number']
+    search_fields = ['name' ,'interviewer__email', 'interviewer__full_name', 'interviewer__phone_number']
     ordering = ['gang']
     readonly_fields = []
 
