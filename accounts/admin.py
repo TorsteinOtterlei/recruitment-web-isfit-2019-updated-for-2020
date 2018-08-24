@@ -1,10 +1,11 @@
 from django.contrib import admin
 from django.contrib.auth import admin as auth_admin
+from import_export.admin import ImportExportModelAdmin
 # local:
 from accounts.models import User
 from accounts.forms import SignUpForm
 
-class UserAdmin(auth_admin.UserAdmin):
+class UserAdmin(ImportExportModelAdmin): # Replaced auth_admin.UserAdmin
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
         ('Personal info', {'fields': ('first_name', 'last_name', 'phone_number')}),

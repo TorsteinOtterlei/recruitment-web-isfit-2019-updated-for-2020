@@ -49,6 +49,7 @@ EMAIL_USE_TLS = True
 # Application definition
 
 INSTALLED_APPS = [
+    'import_export',
     'django_extensions',
     'accounts.apps.AccountsConfig',
     'applications.apps.ApplicationsConfig',
