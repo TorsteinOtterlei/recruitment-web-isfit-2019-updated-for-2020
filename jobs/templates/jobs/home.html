@@ -22,6 +22,21 @@
 {% endblock %}
 
 {% block body %}
+{% if user.is_superuser %}
+Admins have access to all information and the administration portion of the website
+{% elif user.is_staff %}
+    <div class="text-area container" id="staff-text">
+        <h1>How does the recruitmentweb work?</h1>
+
+        <h2>Information about staff-user</h2><br />
+
+    When you have got access to staff-user you will be on the staff-part of the website. This means that you have access to information about your applicants. On your profile you will have a list with all applicants that have applied for your position and interview times that have been scheduled.<br /><br />
+    To make it easier for recruitment to schedule interviews, for you and your gang, it is important that you fill out the times when you are unavailable. This is done on “Set dates”. Remember to be flexible since we only have a few days to do all interviews!
+
+    </div>
+
+
+{% else %}
     <div class="text-area container" id="intro-text">
           <h1>We are now recruiting <b><u>volunteers</u></b>!</h1>
           <p><i>Applications to participate in ISFiT19 will open August 31st.
@@ -36,6 +51,7 @@
           <a href={% url 'jobs:information' %}>positions</a> and explore all the options.
     </div>
 
+{% endif %}
     {% if user.is_authenticated %}
         <!-- Profile -->
         <form action="{% url 'accounts:profile' %}" method="get">
