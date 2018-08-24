@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
-from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.admin.views.decorators import staff_member_required, user_passes_test
 from django.db.models import Q
 import json
 # local:
@@ -20,16 +20,19 @@ def profile(request):
     if request.user.is_staff:
         # Default: this staff/interviewer has no position, thus no applications applied for it
         applications = []
+        IS_applications = []
         # Get position or None
         position = Position.objects.filter(interviewer=request.user).first()
             # Check if user is an interviewer
         if position != None:
-            applications = Application.objects.filter(
+            IS_applications = Application.objects.filter(
                         ~Q(interview_time=-1),
                         Q(first=position) | Q(second=position)
                     ).order_by('interview_time')
+            applications = Application.objects.all()
         return render(request, 'accounts/profile_admin.html', {
-            'applications': applications
+            'IS_applications': IS_applications,
+            'applications': applications,
         })
     # Normal profile
     application = Application.objects.filter(applicant=request.user).first()

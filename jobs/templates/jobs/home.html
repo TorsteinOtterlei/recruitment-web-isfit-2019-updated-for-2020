@@ -47,9 +47,11 @@
                 <input class="input-button" type="submit" value="Set dates"><br>
             </form>
             <!-- Manage applications -->
+        {% if user.is_superuser %}
             <form action="{% url 'applications:manage_applications' %}" method="get">
                 <input class="input-button" type="submit" value="Manage applications"><br>
             </form>
+        {% endif %}
         {% else %} <!-- If normal user -->
             <!-- Edit application -->
             <form action="{% url 'applications:apply' %}" method="get">

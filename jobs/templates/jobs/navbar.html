@@ -36,8 +36,10 @@
                     {% endif %}
                     {% if user.is_staff %}
                         <li><a href="{% url 'applications:set_dates' %}">Set Dates</a></li>
+                    {% if user.is_superuser %}
                         <li><a href="{% url 'applications:manage_applications' %}">Manage Applications</a>
                         <li><a href="{% url 'admin:index' %}" target="_blank">Administration</a>
+                    {% endif %}
                     {% endif %}
 
                     <li class="dropdown">

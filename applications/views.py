@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.admin.views.decorators import staff_member_required
 import json
 # local
@@ -65,7 +65,7 @@ def set_dates(request):
         })
 
 @login_required
-@staff_member_required
+@user_passes_test(lambda u: u.is_superuser)
 def manage_applications(request):
     return render(request, 'applications/manage_applications.html', {
         'applications': Application.objects.all(),

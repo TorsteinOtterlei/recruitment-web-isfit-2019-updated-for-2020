@@ -34,6 +34,12 @@
         }
         .interview-div {
             text-align: center;
+            alignment: left;
+        }
+
+        .applicant_div {
+            text-align: center;
+            alignment: right;
         }
     </style>
 {% endblock head %}
@@ -58,16 +64,30 @@
             </div>
         </div>
     </div>
-    {% if applications %}
+    {% if IS_applications %}
         <div class="container border interview-div">
             <h3>Your interviews:</h3>
-            {% for application in applications %}
-            <p>
-                <a href="{% url 'accounts:manage_profile' application.applicant.id %}">{{ application.applicant.get_full_name }}</a> &emsp; {{ application.pretty_interview_time }}
-            </p>
+            {% for application in IS_applications %}
+                <p>
+                    <a href="{% url 'accounts:manage_profile' application.applicant.id %}">{{ application.applicant.get_full_name }}</a> &emsp; {{ application.pretty_interview_time }}
+                </p>
             {% endfor %}
         </div>
     {% endif %}
+    {% if applications %}
+        <div class="container border applicant-div">
+            <h3>Your applicants:</h3>
+            {% for application in applications %}
+                {% if user == application.first.interviewer or user == application.second.interviewer or user == application.third.interviewer %}
+                <p>
+                    <a href="{% url 'accounts:manage_profile' application.applicant.id %}">{{ application.applicant.get_full_name }}</a>
+                </p>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+
 
 
     <form action="{% url 'accounts:logout' %}" method="get">

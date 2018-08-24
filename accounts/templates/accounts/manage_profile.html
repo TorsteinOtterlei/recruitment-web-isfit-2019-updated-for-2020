@@ -171,11 +171,13 @@
 {% if user.is_superuser or application.first.interviewer == user or application.second.interviewer == user or application.third.interviewer == user %}
     <div class="container">
 
+        {% if user.is_superuser %}
         <!-- Back button -->
         <a href="{% url 'applications:manage_applications' %}">
             <img id="arrow-left" src="{% static 'applications/arrow_left.png' %}" alt="Arrow left">
             Manage applications
         </a>
+        {% endif %}
 
         <!-- Title -->
         <div class="title">
@@ -202,7 +204,7 @@
                     <p>Phone number: {{ application.applicant.phone_number }}</p>
 
                         {% if application.interview_time %}
-                            <p>Interview time: {{ application.interview_time }}</p>
+                            <p>Interview time: {{ application.pretty_interview_time }}</p>
                         {% else %}
                             <p>No time set</p>
                         {% endif %}
@@ -223,6 +225,7 @@
             </div>
             <br>
 
+            {% if user.is_superuser %}
             <!-- Button: Applied-positions collapse -->
             <button class="btn btn-dark btn-block" type="button" data-toggle="collapse" data-target="#applied-positions" aria-expanded="false">
                 Positions and interviewers:
@@ -237,6 +240,8 @@
                 </div>
             </div>
             <br>
+            {% endif %}
+
             {% if user.is_superuser %}
             <!-- Button: Available-times collapse -->
             <button class="btn btn-dark btn-block" type="button" data-toggle="collapse" data-target="#available-times" aria-expanded="false">
@@ -315,7 +320,7 @@
         </div> <!-- End: container collapsing fields -->
             {% endif %}
 {% else %}
-            You cannot see this information
+            You have no power here
 {% endif %}
 {% endblock body %}
 

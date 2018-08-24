@@ -30,6 +30,7 @@
 {% endblock %}
 
 {% block body %}
+{% if user.is_superuser %}
 <h3>Manage applications</h3>
 <div class="container">
     <div class="row">
@@ -120,7 +121,9 @@
             </div>
         </div>
     </div>
-
+{% else %}
+    You have no power here
+{% endif %}
 {% endblock %}
 
 {% block scriptblock %}
