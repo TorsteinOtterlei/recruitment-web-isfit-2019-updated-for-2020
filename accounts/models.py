@@ -99,3 +99,36 @@ class User(AbstractBaseUser, PermissionsMixin):
     def email_user(self, subject, message, from_email=None, **kwargs):
         send_mail(subject, message, from_email, [self.email], **kwargs)
         print("sent")
+
+class Applicant(models.Model): # Not in use yet
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="applicant")
+
+    NOT_EVALUATED = 'NE'
+    INTERVIEW_SET = 'IS'
+    INTERVIEW_CONFIRMED = 'IC'
+    INTERVIEWED = 'ID'
+    ACCEPTED = 'AC'
+
+    STATUS_CHOISES = (
+        (NOT_EVALUATED, 'Not evaluated'),
+        (INTERVIEW_SET, 'Interview set'),
+        (INTERVIEW_CONFIRMED, 'Interview confirmed'),
+        (INTERVIEWED, 'Interviewed'),
+        (ACCEPTED, 'Accepted'),
+    )
+
+    status = models.CharField(
+        max_length=2,
+        choices=STATUS_CHOISES,
+        default=NOT_EVALUATED,
+    )
+
+    class Meta:
+        verbose_name = "applicant"
+        verbose_name_plural = "applicants"
+
+
+    def get_status(self):
+        if self.status == None:
+            return 'error'
+        return self.status
