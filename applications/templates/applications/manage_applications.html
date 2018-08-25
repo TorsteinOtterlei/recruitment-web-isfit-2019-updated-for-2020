@@ -1,4 +1,5 @@
 {% extends 'jobs/base.html' %}
+{% load static %}
 {% block title %}Manage applications{% endblock %}
 
 
@@ -27,7 +28,7 @@
         }
 
     </style>
-{% endblock %}
+{% endblock head %}
 
 {% block body %}
 {% if user.is_superuser %}
@@ -39,159 +40,195 @@
                 <option value="All">All</option>
                 {% for section in sections %}
                     <option value="{{ section }}">{{ section }}</option>
-                {% endfor %}
-            </select>
+                    {% endfor %}
+                </select>
 
-            <select id='selector2' onchange="sortOutGang(this.value)">
-                <option value="All">All</option>
-                {% for gang in gangs %}
+                <select id='selector2' onchange="sortOutGang(this.value)">
+                    <option value="All">All</option>
+                    {% for gang in gangs %}
                     <option value="{{ gang }}">{{ gang }}</option>
-                {% endfor %}
-            </select>
-        </div>
+                    {% endfor %}
+                </select>
+            </div>
 
-        <div class="col-sm user_column">
-            <div class="column-header">Not Evaluated</div>
-            <div class="users-div">
-                {% for application in applications %}
+            <div class="col-sm user_column">
+                <div class="column-header">Not Evaluated</div>
+                <div class="users-div">
+                    {% for application in applications %}
                     <div  class="{{ application.applicant.id }}">
                         {% if application.applicant.get_status == 'NE'%}
-                            <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
-                                {{ application.applicant }}<br>
-                            </a>
+                        <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
+                            {{ application.applicant }}<br>
+                        </a>
                         {% endif %}
                     </div>
-                {% endfor %}
+                    {% endfor %}
+                </div>
             </div>
-        </div>
-        <div class="col-sm user_column">
-            <div class="column-header">Interview Set</div>
-            <div class="users-div">
-                {% for application in applications %}
+            <div class="col-sm user_column">
+                <div class="column-header">Interview Set</div>
+                <div class="users-div">
+                    {% for application in applications %}
                     <div class="{{ application.applicant.id }}">
                         {% if application.applicant.get_status == 'IS'%}
-                            <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
-                                {{ application.applicant }}<br>
-                            </a>
+                        <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
+                            {{ application.applicant }}<br>
+                        </a>
                         {% endif %}
                     </div>
-                {% endfor %}
+                    {% endfor %}
+                </div>
             </div>
-        </div>
-        <div class="col-sm user_column">
-            <div class="column-header">Interview Confirmed</div>
-            <div class="users-div">
-                {% for application in applications %}
+            <div class="col-sm user_column">
+                <div class="column-header">Interview Confirmed</div>
+                <div class="users-div">
+                    {% for application in applications %}
                     <div  class="{{ application.applicant.id }}">
                         {% if application.applicant.get_status == 'IC'%}
-                            <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
-                                {{ application.applicant }}<br>
-                            </a>
+                        <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
+                            {{ application.applicant }}<br>
+                        </a>
                         {% endif %}
                     </div>
-                {% endfor %}
+                    {% endfor %}
+                </div>
             </div>
-        </div>
-        <div class="col-sm user_column">
-            <div class="column-header">Interviewed</div>
-            <div class="users-div">
-                {% for application in applications %}
+            <div class="col-sm user_column">
+                <div class="column-header">Interviewed</div>
+                <div class="users-div">
+                    {% for application in applications %}
                     <div  class="{{ application.applicant.id }}">
                         {% if application.applicant.get_status == 'ID'%}
-                            <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
-                                {{ application.applicant }}<br>
-                            </a>
+                        <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
+                            {{ application.applicant }}<br>
+                        </a>
                         {% endif %}
                     </div>
-                {% endfor %}
+                    {% endfor %}
+                </div>
             </div>
-        </div>
-        <div class="col-sm user_column">
-            <div class="column-header">Accepted</div>
-            <div class="users-div">
-                {% for application in applications %}
+            <div class="col-sm user_column">
+                <div class="column-header">Accepted</div>
+                <div class="users-div">
+                    {% for application in applications %}
                     <div  class="{{ application.applicant.id }}">
                         {% if application.applicant.get_status == 'AC'%}
-                            <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
-                                {{ application.applicant }}<br>
-                            </a>
+                        <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
+                            {{ application.applicant }}<br>
+                        </a>
                         {% endif %}
                     </div>
-                {% endfor %}
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </div>
 {% else %}
     You have no power here
 {% endif %}
+    <audio id='pling'>
+        <source src="{% static 'applications/glass_pling.mp3' %}" type="audio/mpeg">
+        Your browser does not support the audio tag.
+    </audio>
 {% endblock %}
 
 {% block scriptblock %}
     <script>
-        var sections_map = new Map()
-        sections_map.set("All", new Map());
+        $(document).ready(function() {
+            // Pling:
+            var appNr = {{ applications.count }}; // or {{ applications | length }}
 
-        var gangs_map = new Map()
-        gangs_map.set("All", new Map());
+            // Function wrapped around parentices and called with () immediately.
+            (function check_new_application() {
+                $.ajax({
+                    type: 'GET',
+                    url: "{% url 'applications:pling' %}",
+                    // success is fired if HTTP response was 200 OK
+                    success: function(data) {
+                        var newAppNr = data.appLength;
+                        if (newAppNr > appNr) {
+                            appNr = newAppNr
+                            $('#pling')[0].play();
+                        }
+                    },
+                    // complete is fired when completed, no matter what
+                    complete: function() {
+                        // Schedule the next request when the current one's complete
+                        var sec = 1000;
+                        setTimeout(check_new_application, 10*sec);
+                    }
+                });
+            })();
 
-        {% for section in sections %}
-            sections_map.set("{{section}}", new Map());
-        {% endfor %}
+            // -------------------------------------------------------------------------------------------------------------
 
-        {% for gang in gangs %}
-            gangs_map.set("{{gang}}", new Map());
-        {% endfor %}
+            var sections_map = new Map()
+            sections_map.set("All", new Map());
 
-        {% for application in applications %}
-            sections_map.get('All').set(parseInt("{{ application.applicant.id }}"), null);
-            gangs_map.get('All').set(parseInt("{{ application.applicant.id }}"), null);
+            var gangs_map = new Map()
+            gangs_map.set("All", new Map());
 
-
-            for (var [key, value] of sections_map) {
-                if ("{{ application.get_position_sections | safe}}".includes(key)){
-                    value.set(parseInt("{{ application.applicant.id }}"), null)
-                }
-            }
-            for (var [key, value] of gangs_map) {
-                if ("{{ application.get_position_gangs | safe}}".includes(key)){
-                    value.set(parseInt("{{ application.applicant.id }}"), null)
-                }
-            }
-        {% endfor %}
-
-        function sortOut(section){
-            for (var [key, value] of sections_map.get('All')) {
-                if (!sections_map.get(section).has(key)){
-                    $('.' + key).css('display','none');
-                }
-                else{
-                    $('.' + key).css('display','block');
-                }
-            }
-            // Change gang selector
-            console.log($('#selector2').val());
-            $('#selector2').find('option').remove().end().append('<option value="All">All</option>');
+            {% for section in sections %}
+                sections_map.set("{{section}}", new Map());
+            {% endfor %}
 
             {% for gang in gangs %}
-                if ("{{ gang.section }}" == section){
-                    $('#selector2').append('<option value="{{ gang }}">{{ gang }}</option>');
+                gangs_map.set("{{gang}}", new Map());
+            {% endfor %}
+
+            {% for application in applications %}
+                sections_map.get('All').set(parseInt("{{ application.applicant.id }}"), null);
+                gangs_map.get('All').set(parseInt("{{ application.applicant.id }}"), null);
+
+
+                for (var [key, value] of sections_map) {
+                    if ("{{ application.get_position_sections | safe}}".includes(key)){
+                        value.set(parseInt("{{ application.applicant.id }}"), null)
+                    }
                 }
-                else if (section == 'All'){
-                    $('#selector2').append('<option value="{{ gang }}">{{ gang }}</option>');
+                for (var [key, value] of gangs_map) {
+                    if ("{{ application.get_position_gangs | safe}}".includes(key)){
+                        value.set(parseInt("{{ application.applicant.id }}"), null)
+                    }
                 }
             {% endfor %}
-        }
 
-        function sortOutGang(gang){
-            section = $('#selector').val();
-            for (var [key, value] of sections_map.get('All')) {
-                if (!gangs_map.get(gang).has(key)){
-                    $('.' + key).css('display','none');
+            function sortOut(section){
+                for (var [key, value] of sections_map.get('All')) {
+                    if (!sections_map.get(section).has(key)){
+                        $('.' + key).css('display','none');
+                    }
+                    else{
+                        $('.' + key).css('display','block');
+                    }
                 }
-                else{
-                    $('.' + key).css('display','block');
+                // Change gang selector
+                console.log($('#selector2').val());
+                $('#selector2').find('option').remove().end().append('<option value="All">All</option>');
+
+                {% for gang in gangs %}
+                    if ("{{ gang.section }}" == section){
+                        $('#selector2').append('<option value="{{ gang }}">{{ gang }}</option>');
+                    }
+                    else if (section == 'All'){
+                        $('#selector2').append('<option value="{{ gang }}">{{ gang }}</option>');
+                    }
+                {% endfor %}
+            }
+
+            function sortOutGang(gang){
+                section = $('#selector').val();
+                for (var [key, value] of sections_map.get('All')) {
+                    if (!gangs_map.get(gang).has(key)){
+                        $('.' + key).css('display','none');
+                    }
+                    else{
+                        $('.' + key).css('display','block');
+                    }
                 }
             }
-        }
+        })
+
+
     </script>
 {% endblock %}

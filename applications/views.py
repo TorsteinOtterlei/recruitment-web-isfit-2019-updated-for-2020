@@ -3,6 +3,7 @@ from django.views import generic
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.admin.views.decorators import staff_member_required
 import json
+from django.http import JsonResponse
 # local
 from applications.forms import ApplicationForm
 from applications.models import Application
@@ -68,7 +69,12 @@ def set_dates(request):
 @user_passes_test(lambda u: u.is_superuser)
 def manage_applications(request):
     return render(request, 'applications/manage_applications.html', {
-        'applications': Application.objects.all(),
+        'applications': Application.objects.exclude(first=None, second=None, third=None),
         'sections': Section.objects.all(),
         'gangs': Gang.objects.all()
     })
+
+def pling(request):
+    # Is compared to applications queryset in manage_applications
+    appLength = Application.objects.exclude(first=None, second=None, third=None).count()
+    return JsonResponse({'appLength': appLength})

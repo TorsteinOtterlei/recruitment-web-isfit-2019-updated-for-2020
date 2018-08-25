@@ -8,4 +8,5 @@ urlpatterns = [
     #path('applicant_text/<int:pk>', views.ApplicationDetail.as_view(), name='applicant_text'),
     path('set_dates/', views.set_dates, name='set_dates'),
     path('manage_applications/', views.manage_applications, name='manage_applications'),
+    path('manage_applications/pling', views.pling, name='pling')
 ]
