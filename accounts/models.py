@@ -27,10 +27,10 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    email = models.EmailField(max_length=254, unique=True, default="default@default.com")
-    first_name = models.CharField(max_length=60, default="default_first", blank=True)
-    last_name = models.CharField(max_length=150, default="default_second", blank=True)
-    phone_number = models.CharField(max_length=13, default="+91 12345679", blank=True)
+    email = models.EmailField(max_length=254, unique=True)
+    first_name = models.CharField(max_length=60, blank=True)
+    last_name = models.CharField(max_length=150, blank=True)
+    phone_number = models.CharField(max_length=13, blank=True)
     active = models.BooleanField(default=True)
     staff = models.BooleanField(default=False)
     superuser = models.BooleanField(default=False)

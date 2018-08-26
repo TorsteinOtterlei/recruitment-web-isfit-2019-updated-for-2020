@@ -7,7 +7,7 @@ from django.contrib.admin.views.decorators import staff_member_required, user_pa
 from django.db.models import Q
 import json
 # local:
-from accounts.forms import SignUpForm, StatusForm, WidgetsForm, CustomAuthenticationForm
+from accounts.forms import SignUpForm, StatusForm, WidgetsForm, CustomAuthenticationForm, EditUserForm
 from accounts.models import User
 # other apps:
 from applications.models import Application
@@ -42,6 +42,17 @@ def profile(request):
     return render(request, 'accounts/profile.html', {
         'positions': positions,
     })
+
+@login_required
+def edit_profile(request):
+    if request.method == 'GET':
+        form = EditUserForm(instance=request.user)
+        return render(request, 'accounts/edit_profile.html', {'form': form})
+    else: # POST
+        form = EditUserForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return profile(request)
 
 def signup(request):
     if request.method == "GET":
