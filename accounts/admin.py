@@ -5,6 +5,10 @@ from import_export.admin import ImportExportModelAdmin
 from accounts.models import User
 from accounts.forms import SignUpForm
 
+def make_staff(modeladmin, request, queryset):
+    queryset.update(staff=True)
+    make_staff.short_description = "Mark selected users as staff"
+
 class UserAdmin(ImportExportModelAdmin): # Replaced auth_admin.UserAdmin
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
@@ -28,6 +32,7 @@ class UserAdmin(ImportExportModelAdmin): # Replaced auth_admin.UserAdmin
     search_fields = ('first_name', 'last_name', 'email', 'phone_number')
     ordering = ['email']
     readonly_fields = ['last_login', 'date_joined']
+    actions = [make_staff]
 
 # Register your models here.
 admin.site.register(User, UserAdmin)
