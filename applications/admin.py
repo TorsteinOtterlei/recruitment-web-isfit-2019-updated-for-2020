@@ -48,7 +48,7 @@ class ApplicationAdmin(admin.ModelAdmin):
     )
     list_display = ['applicant', 'first', 'second', 'third', 'pretty_interview_time', 'interview_time']
     list_filter = [ApplicationSectionFilter, ApplicationGangFilter]
-    search_fields = ['applicant__email', 'applicant__full_name', 'applicant__phone_number']
+    search_fields = ['applicant__email', 'applicant__first_name','applicant__last_name', 'applicant__phone_number']
     ordering = ['interview_time']
     readonly_fields = ['interview_time']
 
