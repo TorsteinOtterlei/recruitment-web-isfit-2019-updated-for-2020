@@ -41,12 +41,17 @@ class Position(models.Model):
     title = models.CharField(max_length=100)
     gang = models.ForeignKey(Gang, on_delete=models.CASCADE, related_name="positions")
     description = models.TextField(max_length=20000)
+    interviewers = models.ManyToManyField(User, related_name="positions", blank=True)
     interviewer = models.OneToOneField(User, on_delete=models.CASCADE, null=True, related_name="position", blank=True)
+    comment = models.CharField(max_length=100, default='')
 
     def __str__(self):
         if self.title == None or self.gang == None:
             return 'error'
         return "{} ({})".format(self.title, self.gang)
+
+    def get_interviewers(self):
+        return self.interviewer
 
 class Date(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="date")
@@ -122,3 +127,9 @@ class Calendar(models.Model):
         if self.gangleader == None:
             return 'error'
         return "Calendar for " + self.gangleader
+
+class Interview(models.Model):
+    applicant = models.OneToOneField(User, on_delete=models.CASCADE, related_name='interview')
+    interviewers = models.ManyToManyField(User, related_name='interviews')
+    room = models.CharField(max_length=40)
+    time = models.IntegerField(default=-1)
