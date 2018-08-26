@@ -17,7 +17,7 @@ class PositionAdmin(admin.ModelAdmin):
     )
     list_display = ['title', 'section', 'gang', 'interviewer']
     list_filter = ['gang']
-    search_fields = ['name' ,'interviewer__email', 'interviewer__full_name', 'interviewer__phone_number']
+    search_fields = ['title' ,'interviewer__email', 'interviewer__first_name', 'interviewer__last_name', 'interviewer__phone_number']
     ordering = ['gang']
     readonly_fields = []
 
@@ -31,7 +31,7 @@ class DateAdmin(admin.ModelAdmin):
     )
     list_display = ['user', 'dates']
     list_filter = []
-    search_fields = ['user__email', 'user__full_name', 'user__phone_number']
+    search_fields = ['user__email', 'user__first_name', 'user__last_name', 'user__phone_number']
     ordering = ['user']
     readonly_fields = ['dates']
 

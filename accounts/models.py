@@ -35,6 +35,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     active = models.BooleanField(default=True)
     staff = models.BooleanField(default=False)
     superuser = models.BooleanField(default=False)
+    recruiter = models.BooleanField(default=False)
+    interviewer = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now, blank=True)
     gang = models.ForeignKey('jobs.Gang', on_delete=models.CASCADE, null=True, blank=True, related_name='members')
 
@@ -97,6 +99,14 @@ class User(AbstractBaseUser, PermissionsMixin):
     @property
     def is_superuser(self):
         return self.superuser
+
+    @property
+    def is_recruiter(self):
+        return self.recruiter
+
+    @property
+    def is_interviewer(self):
+        return self.interviewer
 
     def email_user(self, subject, message, from_email=None, **kwargs):
         send_mail(subject, message, from_email, [self.email], **kwargs)

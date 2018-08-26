@@ -19,9 +19,6 @@ def profile(request):
     # Admin profile should look different
     if request.user.is_staff:
         # Default: this staff/interviewer has no position, thus no applications applied for it
-        #applications = []
-        #IS_applications = []
-        #interviewers = Position.interviewer.objects.all()
         # Get position or None
         position = Position.objects.filter(interviewer=request.user).first()
         interviews = Interview.objects.filter(interviewers=request.user.pk)
@@ -46,17 +43,7 @@ def profile(request):
             Q(first__gang=user.gang) | Q(second__gang=user.gang) | Q(third__gang=user.gang)
         )
 
-            # Check if user is an interviewer
-        '''if position != None:
-            IS_applications = Application.objects.filter(
-                        ~Q(interview_time=-1),
-                        Q(first=position) | Q(second=position)
-                    ).order_by('interview_time')
-            applications = Application.objects.all()
-        '''
         return render(request, 'accounts/profile_admin.html', {
-            #'IS_applications' : IS_applications,
-            #'applications' : applications,
             'me' : me_instance,
             'interviews' : interview_list,
             'user_gang_applications': user_gang_applications,
