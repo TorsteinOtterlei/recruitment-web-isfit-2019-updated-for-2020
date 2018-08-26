@@ -7,18 +7,18 @@ from accounts.models import User
 from jobs.models import Section
 
 class SignUpForm(UserCreationForm):
-    email = forms.EmailField(max_length=250, required=True, help_text='Required')
-    first_name = forms.CharField(max_length=50, required=True, help_text='Required')
-    last_name = forms.CharField(max_length=50, required=True, help_text='Required')
+    email = forms.EmailField(max_length=250, required=True)
+    first_name = forms.CharField(max_length=50, required=True)
+    last_name = forms.CharField(max_length=50, required=True)
     phone_number = forms.CharField(max_length=12)
+    trondheim = forms.BooleanField(required=True, help_text='Yes I live in Trondheim, and know that this page is for volunteering and NOT participating', error_messages={'required': 'You have to live in Trondheim to volunteer'})
 
     class Meta:
         model = User
-        fields = ('email', 'first_name', 'last_name', 'phone_number', 'password1', 'password2')
+        fields = ['email', 'first_name', 'last_name', 'phone_number', 'password1', 'password2', 'trondheim']
 
     def __init__(self, *args, **kwargs):
         super(SignUpForm, self).__init__(*args, **kwargs)
-        #self.fields['username'].widget.attrs.update({'class': 'form-control'})
         self.fields['email'].widget.attrs.update({'class': 'form-control'})
         self.fields['first_name'].widget.attrs.update({'class': 'form-control'})
         self.fields['last_name'].widget.attrs.update({'class': 'form-control'})
@@ -27,6 +27,7 @@ class SignUpForm(UserCreationForm):
         self.fields['password1'].help_text = 'Your password cant be too similar to your other personal information. Your password must contain atleast 8 characters. Your password cant be a commonly used password and cant be entierly numeric.'
         self.fields['password2'].widget.attrs.update({'class': 'form-control'})
 
+
 class StatusForm(forms.ModelForm):
     status = forms.ChoiceField(choices=User.STATUS_CHOISES)
     # Only giving class name for CSS access
@@ -34,10 +35,10 @@ class StatusForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = (['status'])
+        fields = ['status']
 
 # Possible to customise login:
-class CustomAuthenticationForm(AuthenticationForm):
+class CustomAuthenticationForm(AuthenticationForm): # Not currently in use. Can be passed to login view
     error_messages = dict(AuthenticationForm.error_messages) # Inherit from parent. invalid_login and inactive
 
     def confirm_login_allowed(self, user):
