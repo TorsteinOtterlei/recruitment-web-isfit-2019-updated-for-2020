@@ -73,7 +73,10 @@ def manage_applications(request):
         'sections': Section.objects.all(),
         'gangs': Gang.objects.all()
     })
+    # End manage_applications
 
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
 def pling(request):
     # Is compared to applications queryset in manage_applications
     appLength = Application.objects.exclude(first=None, second=None, third=None).count()
