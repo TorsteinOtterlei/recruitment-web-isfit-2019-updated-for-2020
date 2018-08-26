@@ -74,21 +74,18 @@
             {% endfor %}
         </div>
     {% endif %}
-    {% if applications %}
+    <!--{% if applications %}
         <div class="container border applicant-div">
             <h3>Your applicants:</h3>
             {% for application in applications %}
-                {% if user == application.first.interviewer or user == application.second.interviewer or user == application.third.interviewer %}
+                {% if application.first.interviewer.position.gang == application.first.gang or application.second.interviewer.position.gang == application.second.gang or application.third.interviewer.position.gang == application.third.gang %}
                 <p>
                     <a href="{% url 'accounts:manage_profile' application.applicant.id %}">{{ application.applicant.get_full_name }}</a>
                 </p>
                 {% endif %}
             {% endfor %}
         </div>
-    {% endif %}
-
-
-
+    {% endif %}-->
 
     <form action="{% url 'accounts:logout' %}" method="get">
         <input class="input-button" type="submit" value="Log out"><br>
