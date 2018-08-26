@@ -1,19 +1,21 @@
 from django.db import models
 from django.contrib import admin
 # local
-from jobs.models import Section, Gang, Position, Project, Calendar, Date
+from jobs.models import Section, Gang, Position, Project, Calendar, Date, Interview
 
 admin.site.register(Section)
 admin.site.register(Gang)
 admin.site.register(Project)
+admin.site.register(Interview)
 #admin.site.register(Calendar)
 
 
 class PositionAdmin(admin.ModelAdmin):
     fieldsets = (
-        (None, {'fields': ['title', 'description'] } ),
-        ('Relations', {'fields': ['interviewer', 'gang'] } ),
+        (None, {'fields': ['title', 'description', 'comment'] } ),
+        ('Relations', {'fields': ['interviewers', 'interviewer', 'gang'] } ),
     )
+    filter_horizontal = ['interviewers']
     list_display = ['title', 'section', 'gang', 'interviewer']
     list_filter = ['gang']
     search_fields = ['title' ,'interviewer__email', 'interviewer__first_name', 'interviewer__last_name', 'interviewer__phone_number']

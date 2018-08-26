@@ -11,7 +11,7 @@ from accounts.forms import SignUpForm, StatusForm, WidgetsForm, CustomAuthentica
 from accounts.models import User
 # other apps:
 from applications.models import Application
-from jobs.models import Section, Gang, Position, Date
+from jobs.models import Section, Gang, Position, Date, Interview
 
 @login_required
 def profile(request):
@@ -70,38 +70,54 @@ def logout_view(request):
 
 @staff_member_required
 def manage_profile(request, userID):
+    # ----------------------------------------------------------------------------------------
+    # TODO CHANGE INTERVIEW TO FIRST SECOND THIRD!
+    # ----------------------------------------------------------------------------------------
     application = get_object_or_404(Application, applicant_id=userID)
+    positions = application.get_positions()
+    if len(positions) == 1:
+        positions = positions * 2
     applicant = application.applicant
     date, created = Date.objects.get_or_create(user=applicant)
-    interviewers = [pos.interviewer for pos in application.get_positions()]
     userstatus = applicant.get_status()
-    interview_time = application.get_interview_time()
-
 
     if request.method == 'POST':
+        interview, interview_created = Interview.objects.get_or_create(applicant=application.applicant)
         form = StatusForm(instance=applicant)
         chosen_time = request.POST.get('interviewtime') # Get the time marked in front-end
         chosen_room = request.POST.get('interviewroom') # Get the room chosen in front-end
+        chosen_interviewers = []
+        for inter in request.POST.get('interviewers').split(','):
+            if inter != 'None':
+                chosen_interviewers.append(User.objects.get(email=inter))
         print('Chosen time: ' + str(chosen_time))
         print('Chosen room: ' + str(chosen_room))
-        if not chosen_time: # If chosen_time never is submitted (i.e. user click on something else that refreshes the page)
-            chosen_time = interview_time
+        print('Chosen interviewers: ' + str(chosen_interviewers))
+
 
         # Updating the interviewers availability
         if chosen_time != application.get_interview_time():
-            for i in range(2):
-                i = Date.objects.get(user=interviewers[i])
-                if chosen_time != 'none': # If a new interview time is set
-                    print(chosen_time)
-                    i.remove_time(chosen_time)
-                if application.get_interview_time() != 'none': # If there was no interview set in beforehand
-                    i.add_time(interview_time)
-                i.save()
-                print("Available times for interviewer {} are updated".format(i.user.email))
+             # Remove old unavailable times
+            for inter in interview.interviewers.all():
+                userdate = Date.objects.get(user=inter)
+                userdate.add_time(application.get_interview_time())
+                userdate.save()
+             # Add new unavailable times
+            for inter in chosen_interviewers:
+                userdate = Date.objects.get(user=inter)
+                userdate.remove_time(chosen_time)
+                userdate.save()
 
             application.set_interview_time(chosen_time)
             application.save()
-            print('Interview time changed to ' + chosen_time)
+            print('Interview time changed to ' + str(chosen_time))
+
+        # Update/create interview object
+        interview.interviewers.add(*chosen_interviewers)
+        interview.room = chosen_room
+        interview.set_interview_time(chosen_time)
+        interview.save()
+        print('Created interview object!') if interview_created else print('Updated interview object!')
 
         print('request.POST, instance=applicant')
         form = StatusForm(request.POST, instance=applicant)
@@ -112,21 +128,13 @@ def manage_profile(request, userID):
 
     # GET or form failed:
     else:
-        form = StatusForm(instance=applicant) # Ved å gi instance fyller den inn current status
-        # TIPS: Lages det en tom StatusForm, kan Select-box settes til user current status slik:
-        # form.fields['status'].initial = applicant.status
+        form = StatusForm(instance=applicant)
 
-    interviewers_dir = {'kris@test.no': get_object_or_404(Date, user=User.objects.get(email='kris@test.no')).dates_list(),
-     'camilla@test.no': get_object_or_404(Date, user=User.objects.get(email='camilla@test.no')).dates_list(),
-      'johan@test.no': get_object_or_404(Date, user=User.objects.get(email='johan@test.no')).dates_list()}
-    print(interviewers_dir['kris@test.no'])
     return render(request, 'accounts/manage_profile.html', {
         'application': application,
         'date': date,
         'form': form,
-        'interviewers': interviewers,
-        'interview_time': application.get_interview_time(),
-        'interviewers_times': json.dumps(interviewers_dir)
+        'positions': positions
     })
 
 def send_mail(request, userID):

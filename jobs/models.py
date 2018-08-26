@@ -43,7 +43,7 @@ class Position(models.Model):
     description = models.TextField(max_length=20000)
     interviewers = models.ManyToManyField(User, related_name="positions", blank=True)
     interviewer = models.OneToOneField(User, on_delete=models.CASCADE, null=True, related_name="position", blank=True)
-    comment = models.CharField(max_length=100, default='')
+    comment = models.TextField(max_length=500, default='')
 
     def __str__(self):
         if self.title == None or self.gang == None:
@@ -55,7 +55,7 @@ class Position(models.Model):
 
 class Date(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="date")
-    dates = models.TextField(max_length=2000, default=makeDates(182), blank=True) # 1,2,43,68 possible dates
+    dates = models.TextField(max_length=2000, default=makeDates(182), blank=True)
 
     def __str__(self):
         if self.user.email == None:
@@ -133,3 +133,12 @@ class Interview(models.Model):
     interviewers = models.ManyToManyField(User, related_name='interviews')
     room = models.CharField(max_length=40)
     time = models.IntegerField(default=-1)
+
+
+    def set_interview_time(self, time):
+        if time == 'none':
+            self.time = -1
+            self.save()
+        else:
+            self.time = int(time)
+            self.save()

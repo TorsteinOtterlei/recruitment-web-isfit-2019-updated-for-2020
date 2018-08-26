@@ -146,7 +146,7 @@
         color: orange;
     }
 
-    #interviewtime {
+    #interviewtime, #interviewers {
         display: none;
     }
 
@@ -162,6 +162,10 @@
 
     .gridcell-disabled:hover {
         cursor: not-allowed;
+    }
+
+    #btn-mail{
+        display: none;
     }
 
 </style>
@@ -233,16 +237,16 @@
             <!-- Application-text collapsible -->
             <div class="collapse" id="applied-positions">
                 <div class="smooth-wrapper">
-                    {% for position in application.get_positions %}
-                    <!-- {{ position.interviewer }} -->
-                    <p>{{ forloop.counter }}. {{ position }},&emsp; Interviewer:
-                        <select id='i{{forloop.counter}}' onclick="updateCalendar()">
-                            <option value="kris@test.no">kris@test.no</option>
-                            <option value="camilla@test.no">camilla@test.no</option>
-                            <option value="johan@test.no">johan@test.no</option>
-                        </select>
-                    </p>
-                    <hr>
+                    {% for position in positions %}
+                        <p>{{ forloop.counter }}. {{ position }},&emsp; Interviewer:
+                            <select id='i{{forloop.counter}}' class='select-interviewers' onclick="updateCalendar()">
+                                <option>None</option>
+                                {% for interviewer in position.interviewers.all %}
+                                <option value="{{ interviewer.date.dates }}">{{ interviewer }}</option>
+                                {% endfor %}
+                            </select>
+                        </p>
+                        <hr>
                     {% endfor %}
                 </div>
             </div>
@@ -258,8 +262,8 @@
             <div class="collapse" id="available-times">
                 <div class="smooth-wrapper">
                     <div id='available-times-info'>
-                        <h5>Choose interview time</h5><br>
-                        <h5>Interview times when applicant is available</h5><br>
+                        <h5>Choose interview time</h5>
+                        <p>Interview times when applicant and all selected interviewers are available></p>
                         <div class="container">
                             <div class="row">
                                 <div class="col-lg-9">
@@ -315,6 +319,7 @@
                                             {% csrf_token %}
                                             <input id="interviewtime" name="interviewtime"></input>
                                             <input id="interviewroom" name="interviewroom"></input>
+                                            <input id="interviewers" name="interviewers"></input>
                                         </form>
                                         <button onclick="submit_interview()" style="width: 100%; margin: 20px 0 10px 0;" id='submit-button' class="btn button-form">Set interview</button>
                                         <p id='submit-error'>Nothing to change</p>
@@ -345,9 +350,9 @@
                 $("#statusForm").submit()
             }) // End: statusForm.change
 
-            interview_time = "{{interview_time}}";
+            // interview_time = "{{interview_time}}";
+            interview_time = "{{ application.get_interview_time }}";
             chosen_time = interview_time;
-            interviewers_times = {{interviewers_times | safe}};
 
 
             // avail_times = "{{avail_times}}".substring(1,"{{avail_times}}".length -1).split(', ')
@@ -360,7 +365,7 @@
 
             week = 0;
             week_text = ['Week 36 (29. Aug - 2. Sep)', 'Week 37 (3. Sep - 8. Sep)'];
-            filler = "X";
+            filler = "&#10004;";
 
             // Create divs inside grid. Easier than adding them manually
             for (var i=0; i<DATES_LENGTH/2; i++) {
@@ -408,9 +413,11 @@
         }) // End: document.ready
 
         function fillCalendar(avail_times){
-            console.log(avail_times);
             for (var i = 0; i < avail_times.length; i++) {
                 var cellid = "#" + i;
+                $(cellid).html("");
+                $(cellid).removeClass('avail-gridcell');
+                $(cellid).prop("onclick", null).off("click");
                 if (avail_times[i] == 4 && $(cellid).attr('class') != 'gridcell-disabled'){
                     $(cellid).addClass('avail-gridcell')
                     $(cellid).html(filler);
@@ -441,12 +448,9 @@
                     });
                     // ----- End: Define click function for grid boxes ------ \\
                 }
-                else{
-                    $(cellid).html("");
-                    $(cellid).removeClass('avail-gridcell');
-                    $(cellid).prop("onclick", null).off("click");
-                }
-            } // ---------- End: Display previously selected dates ---------- \\
+            }
+            console.log(chosen_time);
+            console.log($('#' + chosen_time));
             $('#' + chosen_time).addClass('chosen-gridcell');
         }
 
@@ -454,6 +458,10 @@
             var interview_room = $("#interviewroom").val();
             if (interview_room == '' && chosen_time != 'none'){
                 $('#submit-error').html('No room is set');
+                return;
+            }
+            if (none_selected && chosen_time != 'none'){
+                $('#submit-error').html('No interviewers are selected');
                 return;
             }
             console.log(chosen_time);
@@ -480,12 +488,10 @@
             // between applicant and all interviewers
             var all_dates = {{date.dates_list | safe}}
             var bucket_init_val = 3;
-            console.log(all_dates);
             // Join arrays
             for (var i = 0; i < inters.length; i++) {
-                console.log(inters[i]);
-                if (inters[i] != 'none'){
-                    all_dates.push.apply(all_dates, interviewers_times[inters[i]])
+                if (inters[i] && inters[i] != 'None'){
+                    all_dates.push.apply(all_dates, inters[i].split(','));
                     bucket_init_val -= 1;
                 }
             }
@@ -500,11 +506,18 @@
             }
             // If applicant has an interview time it should also count as an avalable time
             if (interview_time != 'none') avail_times[Number(interview_time)] = 4;
-            console.log(avail_times);
-            return avail_times
+            return avail_times;
         }
 
         function updateCalendar(){
+            interviewers = '';
+            none_selected = true;
+            for (var i = 0; i < $('.select-interviewers').length; i++) {
+                interviewers += $($('.select-interviewers')[i]).find(":selected").text() + ',';
+                if ($($('.select-interviewers')[i]).find(":selected").text() != 'None') none_selected = false;
+            }
+            $("#interviewers").val(interviewers.slice(0, -1));
+
             var tmp = match($('#i1').val(), $('#i2').val(), $('#i3').val());
             fillCalendar(tmp);
         }
