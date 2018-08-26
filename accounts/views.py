@@ -11,7 +11,7 @@ from accounts.forms import SignUpForm, StatusForm, WidgetsForm, CustomAuthentica
 from accounts.models import User
 # other apps:
 from applications.models import Application
-from jobs.models import Section, Gang, Position, Date
+from jobs.models import Section, Gang, Position, Date, Interview
 
 @login_required
 def profile(request):
@@ -19,22 +19,47 @@ def profile(request):
     # Admin profile should look different
     if request.user.is_staff:
         # Default: this staff/interviewer has no position, thus no applications applied for it
-        applications = []
-        IS_applications = []
+        #applications = []
+        #IS_applications = []
         #interviewers = Position.interviewer.objects.all()
         # Get position or None
         position = Position.objects.filter(interviewer=request.user).first()
+        interviews = Interview.objects.filter(interviewers=request.user.pk)
+        interview_list = list(interviews)
+        all_interviewers = []
+        me = []
+
+        for i in interview_list:
+            all_interviewers.append(i.interviewers.all())
+
+        for j in range(all_interviewers.__len__()):
+            for k in all_interviewers[j]:
+                if k == request.user and me == []:
+                    me.append(k)
+
+        me_instance = None
+        if me != []:
+            me_instance = me[0]
+
+        user = request.user
+        user_gang_applications = Application.objects.filter(
+            Q(first__gang=user.gang) | Q(second__gang=user.gang) | Q(third__gang=user.gang)
+        )
+
             # Check if user is an interviewer
-        if position != None:
+        '''if position != None:
             IS_applications = Application.objects.filter(
                         ~Q(interview_time=-1),
                         Q(first=position) | Q(second=position)
                     ).order_by('interview_time')
             applications = Application.objects.all()
+        '''
         return render(request, 'accounts/profile_admin.html', {
-            'IS_applications': IS_applications,
-            'applications': applications,
-            #'interviewers': interviewers,
+            #'IS_applications' : IS_applications,
+            #'applications' : applications,
+            'me' : me_instance,
+            'interviews' : interview_list,
+            'user_gang_applications': user_gang_applications,
         })
     # Normal profile
     application = Application.objects.filter(applicant=request.user).first()

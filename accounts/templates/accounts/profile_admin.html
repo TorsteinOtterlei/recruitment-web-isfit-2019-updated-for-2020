@@ -60,11 +60,12 @@
                         Email address: {{ user.email }}
                         <br>
                         Phone number: {{ user.phone_number }}
+
                 </div>
             </div>
         </div>
     </div>
-    {% if IS_applications %}
+    <!--{% if IS_applications %}
         <div class="container border interview-div">
             <h3>Your interviews:</h3>
             {% for application in IS_applications %}
@@ -73,8 +74,27 @@
                 </p>
             {% endfor %}
         </div>
-    {% endif %}
-    <!--{% if applications %}
+    {% endif %}-->
+    <div class="container border applicant-div">
+        {% for i in interviews %}
+            <h3>Interview at: {{ i.room }}, {{ i.pretty_interview_time }}</h3>
+        <h4>Applicant:</h4> <a href="{% url 'accounts:manage_profile' i.applicant.id %}">{{ i.applicant.get_full_name }}</a><br />
+        <h4>With:</h4>
+            {% for j in i.interviewers.all %}
+                {{ j.get_full_name }},
+            {% endfor %}
+        <br />
+        <br />
+        {% endfor %}
+
+    </div>
+    <div class="container border interview-div">
+        <h4>Applicants for your gang</h4>
+        {% for application in user_gang_applications %}
+             <a href="{% url 'accounts:manage_profile' application.applicant.id %}">{{ application.applicant.get_full_name }}</a><br />
+        {% endfor %}
+    </div>
+<!--{% if applications %}
         <div class="container border applicant-div">
             <h3>Your applicants:</h3>
             {% for application in applications %}
