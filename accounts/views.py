@@ -21,7 +21,6 @@ def profile(request):
         # Default: this staff/interviewer has no position, thus no applications applied for it
         applications = []
         IS_applications = []
-        #interviewers = Position.interviewer.objects.all()
         # Get position or None
         position = Position.objects.filter(interviewer=request.user).first()
             # Check if user is an interviewer
@@ -34,7 +33,6 @@ def profile(request):
         return render(request, 'accounts/profile_admin.html', {
             'IS_applications': IS_applications,
             'applications': applications,
-            #'interviewers': interviewers,
         })
     # Normal profile
     application = Application.objects.filter(applicant=request.user).first()
