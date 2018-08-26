@@ -9,15 +9,12 @@ class UserAdmin(ImportExportModelAdmin): # Replaced auth_admin.UserAdmin
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
         ('Personal info', {'fields': ('first_name', 'last_name', 'phone_number')}),
-        ('Permissions', {'fields': ('active', 'staff', 'superuser',
-                                       'groups', 'user_permissions')}),
+        ('Permissions', {'fields': ('active', 'staff', 'superuser', 'recruiter', 'interviewer',
+        'groups', 'user_permissions')}),
         ('Important dates', {'fields': ('last_login', 'date_joined')}),
     )
-    limited_fieldsets = (
-        (None, {'fields': ('email',)}),
-        ('Personal info', {'fields': ('first_name', 'last_name', 'phone_number')}),
-        ('Important dates', {'fields': ('last_login', 'date_joined')}),
-    )
+    filter_horizontal = ('groups', 'user_permissions')
+
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
@@ -27,7 +24,7 @@ class UserAdmin(ImportExportModelAdmin): # Replaced auth_admin.UserAdmin
     add_form = SignUpForm
     change_password_form = auth_admin.AdminPasswordChangeForm
     list_display = ('email', 'first_name', 'last_name', 'phone_number', 'staff', 'superuser')
-    list_filter = ('staff', 'superuser', 'active', 'groups')
+    list_filter = ('recruiter', 'interviewer', 'staff', 'superuser', 'active', 'groups')
     search_fields = ('first_name', 'last_name', 'email', 'phone_number')
     ordering = ['email']
     readonly_fields = ['last_login', 'date_joined']
