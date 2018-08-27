@@ -89,9 +89,14 @@
 
     </div>
     <div class="container border interview-div">
-        <h4>Applicants for your gang</h4>
+        {% if user_gang_applications %}
+            <h4>Applicants for your gang ({{ user.gang }}):</h4>
+        {% endif %}
         {% for application in user_gang_applications %}
-             <a href="{% url 'accounts:manage_profile' application.applicant.id %}">{{ application.applicant.get_full_name }}</a><br />
+            <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
+                {{ application.applicant.get_full_name }}
+            </a>
+            <br>
         {% endfor %}
     </div>
 <!--{% if applications %}

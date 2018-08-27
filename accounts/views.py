@@ -99,7 +99,7 @@ def signup(request):
             user = authenticate(email=email, password=raw_password)
             login(request, user)
             print("{} has registered!".format(user))
-            HttpResponseRedirect( reverse('jobs:home') )
+            return HttpResponseRedirect( reverse('home') )
 
     # GET or form failed. Form is either empty or contains previous POST with errors:
     return render(request, 'accounts/registration_form.html', {'form':form})
