@@ -91,7 +91,17 @@
     <div class="container border interview-div">
         <h4>Applicants for your gang</h4>
         {% for application in user_gang_applications %}
-             <a href="{% url 'accounts:manage_profile' application.applicant.id %}">{{ application.applicant.get_full_name }}</a><br />
+             <a href="{% url 'accounts:manage_profile' application.applicant.id %}">{{ application.applicant.get_full_name }}: </a>
+                {% if application.first.gang == user.gang %}
+                    <p>1: {{ application.first }}</p>
+                {% endif %}
+                {% if application.second.gang == user.gang %}
+                    <p>2: {{ application.second }}</p>
+                {% endif %}
+                {% if application.third.gang == user.gang %}
+                    <p>3: {{ application.third }}</p>
+                {% endif %}
+        <br />
         {% endfor %}
     </div>
 <!--{% if applications %}
