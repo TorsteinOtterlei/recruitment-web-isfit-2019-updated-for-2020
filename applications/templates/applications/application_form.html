@@ -74,6 +74,7 @@
 {% endblock %}
 
 {% block body %}
+{% if interview == None %}
 <h2>Your application:</h2>
 On this page you are required to write an application text
 and select the positions you would like to apply for.<br>
@@ -139,6 +140,9 @@ Click the link down below to browse all positions with details. <br>
     </div>
 </div>
 <button onclick="submit()" style="width: 60%; margin: 20px 0 10px 0;" class="btn button-form">Next</button>
+{% else %}
+Once an interview is set, you cannot edit your application. Contact recruiting@isfit.no if you want to change your application
+{% endif %}
 {% endblock %}
 
 {% block scriptblock %}

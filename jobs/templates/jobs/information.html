@@ -45,9 +45,9 @@
                                                         <p>{{ position.description|linebreaksbr }}</p>
                                                         <h5>Contact Information</h5>
                                                         <p>
-                                                            <b>Name:</b>&emsp;{{ position.interviewer.get_full_name }} <br>
-                                                            <b>Phone:</b>&emsp;{{ position.interviewer.phone_number }} <br>
-                                                            <b>Email:</b>&emsp;{{ position.interviewer.email }}
+                                                            <b>Name:</b>&emsp;{{ position.contact_person.get_full_name }} <br>
+                                                            <b>Phone:</b>&emsp;{{ position.contact_person.phone_number }} <br>
+                                                            <b>Email:</b>&emsp;{{ position.contact_person.email }}
                                                         </p>
                                                 </div>
                                             {% endfor %}
