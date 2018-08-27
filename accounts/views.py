@@ -20,7 +20,7 @@ def profile(request):
     if request.user.is_staff:
         # Default: this staff/interviewer has no position, thus no applications applied for it
         # Get position or None
-        position = Position.objects.filter(interviewer=request.user).first()
+        #position = Position.objects.filter(contact_person=request.user).first()
         interviews = Interview.objects.filter(interviewers=request.user.pk)
         interview_list = list(interviews)
         all_interviewers = []
@@ -87,7 +87,7 @@ def manage_profile(request, userID):
     application = get_object_or_404(Application, applicant_id=userID)
     applicant = application.applicant
     date, created = Date.objects.get_or_create(user=applicant)
-    interviewers = [pos.interviewer for pos in application.get_positions()]
+    interviewers = [pos.contact_person for pos in application.get_positions()]
     userstatus = applicant.get_status()
     interview_time = application.get_interview_time()
     DATES_LENGTH = 182
@@ -98,13 +98,13 @@ def manage_profile(request, userID):
     avail_times = [1] * DATES_LENGTH
 
     if len(application.get_positions()) >= 1:
-        if application.first.interviewer != None:
-            all_dates = all_dates + application.first.interviewer.date.dates_list()
+        if application.first.contact_person != None:
+            all_dates = all_dates + application.first.contact_person.date.dates_list()
         else:
             all_dates += all_dates
     if len(application.get_positions()) >= 2:
-        if application.second.interviewer != None:
-            all_dates = all_dates + application.second.interviewer.date.dates_list()
+        if application.second.contact_person != None:
+            all_dates = all_dates + application.second.contact_person.date.dates_list()
         else:
             all_dates += all_dates
         avail_times = [0] * DATES_LENGTH

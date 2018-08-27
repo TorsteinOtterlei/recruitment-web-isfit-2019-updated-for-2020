@@ -79,7 +79,7 @@
         {% for i in interviews %}
             <h3>Interview at: {{ i.room }}, {{ i.pretty_interview_time }}</h3>
         <h4>Applicant:</h4> <a href="{% url 'accounts:manage_profile' i.applicant.id %}">{{ i.applicant.get_full_name }}</a><br />
-        <h4>With:</h4>
+        <h4>Interviewers:</h4>
             {% for j in i.interviewers.all %}
                 {{ j.get_full_name }},
             {% endfor %}

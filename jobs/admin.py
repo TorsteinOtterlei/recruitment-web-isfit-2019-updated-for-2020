@@ -13,11 +13,11 @@ admin.site.register(Interview)
 class PositionAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {'fields': ['title', 'description'] } ),
-        ('Relations', {'fields': ['interviewer', 'interviewers', 'gang'] } ),
+        ('Relations', {'fields': ['contact_person', 'interviewers', 'gang'] } ),
     )
-    list_display = ['title', 'section', 'gang', 'interviewer']
+    list_display = ['title', 'section', 'gang', 'contact_person']
     list_filter = ['gang']
-    search_fields = ['title' ,'interviewer__email', 'interviewer__first_name', 'interviewer__last_name', 'interviewer__phone_number']
+    search_fields = ['title' ,'contact_person__email', 'contact_person__first_name', 'contact_person__last_name', 'contact_person__phone_number']
     ordering = ['gang']
     readonly_fields = []
 

@@ -231,49 +231,49 @@ class Command(BaseCommand):
         p.title = "Accounting position 1"
         p.gang = Gang.objects.get(name="Accounting")
         p.description = "dummy"
-        p.interviewer = users.pop()
+        p.contact_person = users.pop()
         p.save()
 
         p = Position()
         p.title = "Finance position 1"
         p.gang = Gang.objects.get(name="Finance")
         p.description = "dummy"
-        p.interviewer = users.pop()
+        p.contact_person = users.pop()
         p.save()
 
         p = Position()
         p.title = "Web App Developer"
         p.gang = Gang.objects.get(name="IT")
         p.description = "dummy"
-        p.interviewer = users.pop()
+        p.contact_person = users.pop()
         p.save()
 
         p = Position()
         p.title = "App Developer"
         p.gang = Gang.objects.get(name="IT")
         p.description = "dummy"
-        p.interviewer = users.pop()
+        p.contact_person = users.pop()
         p.save()
 
         p = Position()
         p.title = "Participant Web Developer"
         p.gang = Gang.objects.get(name="IT")
         p.description = "dummy"
-        p.interviewer = users.pop()
+        p.contact_person = users.pop()
         p.save()
 
         p = Position()
         p.title = "Recruitment Web Developer"
         p.gang = Gang.objects.get(name="IT")
         p.description = "dummy"
-        p.interviewer = users.pop()
+        p.contact_person = users.pop()
         p.save()
 
         p = Position()
         p.title = "Internal Project Manager"
         p.gang = Gang.objects.get(name="Finance")
         p.description = "dummy2"
-        p.interviewer = users.pop()
+        p.contact_person = users.pop()
         p.save()
 
         # Culture
@@ -281,7 +281,7 @@ class Command(BaseCommand):
         p.title = "Culture_position1"
         p.gang = Gang.objects.get(name="Art")
         p.description = "dummy"
-        p.interviewer = users.pop()
+        p.contact_person = users.pop()
         p.save()
 
         # Theme
@@ -289,7 +289,7 @@ class Command(BaseCommand):
         p.title = "Theme_position1"
         p.gang = Gang.objects.get(name="Dialogue")
         p.description = "dummy"
-        p.interviewer = users.pop()
+        p.contact_person = users.pop()
         p.save()
 
         # Administration
@@ -297,7 +297,7 @@ class Command(BaseCommand):
         p.title = "Administration_position1"
         p.gang = Gang.objects.get(name="Transport")
         p.description = "dummy"
-        p.interviewer = users.pop()
+        p.contact_person = users.pop()
         p.save()
 
         spinner.succeed()

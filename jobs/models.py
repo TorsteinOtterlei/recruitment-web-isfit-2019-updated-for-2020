@@ -44,7 +44,7 @@ class Position(models.Model):
     gang = models.ForeignKey(Gang, on_delete=models.CASCADE, related_name="positions")
     description = models.TextField(max_length=20000)
     interviewers = models.ManyToManyField(User, related_name="positions", blank=True)
-    interviewer = models.OneToOneField(User, on_delete=models.CASCADE, null=True, related_name="position", blank=True)
+    contact_person = models.OneToOneField(User, on_delete=models.CASCADE, null=True, related_name="position", blank=True)
     comment = models.CharField(max_length=100, default='')
 
     def __str__(self):
@@ -52,8 +52,8 @@ class Position(models.Model):
             return 'error'
         return "{} ({})".format(self.title, self.gang)
 
-    def get_interviewers(self):
-        return self.interviewer
+    def get_contact_person(self):
+        return self.contact_person
 
 class Date(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="date")
@@ -133,10 +133,11 @@ class Calendar(models.Model):
 class Interview(models.Model):
     applicant = models.OneToOneField(User, on_delete=models.CASCADE, related_name='interview')
     interviewers = models.ManyToManyField(User, related_name='interviews')
+    first = models.ForeignKey(User, related_name='first_interviews', on_delete=models.CASCADE, null=True, default=None)
+    second = models.ForeignKey(User, related_name='second_interviews', on_delete=models.CASCADE, null=True, default=None)
+    third = models.ForeignKey(User, related_name='third_interviews', on_delete=models.CASCADE, null=True, default=None)
     room = models.CharField(max_length=40)
     time = models.IntegerField(default=-1)
-
-
 
     def get_interview_time(self):
         if self.time == -1:
