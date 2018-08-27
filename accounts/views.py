@@ -19,8 +19,8 @@ def profile(request):
     # Admin profile should look different
     if request.user.is_staff:
         # Default: this staff/interviewer has no position, thus no applications applied for it
-        # Get position or None
-        #position = Position.objects.filter(contact_person=request.user).first()
+
+        # Getting interview objects where user is one of the interviewers
         interviews = Interview.objects.filter(interviewers=request.user.pk)
         interview_list = list(interviews)
         all_interviewers = []
@@ -29,15 +29,18 @@ def profile(request):
         for i in interview_list:
             all_interviewers.append(i.interviewers.all())
 
+        # Finding self.user from list of all interviewers and appending on me
         for j in range(all_interviewers.__len__()):
             for k in all_interviewers[j]:
                 if k == request.user and me == []:
                     me.append(k)
 
+        # Getting user instance from me list
         me_instance = None
         if me != []:
             me_instance = me[0]
 
+        # Getting gang information from user
         user = request.user
         user_gang_applications = Application.objects.filter(
             Q(first__gang=user.gang) | Q(second__gang=user.gang) | Q(third__gang=user.gang)
@@ -50,11 +53,19 @@ def profile(request):
         })
     # Normal profile
     application = Application.objects.filter(applicant=request.user).first()
+
+    # If interview exixsts for this user, get interview instance
+    if Interview.objects.get(applicant=request.user) != None:
+        interview = Interview.objects.get(applicant=request.user)
+    else:
+        interview = None
+
     positions = []
     if application != None:
         positions = application.get_positions()
     return render(request, 'accounts/profile.html', {
         'positions': positions,
+        'interview': interview,
     })
 
 def signup(request):
