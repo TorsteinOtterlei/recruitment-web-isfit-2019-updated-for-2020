@@ -175,7 +175,7 @@
 {% endblock %}
 
 {% block body %}
-{% if user.is_superuser or application.first.interviewer == user or application.second.interviewer == user or application.third.interviewer == user %}
+{% if user.is_superuser or application in user_gang_applications %}
     <div class="container">
 
         {% if user.is_superuser %}

@@ -108,6 +108,11 @@ def manage_profile(request, userID):
     all_dates = application.applicant.date.dates_list()
     avail_times = [1] * DATES_LENGTH
 
+    user = request.user
+    user_gang_applications = Application.objects.filter(
+        Q(first__gang=user.gang) | Q(second__gang=user.gang) | Q(third__gang=user.gang)
+    )
+
     if len(application.get_positions()) >= 1:
         if application.first.contact_person != None:
             all_dates = all_dates + application.first.contact_person.date.dates_list()
@@ -170,7 +175,9 @@ def manage_profile(request, userID):
         'form': form,
         'interviewers': interviewers,
         'avail_times': avail_times,
-        'interview_time': application.get_interview_time()
+        'interview_time': application.get_interview_time(),
+        'user_gang_applications': user_gang_applications,
+
     })
 
 def send_mail(request, userID):
