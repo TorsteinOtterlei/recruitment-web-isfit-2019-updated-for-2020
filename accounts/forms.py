@@ -1,4 +1,4 @@
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm, PasswordChangeForm
 from django import forms
 from django.utils.translation import ugettext, ugettext_lazy as _
 # local:
@@ -69,6 +69,20 @@ class CustomAuthenticationForm(AuthenticationForm): # Not currently in use. Can 
         if not user.is_authenticated:
             raise forms.ValidationError(self.error_messages['invalid_login'], code='invalid_login')
 
+class CustomPasswordChangeForm(PasswordChangeForm):
+    # Inherited fields:
+    # old_password
+    # new_password1
+    # new_password2
+
+    class Meta:
+        model = User
+
+    def __init__(self, *args, **kwargs):
+        super(CustomPasswordChangeForm, self).__init__(*args, **kwargs)
+        self.fields['old_password'].widget.attrs.update({'class': 'form-control'})
+        self.fields['new_password1'].widget.attrs.update({'class': 'form-control'})
+        self.fields['new_password2'].widget.attrs.update({'class': 'form-control'})
 
 
 

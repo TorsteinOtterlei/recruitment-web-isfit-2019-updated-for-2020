@@ -15,7 +15,7 @@
             border-color: orange;
         }
         #user-logo {
-            height: 150px;
+            height: 120px;
             margin-bottom: 10px;
         }
         #title > * {
@@ -53,6 +53,13 @@
             <input class="input-button" type="submit" value="Apply for a position now!"><br>
         </form>
     {% endif %}
+
+    <form action="{% url 'accounts:edit_profile' %}" method="get">
+        <input class="input-button" type="submit" value="Edit Profile"><br>
+    </form>
+    <form action="{% url 'accounts:change_password' %}" method="get">
+        <input class="input-button" type="submit" value="Change password"><br>
+    </form>
     <form action="{% url 'accounts:logout' %}" method="get">
         <input class="input-button" type="submit" value="Log out"><br>
     </form>
