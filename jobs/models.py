@@ -1,8 +1,10 @@
 from django.db import models
+import math
+from accounts.models import User
 # local
 
 # other apps
-from accounts.models import User
+#from accounts.models import User
 
 def makeDates(numb):
     return ",".join([str(i) for i in range(numb)])
@@ -42,16 +44,16 @@ class Position(models.Model):
     gang = models.ForeignKey(Gang, on_delete=models.CASCADE, related_name="positions")
     description = models.TextField(max_length=20000)
     interviewers = models.ManyToManyField(User, related_name="positions", blank=True)
-    interviewer = models.OneToOneField(User, on_delete=models.CASCADE, null=True, related_name="position", blank=True)
-    comment = models.TextField(max_length=500, default='')
+    contact_person = models.OneToOneField(User, on_delete=models.CASCADE, null=True, related_name="position", blank=True)
+    comment = models.CharField(max_length=100, default='')
 
     def __str__(self):
         if self.title == None or self.gang == None:
             return 'error'
         return "{} ({})".format(self.title, self.gang)
 
-    def get_interviewers(self):
-        return self.interviewer
+    def get_contact_person(self):
+        return self.contact_person
 
 class Date(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="date")
@@ -145,3 +147,31 @@ class Interview(models.Model):
         else:
             self.time = int(time)
             self.save()
+
+    def get_interview_time(self):
+        if self.time == -1:
+            return 'none'
+        return str(self.time)
+
+    def pretty_interview_time(self):
+        if self.get_interview_time() == 'none':
+            return 'none'
+        dates_range = 182
+        all_times = ["08:15 - 09:00", "09:15 - 10:00", "10:15 - 11:00",
+        "11:15 - 12:00", "12:15 - 13:00", "13:15 - 14:00", "14:15 - 15:00",
+        "15:15 - 16:00", "16:15 - 17:00", "17:15 - 18:00", "18:15 - 19:00",
+        "19:15 - 20:00", "20:15 - 21:00"]
+        first_week = ["Monday 27 Aug", "Tuesday 28 Aug", "Wednesday 29 Aug",
+         "Thursday 30 Aug", "Friday 31 Aug", "Saturday 1 Sept", "Sunday 2 Sept"]
+        second_week = ["Monday 3 Sept", "Tuesday 4 Sept", "Wednesday 5 Sept", "Thursday 6 Sept",
+         "Friday 7 Sept", "Saturday 8 Sept", "Sunday 9 Sept"]
+
+        tmp = float(self.get_interview_time())
+        if int(tmp) < dates_range//2:
+            return(first_week[int(tmp)%7] + ' - ' + all_times[int(math.trunc(tmp/7))])
+        else:
+            tmp -= dates_range//2
+            return(second_week[int(tmp)%7] + ' - ' + all_times[int(math.trunc(tmp/7))])
+
+    def __str__(self):
+        return str(self.room) + ', ' + str(self.pretty_interview_time())

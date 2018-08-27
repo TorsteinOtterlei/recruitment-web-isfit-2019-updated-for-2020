@@ -8,9 +8,15 @@ from accounts.forms import SignUpForm
 class UserAdmin(ImportExportModelAdmin): # Replaced auth_admin.UserAdmin
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
+
+        ('Personal info', {'fields': ('first_name', 'last_name', 'phone_number', 'gang')}),
+        ('Permissions', {'fields': ('active', 'staff', 'superuser',
+                                       'groups', 'user_permissions')}),
+        ('Important dates', {'fields': ('last_login', 'date_joined')}),
+    )
+    limited_fieldsets = (
+        (None, {'fields': ('email',)}),
         ('Personal info', {'fields': ('first_name', 'last_name', 'phone_number')}),
-        ('Permissions', {'fields': ('active', 'staff', 'superuser', 'recruiter', 'interviewer',
-        'groups', 'user_permissions')}),
         ('Important dates', {'fields': ('last_login', 'date_joined')}),
     )
     filter_horizontal = ('groups', 'user_permissions')

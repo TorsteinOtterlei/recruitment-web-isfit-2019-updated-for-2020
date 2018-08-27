@@ -5,6 +5,7 @@ from django.core.mail import send_mail
 from django.contrib.auth.models import PermissionsMixin
 # local
 # other apps:
+#from jobs.models import Gang
 
 class UserManager(BaseUserManager):
     use_in_migrations = True
@@ -37,6 +38,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     recruiter = models.BooleanField(default=False)
     interviewer = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now, blank=True)
+    gang = models.ForeignKey('jobs.Gang', on_delete=models.CASCADE, null=True, blank=True, related_name='members')
 
     NOT_EVALUATED = 'NE'
     INTERVIEW_SET = 'IS'

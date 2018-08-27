@@ -14,6 +14,14 @@
             padding: 15px 15px 15px 15px;
             border-color: orange;
         }
+        .interview-div {
+            line-height: 1.5em;
+            border: solid;
+            border-radius: 15px;
+            padding: 15px 15px 15px 15px;
+            border-color: orangered;
+        }
+
         #user-logo {
             height: 150px;
             margin-bottom: 10px;
@@ -38,6 +46,7 @@
         <br>
         <h5>You have applied for these positions:</h5>
         <div class="application_positions">
+            <h4>You have applied for these positions:</h4>
             {% for position in positions %}
             <div>
                 <a href="{% url 'jobs:position_detail' position.pk %}">{{ forloop.counter }} - {{ position.title }}</a>
@@ -45,6 +54,14 @@
             {% endfor %}
         </div>
         <br>
+        {% if interview != None %}
+            <div class="interview-div">
+                <h4>Interview information</h4>
+                <b style="color: orangered">Room:</b> {{ interview.room }}<br>
+                <b style="color: orangered">Time:</b> {{ interview.pretty_interview_time }}
+            </div>
+            <br>
+        {% endif %}
         <form action="{% url 'applications:apply' %}" method="get">
             <input class="input-button" type="submit" value="Edit application"><br>
         </form>
@@ -57,5 +74,6 @@
     <form action="{% url 'accounts:logout' %}" method="get">
         <input class="input-button" type="submit" value="Log out"><br>
     </form>
+    <br>
 
 {% endblock %}
