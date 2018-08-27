@@ -1,13 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse
-from django.contrib.auth import authenticate, login, logout
+from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required, user_passes_test
 from django.db.models import Q
+from django.urls import reverse
 import json
 # local:
-from accounts.forms import SignUpForm, StatusForm, WidgetsForm, CustomAuthenticationForm
+from accounts.forms import SignUpForm, StatusForm, WidgetsForm, CustomAuthenticationForm, EditUserForm, CustomPasswordChangeForm
 from accounts.models import User
 # other apps:
 from applications.models import Application
@@ -68,6 +69,24 @@ def profile(request):
         'interview': interview,
     })
 
+@login_required
+def edit_profile(request):
+    error = None
+    if request.method == 'GET':
+        form = EditUserForm(instance=request.user)
+    else: # POST
+        form = EditUserForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect( reverse('accounts:profile') )
+        else:
+            error = 'Something went wrong'
+    # GET or form failed
+    return render(request, 'accounts/edit_profile.html', {
+        'form': form,
+        'error': error,
+    })
+
 def signup(request):
     if request.method == "GET":
         form = SignUpForm() # GET should give a new form
@@ -80,7 +99,7 @@ def signup(request):
             user = authenticate(email=email, password=raw_password)
             login(request, user)
             print("{} has registered!".format(user))
-            return redirect('home')
+            HttpResponseRedirect( reverse('jobs:home') )
 
     # GET or form failed. Form is either empty or contains previous POST with errors:
     return render(request, 'accounts/registration_form.html', {'form':form})
@@ -186,6 +205,19 @@ def manage_profile(request, userID):
         'positions': positions,
         'interview': interview,
         'user_gang_applications': user_gang_applications
+    })
+
+def change_password(request):
+    if request.method == 'POST':
+        form = CustomPasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important!
+            return HttpResponseRedirect( reverse('accounts:profile') )
+    else:
+        form = CustomPasswordChangeForm(request.user)
+    return render(request, 'accounts/change_password.html', {
+        'form': form,
     })
 
 def send_mail(request, userID):
