@@ -80,15 +80,17 @@ def manage_profile(request, userID):
     applicant = application.applicant
     date, created = Date.objects.get_or_create(user=applicant)
     userstatus = applicant.get_status()
+    interview = Interview.objects.filter(applicant=application.applicant).first()
 
     if request.method == 'POST':
-        interview, interview_created = Interview.objects.get_or_create(applicant=application.applicant)
         form = StatusForm(instance=applicant)
         chosen_time = request.POST.get('interviewtime') # Get the time marked in front-end
         chosen_room = request.POST.get('interviewroom') # Get the room chosen in front-end
         chosen_interviewers = []
         for inter in request.POST.get('interviewers').split(','):
-            if inter != 'None':
+            if inter == 'None':
+                chosen_interviewers.append(None)
+            else:
                 chosen_interviewers.append(User.objects.get(email=inter))
         print('Chosen time: ' + str(chosen_time))
         print('Chosen room: ' + str(chosen_room))
@@ -97,27 +99,41 @@ def manage_profile(request, userID):
 
         # Updating the interviewers availability
         if chosen_time != application.get_interview_time():
-             # Remove old unavailable times
-            for inter in interview.interviewers.all():
-                userdate = Date.objects.get(user=inter)
-                userdate.add_time(application.get_interview_time())
-                userdate.save()
-             # Add new unavailable times
+            # Remove old unavailable times
+            if interview:
+                for inter in interview.interviewers.all():
+                    userdate = Date.objects.get(user=inter)
+                    userdate.add_time(application.get_interview_time())
+                    userdate.save()
+
+            # Add new unavailable times
             for inter in chosen_interviewers:
-                userdate = Date.objects.get(user=inter)
-                userdate.remove_time(chosen_time)
-                userdate.save()
+                if inter:
+                    userdate = Date.objects.get(user=inter)
+                    userdate.remove_time(chosen_time)
+                    userdate.save()
+            print('Interview time changed to ' + str(chosen_time))
 
             application.set_interview_time(chosen_time)
             application.save()
-            print('Interview time changed to ' + str(chosen_time))
 
         # Update/create interview object
-        interview.interviewers.add(*chosen_interviewers)
+        if interview:
+            interview.delete()
+        interview = Interview.objects.create(applicant=application.applicant)
+        for i in range(len(chosen_interviewers)):
+            if chosen_interviewers[i]:
+                interview.interviewers.add(chosen_interviewers[i])
+                if i == 0:
+                    interview.first = chosen_interviewers[i]
+                elif i == 1:
+                    interview.second = chosen_interviewers[i]
+                elif i == 2:
+                    interview.third = chosen_interviewers[i]
         interview.room = chosen_room
         interview.set_interview_time(chosen_time)
         interview.save()
-        print('Created interview object!') if interview_created else print('Updated interview object!')
+        print('Created interview object!')
 
         print('request.POST, instance=applicant')
         form = StatusForm(request.POST, instance=applicant)
@@ -134,7 +150,8 @@ def manage_profile(request, userID):
         'application': application,
         'date': date,
         'form': form,
-        'positions': positions
+        'positions': positions,
+        'interview': interview
     })
 
 def send_mail(request, userID):

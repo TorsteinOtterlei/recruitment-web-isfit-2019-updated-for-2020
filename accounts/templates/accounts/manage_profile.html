@@ -318,7 +318,7 @@
                                         <form method="POST" name='dates_form'>
                                             {% csrf_token %}
                                             <input id="interviewtime" name="interviewtime"></input>
-                                            <input id="interviewroom" name="interviewroom"></input>
+                                            <input id="interviewroom" name="interviewroom" value="{{ interview.room }}"></input>
                                             <input id="interviewers" name="interviewers"></input>
                                         </form>
                                         <button onclick="submit_interview()" style="width: 100%; margin: 20px 0 10px 0;" id='submit-button' class="btn button-form">Set interview</button>
@@ -386,7 +386,13 @@
             } // End: cell-appending to grid
 
             // ---------- Start: Display previously selected dates ---------- \\
+            saved_inters = ["{{ interview.first.date.dates }}", "{{ interview.second.date.dates }}", "{{ interview.third.date.dates }}"]
+            console.log(saved_inters);
+            if (saved_inters[0] != '') $($('#i1')[0]).val(saved_inters[0]);
+            if (saved_inters[1] != '') $($('#i2')[0]).val(saved_inters[1]);
+            if (saved_inters[2] != '') $($('#i3')[0]).val(saved_inters[2]);
             updateCalendar();
+
 
             // Send interview time to user by mail:
             $("#btn-mail").click(function() {
@@ -408,7 +414,9 @@
                 }
             })
 
-
+        $('#interviewroom').click(function() {
+            $('#submit-error').html('')
+        });
 
         }) // End: document.ready
 
@@ -439,7 +447,7 @@
                         }
                         if (interview_time == chosen_time){
                             $('#submit-button').attr("disabled", "disabled");
-                            $('#submit-error').html('Nothing to change')
+                            $('#submit-error').html('Nothing to change');
                         }
                         else{
                             $('#submit-button').removeAttr("disabled");
@@ -449,9 +457,14 @@
                     // ----- End: Define click function for grid boxes ------ \\
                 }
             }
-            console.log(chosen_time);
-            console.log($('#' + chosen_time));
-            $('#' + chosen_time).addClass('chosen-gridcell');
+            $('#' + chosen_time).removeClass('chosen-gridcell');
+            $('#submit-button').attr("disabled", "disabled");
+            $('#submit-error').html('No interview selected');
+            if(avail_times[chosen_time] == 4){
+                $('#' + chosen_time).addClass('chosen-gridcell');
+                $('#submit-button').removeAttr("disabled");
+                $('#submit-error').html('');
+            }
         }
 
         function submit_interview(){
@@ -462,6 +475,10 @@
             }
             if (none_selected && chosen_time != 'none'){
                 $('#submit-error').html('No interviewers are selected');
+                return;
+            }
+            if (chosen_time == 'none' && $("#interviewers").val() != 'None,None,None'){
+                $('#submit-error').html('No.');
                 return;
             }
             console.log(chosen_time);
@@ -510,6 +527,7 @@
         }
 
         function updateCalendar(){
+            $('#submit-error').html('')
             interviewers = '';
             none_selected = true;
             for (var i = 0; i < $('.select-interviewers').length; i++) {
