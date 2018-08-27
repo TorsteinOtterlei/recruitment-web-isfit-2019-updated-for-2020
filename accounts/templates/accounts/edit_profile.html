@@ -1,0 +1,42 @@
+{% extends 'jobs/base.html' %}
+{% load static %}
+
+{% block head %}
+    <style media="screen">
+        .edit-user-form {
+            max-width: 600px;
+        }
+        #btn_submit {
+            width: 100%;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <h1>Edit profile:</h1>
+    <form class="container edit-user-form" method="POST"> <!-- Bootstrap -->
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="form-group"> <!-- Bootstrap -->
+            {{ field.label_tag }}
+            {{ field }}
+            {% for error in field.errors %}
+                <div class="error">{{ error }}</div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+        <button id="btn_submit" type="submit" class="btn btn-primary">Save</button>
+    </form>
+    <br><br><br>
+{% endblock %}
+
+{% block scriptblock %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+        })
+    </script>
+{% endblock %}

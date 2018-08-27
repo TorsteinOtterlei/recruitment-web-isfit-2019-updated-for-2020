@@ -106,7 +106,12 @@
             {% endfor %}
         </div>
     {% endif %}-->
-
+    <form action="{% url 'accounts:edit_profile' %}" method="get">
+        <input class="input-button" type="submit" value="Edit Profile"><br>
+    </form>
+    <form action="{% url 'accounts:change_password' %}" method="get">
+        <input class="input-button" type="submit" value="Change password"><br>
+    </form>
     <form action="{% url 'accounts:logout' %}" method="get">
         <input class="input-button" type="submit" value="Log out"><br>
     </form>
