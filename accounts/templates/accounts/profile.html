@@ -58,18 +58,24 @@
             <div class="interview-div">
                 <h5>Interview information</h5>
                 <b style="color: orangered">Room:</b> {{ interview.room }}<br>
-                <b style="color: orangered">Time:</b> {{ interview.pretty_interview_time }}
+                <b style="color: orangered">Time:</b> {{ interview.pretty_interview_time }}<br>
+                <b style="color: orangered">Interviewers:</b><br>
+                                {% for j in interview.interviewers.all %}
+                                    <b>{{ j.get_full_name }}: </b> {{ j.email }}<br>
+                                {% endfor %}
+
             </div>
             <br>
+            If you still want to edit your application, send us an Email on recruiting@isfit.no
         {% else %}
             <div class="interview-div">
                 <h5>Your interview has not been set. Interview information will appear here.</h5>
             </div>
             <br>
-        {% endif %}
         <form action="{% url 'applications:apply' %}" method="get">
             <input class="input-button" type="submit" value="Edit application"><br>
         </form>
+        {% endif %}
     {% else %}
         <h2>You have not yet applied for any positions.</h2>
         <form action="{% url 'applications:apply' %}" method="get">

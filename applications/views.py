@@ -8,7 +8,7 @@ from django.http import JsonResponse
 from applications.forms import ApplicationForm
 from applications.models import Application
 # other apps
-from jobs.models import Section, Gang, Position, Date
+from jobs.models import Section, Gang, Position, Date, Interview
 from accounts.models import User
 
 # Create your views here.
@@ -31,6 +31,11 @@ def apply(request):
     if application.has_positions():
         applied_to = [pos.title for pos in application.get_positions()]
 
+    if Interview.objects.filter(applicant=request.user).first():
+        interview = Interview.objects.get(applicant=request.user)
+    else:
+        interview = None
+
     if request.method == "POST":
         form = ApplicationForm(request.POST, instance=application)
         if form.is_valid(): # if any jobs were selected
@@ -48,6 +53,7 @@ def apply(request):
         'sections': Section.objects.all(),
         'gangs': Gang.objects.all(),
         'applied_to': json.dumps(applied_to),
+        'interview': interview,
     })
     # End: apply
 
