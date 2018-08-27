@@ -1,5 +1,5 @@
 {% extends 'jobs/base.html' %}
-{% block title %}Welcome{% endblock %}
+{% block title %}{{ user.get_full_name }}{% endblock %}
 {% load static %}
 
 {% block head %}
@@ -26,25 +26,27 @@
             height: 150px;
             margin-bottom: 10px;
         }
-        #title > * {
-            display: inline-block;
+
+        #status {
+            color: #cc8102;
         }
-        #status, #status:hover {
-            color: blue;
+        h5, #title{
+            text-align: center;
         }
     </style>
 {% endblock head %}
 
 {% block body %}
     <img id="user-logo" src="{% static 'accounts/user.png' %}" alt="User logo">
+    <p><span id=status>&emsp;<b>Status:</b> {{ user.get_status_display }} </span></p>
     <div id="title">
         <h1>{{ user.get_full_name }}</h1>
-        <span id=status>&emsp;Status: {{ user.get_status_display }} </span>
     </div>
     {% if positions %}
+        <h5>You will recive an e-mail with information regarding your interview. Please remember to check your email regularly.</h5>
         <br>
         <div class="application_positions">
-            <h4>You have applied for these positions:</h4>
+            <h5>You have applied for these positions:</h5>
             {% for position in positions %}
             <div>
                 <a href="{% url 'jobs:position_detail' position.pk %}">{{ forloop.counter }} - {{ position.title }}</a>
@@ -54,9 +56,14 @@
         <br>
         {% if interview != None %}
             <div class="interview-div">
-                <h4>Interview information</h4>
+                <h5>Interview information</h5>
                 <b style="color: orangered">Room:</b> {{ interview.room }}<br>
                 <b style="color: orangered">Time:</b> {{ interview.pretty_interview_time }}
+            </div>
+            <br>
+        {% else %}
+            <div class="interview-div">
+                <h5>Your interview has not been set. Interview information will appear here.</h5>
             </div>
             <br>
         {% endif %}

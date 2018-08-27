@@ -31,7 +31,7 @@
         border-top-style: none;
         border-bottom-left-radius: 8px;
         border-bottom-right-radius: 8px;
-        padding: 10px 0 10px 0;
+        padding: 10px;
     }
     hr {
         border: 1px solid #343a40;
@@ -133,15 +133,8 @@
             font-size: small;
             min-width: 5em;
             padding-top: 0.1em;
-        }
-        .calendar{
-            padding: 0;
-            margin-left: -0.6em;
-            margin-right: -0.6em;
-        }
-        #available-times{
-            margin-left: -1em;
-            margin-right: -1em;
+            /*
+            */
         }
     }
 
@@ -153,7 +146,7 @@
         color: orange;
     }
 
-    #interviewtime {
+    #interviewtime, #interviewers {
         display: none;
     }
 
@@ -169,6 +162,10 @@
 
     .gridcell-disabled:hover {
         cursor: not-allowed;
+    }
+
+    #btn-mail{
+        display: none;
     }
 
 </style>
@@ -240,9 +237,16 @@
             <!-- Application-text collapsible -->
             <div class="collapse" id="applied-positions">
                 <div class="smooth-wrapper">
-                    {% for position in application.get_positions %}
-                    <p>{{ forloop.counter }}. {{ position }},&emsp; Interviewer: {{ position.interviewer }}</p>
-                    <hr>
+                    {% for position in positions %}
+                        <p>{{ forloop.counter }}. {{ position }},&emsp; Interviewer:
+                            <select id='i{{forloop.counter}}' class='select-interviewers' onclick="updateCalendar()">
+                                <option>None</option>
+                                {% for interviewer in position.interviewers.all %}
+                                <option value="{{ interviewer.date.dates }}">{{ interviewer }}</option>
+                                {% endfor %}
+                            </select>
+                        </p>
+                        <hr>
                     {% endfor %}
                 </div>
             </div>
@@ -258,7 +262,8 @@
             <div class="collapse" id="available-times">
                 <div class="smooth-wrapper">
                     <div id='available-times-info'>
-                        <h5>Interview times when applicant and both interviewers are available</h5><br>
+                        <h5>Choose interview time</h5>
+                        <p>Interview times when applicant and all selected interviewers are available></p>
                         <div class="container">
                             <div class="row">
                                 <div class="col-lg-9">
@@ -308,13 +313,17 @@
                                             <button type="button" class="btn" id="bt0" onclick="changeWeek(this, 0)">&#8678; 1st Week</button>
                                             <button type="button" class="btn" id="bt1" onclick="changeWeek(this, 1)">2nd Week &#8680;</button>
                                         </div>
+                                        Set room used for interview
 
                                         <form method="POST" name='dates_form'>
                                             {% csrf_token %}
                                             <input id="interviewtime" name="interviewtime"></input>
-                                            <button onclick="submit_interview()" style="width: 100%; margin: 20px 0 10px 0;" id='submit-button' class="btn button-form">Set interview</button>
-                                            <p id='submit-error'>Nothing to change</p>
+                                            <input id="interviewroom" name="interviewroom" value="{{ interview.room }}"></input>
+                                            <input id="interviewers" name="interviewers"></input>
                                         </form>
+                                        <button onclick="submit_interview()" style="width: 100%; margin: 20px 0 10px 0;" id='submit-button' class="btn button-form">Set interview</button>
+                                        <p id='submit-error'>Nothing to change</p>
+
                                         <button type="button" id="btn-mail">Notify interview to {{ application.applicant }} </button>
 
                                     </div>
@@ -333,30 +342,33 @@
 
 {% block scriptblock %}
     <script type="text/javascript">
-        var week, week_text, interview_time, chosen_time, avail_times;
+        var week, week_text, filler, interview_time, chosen_time, avail_times, interviewers_times;
+        var DATES_LENGTH = 182;
 
         $(document).ready(function() {
             $("#statusForm").change(function() {
                 $("#statusForm").submit()
             }) // End: statusForm.change
 
-            interview_time = "{{interview_time}}";
+            // interview_time = "{{interview_time}}";
+            interview_time = "{{ application.get_interview_time }}";
             chosen_time = interview_time;
 
-            avail_times = "{{avail_times}}".substring(1,"{{avail_times}}".length -1).split(', ')
+
+            // avail_times = "{{avail_times}}".substring(1,"{{avail_times}}".length -1).split(', ')
+            // match('kris@test.no', 'camilla@test.no', 'johan@test.no')
 
             $('.grid2').css('display', 'none');
             $('#bt0').prop("disabled", true);
             $('#submit-button').attr("disabled", "disabled");
             console.log('Chosen time: ' + chosen_time)
 
-            dates_range = 182
             week = 0;
             week_text = ['Week 36 (29. Aug - 2. Sep)', 'Week 37 (3. Sep - 8. Sep)'];
-            var filler = "X";
+            filler = "&#10004;";
 
             // Create divs inside grid. Easier than adding them manually
-            for (var i=0; i<dates_range/2; i++) { // 70 because of temporary 0-69 grid
+            for (var i=0; i<DATES_LENGTH/2; i++) {
                 var div = document.createElement("div");  // Create with DOM
                 div.id = i; // Give each cell their id according to grid
                 var tmp = (i%7==0 || i%7==1) ? 'gridcell-disabled' : 'gridcell';
@@ -365,7 +377,7 @@
             } // End: cell-appending to grid
 
             // Create divs inside grid. Easier than adding them manually
-            for (var i=dates_range/2; i<dates_range; i++) { // 70 because of temporary 0-69 grid
+            for (var i=DATES_LENGTH/2; i<DATES_LENGTH; i++) {
                 var div = document.createElement("div");  // Create with DOM
                 div.id = i; // Give each cell their id according to grid
                 var tmp = (i%7==6) ? 'gridcell-disabled' : 'gridcell';
@@ -374,41 +386,13 @@
             } // End: cell-appending to grid
 
             // ---------- Start: Display previously selected dates ---------- \\
-            console.log(avail_times)
-            for (var i = 0; i < avail_times.length; i++) {
-                var cellid = "#" + i;
-                if (avail_times[i] == "3" && $(cellid).attr('class') != 'gridcell-disabled'){
-                    $(cellid).addClass('avail-gridcell')
-                    $(cellid).html(filler);
-                    // ---- Start: Define onclick function for grid boxex --- \\
-                    $(cellid).click(function() {
-                        if (this.id == chosen_time){
-                            $('#'+chosen_time).removeClass('chosen-gridcell');
+            saved_inters = ["{{ interview.first.date.dates }}", "{{ interview.second.date.dates }}", "{{ interview.third.date.dates }}"]
+            console.log(saved_inters);
+            if (saved_inters[0] != '') $($('#i1')[0]).val(saved_inters[0]);
+            if (saved_inters[1] != '') $($('#i2')[0]).val(saved_inters[1]);
+            if (saved_inters[2] != '') $($('#i3')[0]).val(saved_inters[2]);
+            updateCalendar();
 
-                            if (interview_time != 'none')$('#submit-button').html('Remove interview');
-                            chosen_time = 'none';
-                        }
-                        else{
-                            $('#'+chosen_time).removeClass('chosen-gridcell');
-                            $('#'+this.id).addClass('chosen-gridcell');
-
-                            if (interview_time != 'none') $('#submit-button').html('Change interview');
-                            else $('#submit-button').html('Set interview');
-                            chosen_time = this.id;
-                        }
-                        if (interview_time == chosen_time){
-                            $('#submit-button').attr("disabled", "disabled");
-                            $('#submit-error').html('Nothing to change')
-                        }
-                        else{
-                            $('#submit-button').removeAttr("disabled");
-                            $('#submit-error').html('')
-                        }
-                    });
-                    // ----- End: Define click function for grid boxes ------ \\
-                }
-            } // ---------- End: Display previously selected dates ---------- \\
-            $('#' + chosen_time).addClass('chosen-gridcell');
 
             // Send interview time to user by mail:
             $("#btn-mail").click(function() {
@@ -430,10 +414,75 @@
                 }
             })
 
+        $('#interviewroom').click(function() {
+            $('#submit-error').html('')
+        });
+
         }) // End: document.ready
 
+        function fillCalendar(avail_times){
+            for (var i = 0; i < avail_times.length; i++) {
+                var cellid = "#" + i;
+                $(cellid).html("");
+                $(cellid).removeClass('avail-gridcell');
+                $(cellid).prop("onclick", null).off("click");
+                if (avail_times[i] == 4 && $(cellid).attr('class') != 'gridcell-disabled'){
+                    $(cellid).addClass('avail-gridcell')
+                    $(cellid).html(filler);
+                    // ---- Start: Define onclick function for grid boxex --- \\
+                    $(cellid).click(function() {
+                        if (this.id == chosen_time){
+                            $('#'+chosen_time).removeClass('chosen-gridcell');
+
+                            if (interview_time != 'none')$('#submit-button').html('Remove interview');
+                            chosen_time = 'none';
+                        }
+                        else{
+                            $('#'+chosen_time).removeClass('chosen-gridcell');
+                            $('#'+this.id).addClass('chosen-gridcell');
+
+                            if (interview_time != 'none') $('#submit-button').html('Change interview');
+                            else $('#submit-button').html('Set interview');
+                            chosen_time = this.id;
+                        }
+                        if (interview_time == chosen_time){
+                            $('#submit-button').attr("disabled", "disabled");
+                            $('#submit-error').html('Nothing to change');
+                        }
+                        else{
+                            $('#submit-button').removeAttr("disabled");
+                            $('#submit-error').html('')
+                        }
+                    });
+                    // ----- End: Define click function for grid boxes ------ \\
+                }
+            }
+            $('#' + chosen_time).removeClass('chosen-gridcell');
+            $('#submit-button').attr("disabled", "disabled");
+            $('#submit-error').html('No interview selected');
+            if(avail_times[chosen_time] == 4){
+                $('#' + chosen_time).addClass('chosen-gridcell');
+                $('#submit-button').removeAttr("disabled");
+                $('#submit-error').html('');
+            }
+        }
+
         function submit_interview(){
+            var interview_room = $("#interviewroom").val();
+            if (interview_room == '' && chosen_time != 'none'){
+                $('#submit-error').html('No room is set');
+                return;
+            }
+            if (none_selected && chosen_time != 'none'){
+                $('#submit-error').html('No interviewers are selected');
+                return;
+            }
+            if (chosen_time == 'none' && $("#interviewers").val() != 'None,None,None'){
+                $('#submit-error').html('No.');
+                return;
+            }
             console.log(chosen_time);
+            console.log(interview_room);
             $("#interviewtime").val(chosen_time);
             document.dates_form.submit();
         }
@@ -448,5 +497,48 @@
             $('#bt' + (num + 1) % 2).prop("disabled",false);
 
         }
+
+
+        function match(...inters){
+            // Returns an array where each index maps to an interview time
+            // Numbers below 4 means no match for the given time, 4 means a match
+            // between applicant and all interviewers
+            var all_dates = {{date.dates_list | safe}}
+            var bucket_init_val = 3;
+            // Join arrays
+            for (var i = 0; i < inters.length; i++) {
+                if (inters[i] && inters[i] != 'None'){
+                    all_dates.push.apply(all_dates, inters[i].split(','));
+                    bucket_init_val -= 1;
+                }
+            }
+            var avail_times = [];
+            // Build buckets
+            for (var j = 0; j < DATES_LENGTH; j++) {
+                avail_times[j] = bucket_init_val
+            }
+            // Fill buckets
+            for (var i = 0; i < all_dates.length; i++) {
+                avail_times[all_dates[i]] += 1
+            }
+            // If applicant has an interview time it should also count as an avalable time
+            if (interview_time != 'none') avail_times[Number(interview_time)] = 4;
+            return avail_times;
+        }
+
+        function updateCalendar(){
+            $('#submit-error').html('')
+            interviewers = '';
+            none_selected = true;
+            for (var i = 0; i < $('.select-interviewers').length; i++) {
+                interviewers += $($('.select-interviewers')[i]).find(":selected").text() + ',';
+                if ($($('.select-interviewers')[i]).find(":selected").text() != 'None') none_selected = false;
+            }
+            $("#interviewers").val(interviewers.slice(0, -1));
+
+            var tmp = match($('#i1').val(), $('#i2').val(), $('#i3').val());
+            fillCalendar(tmp);
+        }
+
     </script>
 {% endblock %}

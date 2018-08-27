@@ -225,6 +225,7 @@ class Command(BaseCommand):
         spinner = Halo("Creating positions")
         spinner.start()
         users = list(User.objects.all())
+        users2 = list(User.objects.all())
 
         # Economy
         p = Position()
@@ -233,12 +234,16 @@ class Command(BaseCommand):
         p.description = "dummy"
         p.contact_person = users.pop()
         p.save()
+        p.interviewers.add(*users2[:4])
+        p.save()
 
         p = Position()
         p.title = "Finance position 1"
         p.gang = Gang.objects.get(name="Finance")
         p.description = "dummy"
         p.contact_person = users.pop()
+        p.save()
+        p.interviewers.add(*users2[:4])
         p.save()
 
         p = Position()
@@ -247,12 +252,16 @@ class Command(BaseCommand):
         p.description = "dummy"
         p.contact_person = users.pop()
         p.save()
+        p.interviewers.add(*users2[:4])
+        p.save()
 
         p = Position()
         p.title = "App Developer"
         p.gang = Gang.objects.get(name="IT")
         p.description = "dummy"
         p.contact_person = users.pop()
+        p.save()
+        p.interviewers.add(*users2[:4])
         p.save()
 
         p = Position()
@@ -261,6 +270,8 @@ class Command(BaseCommand):
         p.description = "dummy"
         p.contact_person = users.pop()
         p.save()
+        p.interviewers.add(*users2[:4])
+        p.save()
 
         p = Position()
         p.title = "Recruitment Web Developer"
@@ -268,12 +279,16 @@ class Command(BaseCommand):
         p.description = "dummy"
         p.contact_person = users.pop()
         p.save()
+        p.interviewers.add(*users2[:4])
+        p.save()
 
         p = Position()
         p.title = "Internal Project Manager"
         p.gang = Gang.objects.get(name="Finance")
         p.description = "dummy2"
         p.contact_person = users.pop()
+        p.save()
+        p.interviewers.add(*users2[:4])
         p.save()
 
         # Culture
@@ -283,6 +298,8 @@ class Command(BaseCommand):
         p.description = "dummy"
         p.contact_person = users.pop()
         p.save()
+        p.interviewers.add(*users2[:4])
+        p.save()
 
         # Theme
         p = Position()
@@ -291,6 +308,8 @@ class Command(BaseCommand):
         p.description = "dummy"
         p.contact_person = users.pop()
         p.save()
+        p.interviewers.add(*users2[:4])
+        p.save()
 
         # Administration
         p = Position()
@@ -298,6 +317,8 @@ class Command(BaseCommand):
         p.gang = Gang.objects.get(name="Transport")
         p.description = "dummy"
         p.contact_person = users.pop()
+        p.save()
+        p.interviewers.add(*users2[:4])
         p.save()
 
         spinner.succeed()

@@ -55,7 +55,7 @@ def profile(request):
     application = Application.objects.filter(applicant=request.user).first()
 
     # If interview exixsts for this user, get interview instance
-    if Interview.objects.get(applicant=request.user) != None:
+    if Interview.objects.filter(applicant=request.user).first():
         interview = Interview.objects.get(applicant=request.user)
     else:
         interview = None
@@ -95,89 +95,97 @@ def logout_view(request):
 
 @staff_member_required
 def manage_profile(request, userID):
+    # ----------------------------------------------------------------------------------------
+    # TODO CHANGE INTERVIEW TO FIRST SECOND THIRD!
+    # ----------------------------------------------------------------------------------------
     application = get_object_or_404(Application, applicant_id=userID)
+    positions = application.get_positions()
+    if len(positions) == 1:
+        positions = positions * 2
     applicant = application.applicant
     date, created = Date.objects.get_or_create(user=applicant)
-    interviewers = [pos.contact_person for pos in application.get_positions()]
     userstatus = applicant.get_status()
-    interview_time = application.get_interview_time()
-    DATES_LENGTH = 182
-    # BUG: Error if application doesn't have first or second positions. Possibly fixed
-
-    # Find available times that match both applicant and interviewer(s)
-    all_dates = application.applicant.date.dates_list()
-    avail_times = [1] * DATES_LENGTH
+    interview = Interview.objects.filter(applicant=application.applicant).first()
 
     user = request.user
     user_gang_applications = Application.objects.filter(
         Q(first__gang=user.gang) | Q(second__gang=user.gang) | Q(third__gang=user.gang)
     )
 
-    if len(application.get_positions()) >= 1:
-        if application.first.contact_person != None:
-            all_dates = all_dates + application.first.contact_person.date.dates_list()
-        else:
-            all_dates += all_dates
-    if len(application.get_positions()) >= 2:
-        if application.second.contact_person != None:
-            all_dates = all_dates + application.second.contact_person.date.dates_list()
-        else:
-            all_dates += all_dates
-        avail_times = [0] * DATES_LENGTH
-
-    for i in range(len(all_dates)):
-        avail_times[all_dates[i]] += 1
-    if interview_time != 'none': # The time when the interview is set is also available
-        avail_times[int(interview_time)] = 3
-    # Available times found (reprecented as an array where the number 3 means an available time)
-
     if request.method == 'POST':
         form = StatusForm(instance=applicant)
-        chosen_time = request.POST.get('interviewtime') # Get the time marked on front-end
-        if not chosen_time: # If chosen_time never is submitted (i.e. user click on something else that refreshes the page)
-            chosen_time = interview_time
+        chosen_time = request.POST.get('interviewtime') # Get the time marked in front-end
 
-        # Updating the interviewers availability
-        if chosen_time != application.get_interview_time():
-            for i in range(2):
-                i = Date.objects.get(user=interviewers[i])
-                if chosen_time != 'none': # If a new interview time is set
-                    print(chosen_time)
-                    i.remove_time(chosen_time)
-                if application.get_interview_time() != 'none': # If there was no interview set in beforehand
-                    i.add_time(interview_time)
-                i.save()
-                print("Available times for interviewer {} are updated".format(i.user.email))
+        if chosen_time == None:
+            form = StatusForm(request.POST, instance=applicant)
 
-            application.set_interview_time(chosen_time)
-            application.save()
-            print('Interview time changed to ' + chosen_time)
+            if form.is_valid():
+                print('form valid')
+                form.save()
+        else:
+            chosen_room = request.POST.get('interviewroom') # Get the room chosen in front-end
+            chosen_interviewers = []
+            for inter in request.POST.get('interviewers').split(','):
+                if inter == 'None':
+                    chosen_interviewers.append(None)
+                else:
+                    chosen_interviewers.append(User.objects.get(email=inter))
+            print('Chosen time: ' + str(chosen_time))
+            print('Chosen room: ' + str(chosen_room))
+            print('Chosen interviewers: ' + str(chosen_interviewers))
 
-        print('request.POST, instance=applicant')
-        form = StatusForm(request.POST, instance=applicant)
 
-        if form.is_valid():
-            print('form valid')
-            form.save() # Lagrer status direkte på user fordi instance er gitt
-            # TIPS: Kan droppe form.save() for å endre objekt manuelt med form-data. men HUSK: save objektet etterpå
-            # Example:
-                #applicant.status = form.cleaned_data.get('status')
-                #applicant.save()
+            # Updating the interviewers availability
+            if chosen_time != application.get_interview_time():
+                # Remove old unavailable times
+                if interview:
+                    for inter in interview.interviewers.all():
+                        userdate = Date.objects.get(user=inter)
+                        userdate.add_time(application.get_interview_time())
+                        userdate.save()
+
+                # Add new unavailable times
+                for inter in chosen_interviewers:
+                    if inter:
+                        userdate = Date.objects.get(user=inter)
+                        userdate.remove_time(chosen_time)
+                        userdate.save()
+                print('Interview time changed to ' + str(chosen_time))
+
+                application.set_interview_time(chosen_time)
+                application.save()
+
+            # Update/create interview object
+            if interview:
+                interview.delete()
+            interview = Interview.objects.create(applicant=application.applicant)
+            for i in range(len(chosen_interviewers)):
+                if chosen_interviewers[i]:
+                    interview.interviewers.add(chosen_interviewers[i])
+                    if i == 0:
+                        interview.first = chosen_interviewers[i]
+                    elif i == 1:
+                        interview.second = chosen_interviewers[i]
+                    elif i == 2:
+                        interview.third = chosen_interviewers[i]
+            interview.room = chosen_room
+            interview.set_interview_time(chosen_time)
+            interview.save()
+            print('Created interview object!')
+
+            print('request.POST, instance=applicant')
 
     # GET or form failed:
     else:
-        form = StatusForm(instance=applicant) # Ved å gi instance fyller den inn current status
-        # TIPS: Lages det en tom StatusForm, kan Select-box settes til user current status slik:
-        # form.fields['status'].initial = applicant.status
+        form = StatusForm(instance=applicant)
+
     return render(request, 'accounts/manage_profile.html', {
         'application': application,
         'date': date,
         'form': form,
-        'interviewers': interviewers,
-        'avail_times': avail_times,
-        'interview_time': application.get_interview_time(),
-        'user_gang_applications': user_gang_applications,
-
+        'positions': positions,
+        'interview': interview,
+        'user_gang_applications': user_gang_applications
     })
 
 def send_mail(request, userID):

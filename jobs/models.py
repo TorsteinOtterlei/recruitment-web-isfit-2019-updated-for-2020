@@ -57,7 +57,7 @@ class Position(models.Model):
 
 class Date(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="date")
-    dates = models.TextField(max_length=2000, default=makeDates(182), blank=True) # 1,2,43,68 possible dates
+    dates = models.TextField(max_length=2000, default=makeDates(182), blank=True)
 
     def __str__(self):
         if self.user.email == None:
@@ -132,12 +132,21 @@ class Calendar(models.Model):
 
 class Interview(models.Model):
     applicant = models.OneToOneField(User, on_delete=models.CASCADE, related_name='interview')
-    interviewers = models.ManyToManyField(User, related_name='interviews')
-    first = models.ForeignKey(User, related_name='first_interviews', on_delete=models.CASCADE, null=True, default=None)
-    second = models.ForeignKey(User, related_name='second_interviews', on_delete=models.CASCADE, null=True, default=None)
-    third = models.ForeignKey(User, related_name='third_interviews', on_delete=models.CASCADE, null=True, default=None)
-    room = models.CharField(max_length=40)
+    interviewers = models.ManyToManyField(User, blank=True, related_name='interviews')
+    first = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='first_interviews')
+    second = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='second_interviews')
+    third = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='third_interviews')
+    room = models.CharField(max_length=40, default="")
     time = models.IntegerField(default=-1)
+
+
+    def set_interview_time(self, time):
+        if time == 'none':
+            self.time = -1
+            self.save()
+        else:
+            self.time = int(time)
+            self.save()
 
     def get_interview_time(self):
         if self.time == -1:
