@@ -223,6 +223,7 @@ a:link:hover, a:visited:hover {
     position: relative;
     top: 50px;
     margin-bottom: 50px;
+    margin-left: -7em;
 }
 /* Needed? */
 .gangs-div > .flex-vertical > h5 {
