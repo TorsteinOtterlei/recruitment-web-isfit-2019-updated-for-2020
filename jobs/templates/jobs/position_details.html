@@ -35,19 +35,27 @@
 {% endblock head %}
 
 {% block body %}
+{% if user.is_authenticated %}
 <div class="container">
     <a href="{% url 'accounts:profile' %}">
-        <img id="arrow-left" src="{% static 'applications/arrow_left.png' %}" alt="Arrow left">
+        <img id="arrow-left1" src="{% static 'applications/arrow_left.png' %}" alt="Arrow left">
         Profile
+    </a>
+</div>
+{% endif %}
+<div class="container">
+    <a href="{% url 'jobs:information' %}">
+        <img id="arrow-left2" src="{% static 'applications/arrow_left.png' %}" alt="Arrow left">
+        Positions
     </a>
 </div>
 
 <div id="title" class="col-lg-auto">
-    <b>{{position.title}}</b>
+    <b>{{ position.gang }}: {{position.title}}</b>
 </div>
 
 <div id="leader" class="col-lg-auto">
-    Leader: {{position.contact_person.get_full_name}}<br />
+    Contact person: {{position.contact_person.get_full_name}}<br />
     Email address: {{position.contact_person.email}}<br />
     Phone: {{position.contact_person.phone_number}}
 </div>
