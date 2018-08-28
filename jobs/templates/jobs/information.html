@@ -5,58 +5,96 @@
         .positions-overview div {
             color: white;
         }
+
+        @media screen and (max-width: 767px) {
+            .box-white ul li {
+                padding: 0 5px;
+            }
+        }
+
+        .box-white {
+            background: #0d0d0d;
+            border-radius: 2px;
+            padding: 1em;
+            margin-bottom: 2em;
+        }
+
+        .box-white ul li {
+            margin: .5em 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 1em;
+            padding: 0 10px;
+        }
+
+        .col-xs-12 {
+            width: 100%;
+            float: left;
+            position: relative;
+            min-height: 1px;
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+
+        .col-sm-4 {
+            position: relative;
+            min-height: 1px;
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+
+        * {
+            outline: 0;
+        }
+
+        ul.list-unstyled {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+
+        ul.list-unstyled li {
+            overflow: hidden;
+        }
+
+        ul {
+            margin: 0 0 1em 1em;
+            list-style: disc;
+        }
+
+        li {
+            display: list-item;
+            text-align: -webkit-match-parent;
+        }
+
     </style>
 {% endblock head %}
 
 {% block body %}
-        <div class="container row">
-            <div class="col-xl-12">
-                    <h1>Sections<br></h1>
+
+<div class="container fluid">
+    <div id="primary" class="content-area">
+        <main id="main" class="site-main" role="main">
+            <div class="container">
+                <div class="section-padding">
                     {% for section in sections %}
-                        <div class="flex-horizontal">
-                            <h3 class="column-1">
-                                <a class="dropdown-toggle" data-toggle="collapse" href="#{{ section.name }}" role="button" aria-expanded="false" aria-controls="collapseExample">
-                                    {{ section.name }}
-                                </a>
-                            </h3>
-                            <div class="gangs-div collapse" id="{{ section.name }}">
-                                <h5>About</h5>
-                                <p>{{ section.information }}</p>
-                                <hr>
-                                <h5>Gangs</h5>
+                        <section class="box-white">
+                            <h4>{{ section.name }}</h4>
+                            <ul class="row list-unstyled">
                                 {% for gang in section.gangs.all %}
-                                    <div class="flex-vertical">
-                                        <h5 class="column-2">
-                                            <a class="dropdown-toggle" data-toggle="collapse" href="#{{ gang.name }}" role="button" aria-expanded="false" aria-controls="collapseExample">
-                                                {{ gang.name }}
-                                            </a>
-                                        </h5>
-                                        <div class="positions-div collapse" id="{{ gang.name }}">
-                                            <h5>Positions</h5>
-                                            {% for position in gang.positions.all %}
-                                                <div class="flex-horizontal">
-                                                    <h5 href="">
-                                                        <a class="dropdown-toggle" data-toggle="collapse" href="#{{ position.title }}" role="button" aria-expanded="false" aria-controls="collapseExample" for="{{ position.pk }}">
-                                                            {{ position.title }}
-                                                        </a>
-                                                    </h5>
-                                                </div>
-                                                <div class="collapse" id="{{ position.title }}">
-                                                        <p>{{ position.description|linebreaksbr }}</p>
-                                                        <h5>Contact Information</h5>
-                                                        <p>
-                                                            <b>Name:</b>&emsp;{{ position.contact_person.get_full_name }} <br>
-                                                            <b>Phone:</b>&emsp;{{ position.contact_person.phone_number }} <br>
-                                                            <b>Email:</b>&emsp;{{ position.contact_person.email }}
-                                                        </p>
-                                                </div>
-                                            {% endfor %}
-                                        </div>
-                                    </div>
+                                    {% for position in gang.positions.all %}
+                                        <li class="col-xs-12 col-sm-4">
+                                            <a href="{% url 'jobs:position_detail' position.pk %}">{{ position.title }}</a>
+                                        </li>
+                                    {% endfor %}
                                 {% endfor %}
-                            </div>
-                        </div>
+                            </ul>
+                        </section>
                     {% endfor %}
+                </div>
             </div>
-        </div>
+        </main>
+    </div>
+</div>
 {% endblock %}

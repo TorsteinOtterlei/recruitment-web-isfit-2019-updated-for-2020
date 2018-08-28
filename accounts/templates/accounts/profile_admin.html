@@ -47,16 +47,16 @@
 {% block body %}
     <div class="container profile">
         <div class="row">
-            <div class="col-md-6 user border">
+            <div class="col-md-6 user">
                 <img id="user-logo" src="{% static 'accounts/user.png' %}" alt="User logo">
                 <div id="title">
                     <h1>{{ user.get_full_name }}</h1>
                     <span id=status>&emsp;Status: Admin </span>
                 </div>
             </div>
-            <div class="col-md-6 user-info border">
+            <div class="col-md-6 user-info">
                 <h2>Personal information:</h2>
-                <div class="user-info-details border">
+                <div class="user-info-details">
                         Email address: {{ user.email }}
                         <br>
                         Phone number: {{ user.phone_number }}
