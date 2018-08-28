@@ -1,0 +1,67 @@
+{% extends 'jobs/base.html' %}
+{% block title %}{{position.title}}{% endblock %}
+{% load static %}
+{% block head %}
+    <meta name="icon-author" content="">
+
+    <style media="screen">
+
+        #leader {
+            color: orange;
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+        .detail {
+            column-width: auto;
+            background: #343a40;
+            border-color: orange;
+            border-style: dashed;
+            border-radius: 10px 30px;
+            max-width: 700px;
+        }
+
+        #title {
+            color: white;
+            font-family: "Bitstream Vera Sans Mono", Monaco, "Courier New", Courier, monospace;
+            font-size: xx-large;
+            background: #343a40;
+            border-color: orange;
+            border-style: dashed;
+            border-radius: 10px 30px;
+            alignment: center;
+        }
+
+    </style>
+{% endblock head %}
+
+{% block body %}
+{% if user.is_authenticated %}
+<div class="container">
+    <a href="{% url 'accounts:profile' %}">
+        <img id="arrow-left1" src="{% static 'applications/arrow_left.png' %}" alt="Arrow left">
+        Profile
+    </a>
+</div>
+{% endif %}
+<div class="container">
+    <a href="{% url 'jobs:information' %}">
+        <img id="arrow-left2" src="{% static 'applications/arrow_left.png' %}" alt="Arrow left">
+        Positions
+    </a>
+</div>
+
+<div id="title" class="col-lg-auto">
+    <b>{{ position.gang }}: {{position.title}}</b>
+</div>
+
+<div id="leader" class="col-lg-auto">
+    Contact person: {{position.contact_person.get_full_name}}<br />
+    Email address: {{position.contact_person.email}}<br />
+    Phone: {{position.contact_person.phone_number}}
+</div>
+
+<div class="col-lg-1 detail">
+    {{position.description|linebreaksbr}}
+</div>
+
+{% endblock %}
