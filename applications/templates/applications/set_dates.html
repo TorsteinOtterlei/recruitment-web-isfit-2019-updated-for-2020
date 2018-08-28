@@ -43,6 +43,13 @@
             height: 28px;
             border: solid;
             border-radius: 7px;
+            border-width: thin;
+        }
+        .gridcell-disabled {
+            color: gray;
+        }
+        .gridcell-selected {
+            color: red;
         }
         .gridcell:hover {
             cursor: pointer;
@@ -190,7 +197,9 @@
                 // else div.className = "gridcell";
                 var tmp = (i%7==0 || i%7==1) ? 'gridcell-disabled' : 'gridcell';
                 div.className = tmp;
-                if (tmp=='gridcell-disabled') div.innerHTML = filler;
+                if (tmp=='gridcell-disabled') {
+                    div.innerHTML = filler;
+                }
                 $(".grid1").append(div);
             } // End: cell-appending to grid
 
@@ -208,12 +217,14 @@
             for (var i = 0; i < user_dates.length; i++) {
                 var cellid = "#" + user_dates[i];
                 $(cellid).html(filler);
+                $(cellid).addClass('gridcell-selected')
             } // End: Display previously selected dates
 
             // Select or unselect dates, and update the array accordingly
             $(".gridcell").click(function(){
                 if (this.innerHTML == filler) { // Unselect
                     this.innerHTML = "";
+                    $(this).removeClass('gridcell-selected')
                     var index = user_dates.indexOf(parseInt(this.id));
                     user_dates.splice(index, 1);
                     $("#timestring").val(user_dates);
@@ -221,6 +232,7 @@
                 }
                 else { // Select
                     this.innerHTML = filler;
+                    $(this).addClass('gridcell-selected')
                     user_dates.push(parseInt(this.id));
                     $("#timestring").val(user_dates);
                     console.log($("#timestring").val());
@@ -239,6 +251,7 @@
                     if (week == 1) j = i + dates_range/2;
                     user_dates[j] = j;
                     $("#" + j).html(filler);
+                    $("#" + j).addClass('gridcell-selected');
                 }
                 $("#timestring").val(user_dates);
             });
@@ -250,6 +263,7 @@
                     var j = i;
                     if (week == 1) j = i + dates_range/2;
                     $("#" + j).html("");
+                    $("#" + j).removeClass('gridcell-selected');
                 }
                 $("#timestring").val(user_dates);
             });

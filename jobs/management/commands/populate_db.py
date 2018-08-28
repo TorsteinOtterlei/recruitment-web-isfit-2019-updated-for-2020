@@ -79,15 +79,15 @@ class Command(BaseCommand):
         global USER_PW
         spinner = Halo(text="Creating users", color="magenta")
         spinner.start()
-        kristian = User.objects.create_user(email="kris@test.no", first_name="Kristian", password=USER_PW)
-        camilla = User.objects.create_user(email="camilla@test.no", first_name="Camilla", password=USER_PW)
-        johan = User.objects.create_user(email="johan@test.no", first_name="Johan", password=USER_PW)
-        sofie = User.objects.create_user(email="sofie@test.no", first_name="Sofie", password=USER_PW)
-        synnove = User.objects.create_user(email="synnove@test.no", first_name="Synnove", password=USER_PW)
-        ola = User.objects.create_user(email="ola@test.no", first_name="Ola", password=USER_PW)
-        mona = User.objects.create_user(email="mona@test.no", first_name="Mona", password=USER_PW)
-        ellen = User.objects.create_user(email="ellen@test.no", first_name="Ellen", password=USER_PW)
-        ragnhild = User.objects.create_user(email="ragnhild@test.no", first_name="Ragnhild", password=USER_PW)
+        kristian = User.objects.create_user(email="kris@test.no", first_name="Kristian", last_name='Dummy', password=USER_PW)
+        camilla = User.objects.create_user(email="camilla@test.no", first_name="Camilla", last_name='Dummy', password=USER_PW)
+        johan = User.objects.create_user(email="johan@test.no", first_name="Johan", last_name='Dummy', password=USER_PW)
+        sofie = User.objects.create_user(email="sofie@test.no", first_name="Sofie", last_name='Dummy', password=USER_PW)
+        synnove = User.objects.create_user(email="synnove@test.no", first_name="Synnove", last_name='Dummy', password=USER_PW)
+        ola = User.objects.create_user(email="ola@test.no", first_name="Ola", last_name='Dummy', password=USER_PW)
+        mona = User.objects.create_user(email="mona@test.no", first_name="Mona", last_name='Dummy', password=USER_PW)
+        ellen = User.objects.create_user(email="ellen@test.no", first_name="Ellen", last_name='Dummy', password=USER_PW)
+        ragnhild = User.objects.create_user(email="ragnhild@test.no", first_name="Ragnhild", last_name='Dummy', password=USER_PW)
         # Create simple users
         choices = [i[0] for i in User.STATUS_CHOISES]
         for i in range(USER_AMOUNT):
