@@ -54,7 +54,7 @@ class Position(models.Model):
     gang = models.ForeignKey(Gang, on_delete=models.CASCADE, related_name="positions")
     description = models.TextField(max_length=20000)
     interviewers = models.ManyToManyField(User, related_name="positions", blank=True)
-    contact_person = models.OneToOneField(User, on_delete=models.CASCADE, null=True, related_name="position", blank=True)
+    contact_person = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name="position", blank=True)
     comment = models.TextField(max_length=100, default='', blank=True)
 
     class Meta:
