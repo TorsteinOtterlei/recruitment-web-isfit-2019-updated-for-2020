@@ -28,7 +28,7 @@ def make_interviewer(modeladmin, request, queryset):
 class UserAdmin(auth_admin.UserAdmin, ImportExportModelAdmin):
     # User forms
     form = auth_admin.UserChangeForm
-    add_form = SignUpForm # Important! (AbstractBaseUser is created differently)
+    add_form = auth_admin.UserCreationForm # Important!
     change_password_form = auth_admin.AdminPasswordChangeForm
 
     # Fields shown in user detail: admin/accounts//user/'id'/change
@@ -53,7 +53,7 @@ class UserAdmin(auth_admin.UserAdmin, ImportExportModelAdmin):
         ),
     )
 
-    list_display = ('email', 'first_name', 'last_name', 'phone_number', 'staff', 'superuser')
+    list_display = ('email', 'get_full_name', 'phone_number', 'gang', 'staff', 'superuser')
     list_filter = ('recruiter', 'interviewer', 'staff', 'superuser', 'active', 'groups')
     search_fields = ('first_name', 'last_name', 'email', 'phone_number')
     ordering = ['email']
