@@ -28,7 +28,7 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    email = models.EmailField(max_length=254, unique=True, null=False, blank=False)
+    email = models.EmailField(max_length=254, unique=True)
     first_name = models.CharField(max_length=60, null=False, blank=False)
     last_name = models.CharField(max_length=150, null=False, blank=False)
     phone_number = models.CharField(max_length=13, blank=True)
@@ -45,6 +45,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     INTERVIEW_CONFIRMED = 'IC'
     INTERVIEWED = 'ID'
     ACCEPTED = 'AC'
+    POSSIBLY_PARTICIPANT = 'PP'
 
     STATUS_CHOISES = (
         (NOT_EVALUATED, 'Not evaluated'),
@@ -52,6 +53,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         (INTERVIEW_CONFIRMED, 'Interview confirmed'),
         (INTERVIEWED, 'Interviewed'),
         (ACCEPTED, 'Accepted'),
+        (POSSIBLY_PARTICIPANT, 'Possibly participant'),
     )
 
     status = models.CharField(
