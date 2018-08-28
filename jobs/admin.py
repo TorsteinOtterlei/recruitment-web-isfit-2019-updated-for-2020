@@ -17,7 +17,7 @@ class PositionAdmin(admin.ModelAdmin):
     )
     filter_horizontal = ['interviewers']
     list_display = ['title', 'section', 'gang', 'contact_person']
-    list_filter = ['gang']
+    list_filter = ['gang__section', 'gang']
     search_fields = ['title' ,'contact_person__email', 'contact_person__first_name', 'contact_person__last_name', 'contact_person__phone_number']
     ordering = ['gang']
     readonly_fields = []

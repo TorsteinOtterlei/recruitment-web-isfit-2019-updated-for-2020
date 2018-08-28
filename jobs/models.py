@@ -14,6 +14,11 @@ class Section(models.Model):
     leader = models.OneToOneField(User, on_delete=models.SET_NULL, null=True)
     information = models.TextField(max_length=20000)
 
+    class Meta:
+        verbose_name = "section"
+        verbose_name_plural = "sections"
+        ordering = ['name']
+
     def __str__(self):
         if self.name == None:
             return 'error'
@@ -23,6 +28,11 @@ class Gang(models.Model):
     name = models.CharField(max_length=100)
     #leader = models.OneToOneField(User, on_delete=models.SET_NULL, null=True)
     section = models.ForeignKey(Section, on_delete=models.CASCADE, related_name="gangs")
+
+    class Meta:
+        verbose_name = "gang"
+        verbose_name_plural = "gangs"
+        order_with_respect_to = 'section'
 
     def __str__(self):
         if self.name == None:
@@ -45,7 +55,12 @@ class Position(models.Model):
     description = models.TextField(max_length=20000)
     interviewers = models.ManyToManyField(User, related_name="positions", blank=True)
     contact_person = models.OneToOneField(User, on_delete=models.CASCADE, null=True, related_name="position", blank=True)
-    comment = models.CharField(max_length=100, default='')
+    comment = models.TextField(max_length=100, default='', blank=True)
+
+    class Meta:
+        verbose_name = "position"
+        verbose_name_plural = "positions"
+        order_with_respect_to = "gang"
 
     def __str__(self):
         if self.title == None or self.gang == None:
@@ -58,6 +73,10 @@ class Position(models.Model):
 class Date(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="date")
     dates = models.TextField(max_length=2000, default=makeDates(182), blank=True)
+
+    class Meta:
+        verbose_name = "date"
+        verbose_name_plural = "dates"
 
     def __str__(self):
         if self.user.email == None:
