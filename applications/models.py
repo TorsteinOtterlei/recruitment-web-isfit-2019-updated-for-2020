@@ -6,9 +6,9 @@ import math
 
 # Create your models here.
 class Application(models.Model):
-    first = models.ForeignKey(Position, on_delete=models.CASCADE, default=None, null=True, related_name="first")
-    second = models.ForeignKey(Position, on_delete=models.CASCADE, default=None, null=True, blank=True, related_name="second")
-    third = models.ForeignKey(Position, on_delete=models.CASCADE, default=None, null=True, blank=True, related_name="third")
+    first = models.ForeignKey(Position, on_delete=models.SET_NULL, default=None, null=True, related_name="first")
+    second = models.ForeignKey(Position, on_delete=models.SET_NULL, default=None, null=True, blank=True, related_name="second")
+    third = models.ForeignKey(Position, on_delete=models.SET_NULL, default=None, null=True, blank=True, related_name="third")
     applicant = models.OneToOneField(User, on_delete=models.CASCADE, related_name="application")
     text = models.TextField(max_length=2000)
     interview_time = models.IntegerField(default=-1)

@@ -27,7 +27,7 @@ class Section(models.Model):
 class Gang(models.Model):
     name = models.CharField(max_length=100)
     #leader = models.OneToOneField(User, on_delete=models.SET_NULL, null=True)
-    section = models.ForeignKey(Section, on_delete=models.CASCADE, related_name="gangs")
+    section = models.ForeignKey(Section, on_delete=models.SET_NULL, null=True, related_name="gangs")
 
     class Meta:
         verbose_name = "gang"
@@ -42,7 +42,7 @@ class Gang(models.Model):
 class Project(models.Model):
     name = models.CharField(max_length=100)
     leader = models.OneToOneField(User, on_delete=models.SET_NULL, null=True)
-    gang = models.ForeignKey(Gang, on_delete=models.CASCADE, related_name="projects")
+    gang = models.ForeignKey(Gang, on_delete=models.SET_NULL, null=True, related_name="projects")
 
     def __str__(self):
         if self.name == None:
@@ -51,10 +51,10 @@ class Project(models.Model):
 
 class Position(models.Model):
     title = models.CharField(max_length=100)
-    gang = models.ForeignKey(Gang, on_delete=models.CASCADE, related_name="positions")
+    gang = models.ForeignKey(Gang, on_delete=models.SET_NULL, null=True, related_name="positions")
     description = models.TextField(max_length=20000)
     interviewers = models.ManyToManyField(User, related_name="positions", blank=True)
-    contact_person = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name="position", blank=True)
+    contact_person = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="position", blank=True)
     comment = models.TextField(max_length=100, default='', blank=True)
 
     class Meta:
@@ -130,7 +130,7 @@ class Date(models.Model):
         return res
 
 
-class Calendar(models.Model):
+class Calendar(models.Model): # NOT IN USE
     gangleader = models.OneToOneField(User, on_delete=models.CASCADE)
     dict = models.TextField(max_length=2000, default=None) # user:1,user:2
     #gangleader_dates = models.ForeignKey(Dates, on_delete=models.CASCADE, default=None, null=True)
@@ -152,9 +152,9 @@ class Calendar(models.Model):
 class Interview(models.Model):
     applicant = models.OneToOneField(User, on_delete=models.CASCADE, related_name='interview')
     interviewers = models.ManyToManyField(User, blank=True, related_name='interviews')
-    first = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='first_interviews')
-    second = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='second_interviews')
-    third = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='third_interviews')
+    first = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='first_interviews')
+    second = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='second_interviews')
+    third = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='third_interviews')
     room = models.CharField(max_length=40, default="")
     time = models.IntegerField(default=-1)
 

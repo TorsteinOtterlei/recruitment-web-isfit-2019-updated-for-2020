@@ -38,7 +38,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     recruiter = models.BooleanField(default=False)
     interviewer = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now, blank=True)
-    gang = models.ForeignKey('jobs.Gang', on_delete=models.CASCADE, null=True, blank=True, related_name='members')
+    gang = models.ForeignKey('jobs.Gang', on_delete=models.SET_NULL, null=True, blank=True, related_name='members')
 
     NOT_EVALUATED = 'NE'
     INTERVIEW_SET = 'IS'
@@ -70,7 +70,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = 'user'
         verbose_name_plural = 'users'
-        ordering = ['first_name', 'last_name']
+        ordering = ['email']
 
     def __str__(self):
         if self.email == None:

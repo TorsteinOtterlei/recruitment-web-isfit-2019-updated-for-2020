@@ -64,6 +64,7 @@ def profile(request):
     positions = []
     if application != None:
         positions = application.get_positions()
+
     return render(request, 'accounts/profile.html', {
         'positions': positions,
         'interview': interview,
@@ -71,7 +72,6 @@ def profile(request):
 
 @login_required
 def edit_profile(request):
-    error = None
     if request.method == 'GET':
         form = EditUserForm(instance=request.user)
     else: # POST
@@ -79,12 +79,9 @@ def edit_profile(request):
         if form.is_valid():
             form.save()
             return HttpResponseRedirect( reverse('accounts:profile') )
-        else:
-            error = 'Something went wrong'
     # GET or form failed
     return render(request, 'accounts/edit_profile.html', {
         'form': form,
-        'error': error,
     })
 
 def signup(request):
@@ -231,7 +228,7 @@ def send_mail(request, userID):
             Sent from {}""".format(user.application.pretty_date(), user.application.first, request.user)
 
     emil.email_user(subject="Interview", message=msg, from_email="emil.telstad@live.no")
-    user.email_user(subject="Interview", message=msg, from_email=request.user.email)
+    #user.email_user(subject="Interview", message=msg, from_email=request.user.email)
     return HttpResponse()
     #return manage_profile(request, userID)
 
