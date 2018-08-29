@@ -88,7 +88,7 @@ a:link, a:visited{
     color: #cc8102;
 }
 a:link:hover, a:visited:hover {
-    color: #ffcc00;
+    color: orange;
     text-underline: orange;
 }
 
