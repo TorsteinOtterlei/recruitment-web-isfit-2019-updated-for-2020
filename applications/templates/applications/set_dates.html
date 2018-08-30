@@ -236,6 +236,7 @@
                     user_dates.push(parseInt(this.id));
                     $("#timestring").val(user_dates);
                     console.log($("#timestring").val());
+                    console.log($("#timestring").val().split(','));
                 }
 
             }); // End: gridcell.click
@@ -245,26 +246,32 @@
             });*/
 
             $("#select_all").click(function() {
-                for (var i = 0; i < dates_range/2; i++) {
-                    var j = i;
-                    if ((week == 0 && i%7==0)  || (week==0 && i%7==1) || (week==1 && i%7==6)) continue;//awesome code
-                    if (week == 1) j = i + dates_range/2;
-                    user_dates[j] = j;
-                    $("#" + j).html(filler);
-                    $("#" + j).addClass('gridcell-selected');
-                }
+                user_dates.forEach(function(elem) {
+                    var index = user_dates.indexOf(elem);
+                    if (week == 0 && elem < 91) user_dates.splice(index, 1);
+                    if (week == 1 && user_dates[i] > 90) user_dates.splice(index, 1);
+                });
+                var tmp = (week == 0) ? all_dates.slice(0, 91) : all_dates.slice(90);
+                tmp.forEach(function(elem) {
+                    if ((week == 0 && elem%7==0)  || (week==0 && elem%7==1) || (week==1 && elem%7==6)) return;
+                    user_dates.push(elem);
+                    $("#" + elem).html(filler);
+                    $("#" + elem).addClass('gridcell-selected');
+                });
                 $("#timestring").val(user_dates);
             });
+            
             $("#unselect_all").click(function() {
-                if (week == 0) user_dates.splice(0, dates_range/2);
-                else user_dates.splice(dates_range/2, dates_range);
-                for (var i = 0; i < dates_range/2; i++) {
-                    if ((week == 0 && i%7==0)  || (week==0 && i%7==1) || (week==1 && i%7==6)) continue;
-                    var j = i;
-                    if (week == 1) j = i + dates_range/2;
-                    $("#" + j).html("");
-                    $("#" + j).removeClass('gridcell-selected');
-                }
+                var tmp = (week == 0) ? all_dates.slice(0, 91) : all_dates.slice(90);
+                tmp.forEach(function(elem) {
+                    var index = user_dates.indexOf(elem);
+                    if (index > -1) {
+                        if ((week == 0 && elem%7==0)  || (week==0 && elem%7==1) || (week==1 && elem%7==6)) return;
+                        user_dates.splice(index, 1);
+                        $("#" + elem).html("");
+                        $("#" + elem).removeClass('gridcell-selected');
+                    }
+                });
                 $("#timestring").val(user_dates);
             });
 
