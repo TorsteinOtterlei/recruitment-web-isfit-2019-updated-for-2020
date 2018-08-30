@@ -59,6 +59,10 @@ def apply(request):
 
 @login_required
 def set_dates(request):
+    # Temporal: deadline for interviewers was on 29. Aug -----------------------
+    if request.user.is_staff:
+        return render(request, 'applications/deadline_passed.html')
+    # --------------------------------------------------------------------------
     if request.method == 'POST':
         times = request.POST.get('times')
         date = Date.objects.get(user=request.user)
