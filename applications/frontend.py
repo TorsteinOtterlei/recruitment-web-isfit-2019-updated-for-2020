@@ -9,10 +9,10 @@ from random import randint
 
 def create_dummy_user():
     try:
-        r = str(randint(0,10000))
+        r = str(randint(0,100000))
         return User.objects.create_user(
-        email="dummy{}@dummy.no".format(r),
-        first_name=r,
+        email="pling{}@dummy.no".format(r),
+        first_name="Pling",
         last_name=r,
         password=r
         )
@@ -22,7 +22,7 @@ def create_dummy_user():
 
 @login_required()
 def appLength(request):
-    # Is compared to applications queryset in manage_applications
+    # NOTE: Application creation is only for testing
     Application.objects.create(applicant=create_dummy_user(), first=Position.objects.first())
     appLength = Application.objects.exclude(first=None, second=None, third=None).count()
     return JsonResponse({'appLength': appLength})

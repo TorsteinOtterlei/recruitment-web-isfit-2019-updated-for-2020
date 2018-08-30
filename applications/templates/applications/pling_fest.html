@@ -30,7 +30,7 @@
             // Vars:
             var appLength = {{ appLength }};
             var check_app_interval;
-            // -----------------------------------------------------------------------------
+            // -----------------------------------------------------------------
             // Functions:
             function getRandomColor() {
                 var color = '#';
@@ -52,10 +52,10 @@
                             $('#pling')[0].play();
                             $('html').css('background-color', getRandomColor())
                         }
-                    }, // End: success
+                    }, // End: Success
                 }); // End: Ajax
             }; // End: Check new application -->
-            // -----------------------------------------------------------------------------
+            // -----------------------------------------------------------------
             // Event listeners:
             $('#start').click(function() {
                 $(this).attr("disabled", true);
@@ -67,6 +67,7 @@
                 clearInterval(check_app_interval);
                 $('html').css('background-color', 'black');
             }); // End: #pause (click)
+            // -----------------------------------------------------------------
         }); // End: document ready
     </script>
 {% endblock scriptblock %}

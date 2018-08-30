@@ -3,189 +3,188 @@
 {% load static %}
 
 {% block head %}
-<style media="screen">
-
-    .title {
-        text-align: center;
-    }
-    .title * {
-        display: inline-block;
-    }
-    .status-field { /* classname given in StatusForm */
-        border: black 1px solid;
-        border-radius: 3px;
-        background-color: rgb(35, 35, 35);
-        color: orange;
-        cursor: pointer;
-    }
-    .status-field:hover{
-        background-color: rgb(45, 45, 45);
-    }
-
-    .button-back {
-        position: absolute;
-        top: 80px;
-        left: 20px;
-    }
-    .smooth-wrapper {
-        background-color: #23272b;
-        border: 1px solid #343a40;
-        border-top-style: none;
-        border-bottom-left-radius: 8px;
-        border-bottom-right-radius: 8px;
-        padding: 10px;
-    }
-    hr {
-        border: 1px solid #343a40;
-    }
-
-    /**/
-
-    .button-back {
-        position: absolute;
-        top: 80px;
-        left: 20px;
-    }
-    .collapsing-field {
-        background-color: #23272b;
-        border: 1px solid #343a40;
-        border-top-style: none;
-        border-bottom-left-radius: 8px;
-        border-bottom-right-radius: 8px;
-        padding: 10px;
-    }
-    hr {
-        border: 1px solid #343a40;
-    }
-
-
-    .calendar {
-        display: grid;
-        grid-template-columns: 1fr 6fr;
-        gap: 0.8em;
-        border: solid;
-        border-radius: 20px;
-        border-color: gray;
-        /*
-        */
-        padding: 0.7em;
-        text-align: center;
-        color: DeepSkyBlue;
-    }
-    .times {
-        display: grid;
-        gap: 1em;
-        padding-top: 0.25em;
-        padding-bottom: 0.5em;
-    }
-    .times div {
-        min-width: 6em;
-        /*
-        padding-top: 0.25em;
-        */
-    }
-    .days {
-        display: grid;
-        grid-template-columns: repeat(7, 1fr);
-        grid-gap: 0.2em;
-    }
-    .grid1, .grid2 {
-        display: grid;
-        grid-template-columns: repeat(7, 1fr);
-        grid-template-rows: repeat(10, 1.9em);
-        gap: 0.55em;
-    }
-    .gridcell, .gridcell-disabled {
-        height: 28px;
-        border: solid;
-        border-radius: 7px;
-    }
-
-    #timestring {
-        display: none;
-    }
-    #buttons-div {
-        text-align: center;
-    }
-    #bt0, #bt1{
-        margin-top: 10px;
-    }
-    #cell-selecting, #changeWeek-div {
-        display: inline-block;
-    }
-    #buttons-div button {
-        min-width: 100px;
-    }
-    .buttons-col {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0;
-    }
-
-    @media only screen and (max-width: 30em) {
-        .grid1, .grid2 {
-            gap: 0.13em;
+    <style media="screen">
+        .title {
+            text-align: center;
         }
-        .gridcell, .gridcell-disabled {
-            font-size: small;
-            height: 20px;
+        .title * {
+            display: inline-block;
         }
-        .times, .topleft {
-            font-size: small;
-            min-width: 5em;
-            padding-top: 0.1em;
+        .status-field { /* classname given in StatusForm */
+            border: black 1px solid;
+            border-radius: 3px;
+            background-color: rgb(35, 35, 35);
+            color: orange;
+            cursor: pointer;
+        }
+        .status-field:hover{
+            background-color: rgb(45, 45, 45);
+        }
+
+        .button-back {
+            position: absolute;
+            top: 80px;
+            left: 20px;
+        }
+        .smooth-wrapper {
+            background-color: #23272b;
+            border: 1px solid #343a40;
+            border-top-style: none;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            padding: 10px;
+        }
+        hr {
+            border: 1px solid #343a40;
+        }
+
+        /**/
+
+        .button-back {
+            position: absolute;
+            top: 80px;
+            left: 20px;
+        }
+        .collapsing-field {
+            background-color: #23272b;
+            border: 1px solid #343a40;
+            border-top-style: none;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            padding: 10px;
+        }
+        hr {
+            border: 1px solid #343a40;
+        }
+
+
+        .calendar {
+            display: grid;
+            grid-template-columns: 1fr 6fr;
+            gap: 0.8em;
+            border: solid;
+            border-radius: 20px;
+            border-color: gray;
             /*
             */
+            padding: 0.7em;
+            text-align: center;
+            color: DeepSkyBlue;
         }
-    }
+        .times {
+            display: grid;
+            gap: 1em;
+            padding-top: 0.25em;
+            padding-bottom: 0.5em;
+        }
+        .times div {
+            min-width: 6em;
+            /*
+            padding-top: 0.25em;
+            */
+        }
+        .days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            grid-gap: 0.2em;
+        }
+        .grid1, .grid2 {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            grid-template-rows: repeat(10, 1.9em);
+            gap: 0.55em;
+        }
+        .gridcell, .gridcell-disabled {
+            height: 28px;
+            border: solid;
+            border-radius: 7px;
+        }
 
-    .avail-gridcell:hover {
-        cursor: pointer;
-        color: orange;
-    }
-    .chosen-gridcell {
-        color: orange;
-    }
+        #timestring {
+            display: none;
+        }
+        #buttons-div {
+            text-align: center;
+        }
+        #bt0, #bt1{
+            margin-top: 10px;
+        }
+        #cell-selecting, #changeWeek-div {
+            display: inline-block;
+        }
+        #buttons-div button {
+            min-width: 100px;
+        }
+        .buttons-col {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
 
-    #interviewtime, #interviewers {
-        display: none;
-    }
+        @media only screen and (max-width: 30em) {
+            .grid1, .grid2 {
+                gap: 0.13em;
+            }
+            .gridcell, .gridcell-disabled {
+                font-size: small;
+                height: 20px;
+            }
+            .times, .topleft {
+                font-size: small;
+                min-width: 5em;
+                padding-top: 0.1em;
+                /*
+                */
+            }
+        }
 
-    #available-times-info{
-        text-align: center;
-    }
+        .avail-gridcell:hover {
+            cursor: pointer;
+            color: orange;
+        }
+        .chosen-gridcell {
+            color: orange;
+        }
 
-    #submit-error{
-        font-size: small;
-        color: red;
-        text-align: left;
-    }
+        #interviewtime, #interviewers {
+            display: none;
+        }
 
-    .gridcell-disabled:hover {
-        cursor: not-allowed;
-    }
+        #available-times-info{
+            text-align: center;
+        }
 
-    #btn-mail{
-        display: none;
-    }
+        #submit-error{
+            font-size: small;
+            color: red;
+            text-align: left;
+        }
 
-    .select-interviewers{
-        background-color: rgba(250, 240, 230, 0.3);
-        border: solid black 1px;
-        border-radius: 3px;
-    }
-    .select-interviewers:hover{
-        cursor: pointer;
-        background-color: rgba(250, 240, 230, 0.4);
-    }
+        .gridcell-disabled:hover {
+            cursor: not-allowed;
+        }
 
-    .btn:hover{
-        margin-top: 2px;
-        margin-bottom: -2px;
-    }
+        #btn-mail{
+            display: none;
+        }
 
-</style>
+        .select-interviewers{
+            background-color: rgba(250, 240, 230, 0.3);
+            border: solid black 1px;
+            border-radius: 3px;
+        }
+        .select-interviewers:hover{
+            cursor: pointer;
+            background-color: rgba(250, 240, 230, 0.4);
+        }
+
+        .btn:hover{
+            margin-top: 2px;
+            margin-bottom: -2px;
+        }
+
+    </style>
 {% endblock %}
 
 {% block body %}
@@ -259,10 +258,15 @@
                             <select id='i{{forloop.counter}}' class='select-interviewers' onclick="updateCalendar()">
                                 <option>None</option>
                                 {% for interviewer in position.interviewers.all %}
-                                <option value="{{ interviewer.date.dates }}">{{ interviewer }}</option>
+                                    <option value="{{ interviewer.date.dates }}">{{ interviewer }}</option>
                                 {% endfor %}
                             </select>
                         </p>
+                        <small class="text-secondary">
+                            {% if position.comment %}
+                                Kommentar til fordeling:&emsp;{{ position.comment }}
+                            {% endif %}
+                        </small>
                         <hr>
                     {% endfor %}
                 </div>
