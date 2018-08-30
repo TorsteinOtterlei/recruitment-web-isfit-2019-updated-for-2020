@@ -13,11 +13,15 @@
         .error {
             color: red;
         }
+        .modal {
+            color: black;
+        }
     </style>
-{% endblock %}
+{% endblock head %}
 
 {% block body %}
     <h1>Edit profile:</h1>
+    <!-- Edit user (form) -->
     <form class="container edit-user-form" method="POST"> <!-- Bootstrap -->
         {% csrf_token %}
         {% for field in form %}
@@ -30,14 +34,62 @@
         </div>
         {% endfor %}
         <button id="btn_submit" type="submit" class="btn btn-primary">Save</button>
-    </form>
-    <br><br><br>
+    </form> <!-- End: Edit user (form) -->
+    <br>
+    <!-- Delete account (button) -->
+    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteAccount">
+        Delete account
+    </button>
+
+    <!-- Delete user (modal) -->
+    <div class="modal fade" id="deleteAccount" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Are you sure you want to delete your account?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        This action will delete your account and
+                        everything else you have saved on this website.
+                        (Yes, the application too)
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <!-- Delete user confirmed (button) -->
+                    <form action="{% url 'accounts:delete_user' %}" method="get">
+                        <input class="btn btn-danger" type="submit" value="Delete account"><br>
+                    </form>
+                    <!-- Cancel (button) -->
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div> <!-- End: Delete user (modal) -->
+
+    <br><br><br> <!-- Quickfix footer -->
 {% endblock %}
 
 {% block scriptblock %}
     <script type="text/javascript">
         $(document).ready(function() {
+            // Vars:
 
+            // -----------------------------------------------------------------
+            // Functions:
+
+            // -----------------------------------------------------------------
+            // Event listeners:
+            $("#btn-delete-confirmed").click(function() {
+                $.ajax({
+                    type: 'GET',
+                    url: "{% url 'accounts:delete_user' %}"
+                }); // End: Ajax
+            }); // End: Delete confirmed (click)
+            // -----------------------------------------------------------------
         })
     </script>
 {% endblock %}
