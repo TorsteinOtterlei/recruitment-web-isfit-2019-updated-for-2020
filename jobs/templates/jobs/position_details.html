@@ -56,7 +56,7 @@
     <!-- Title (row centered) -->
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-sm-auto"> <!-- Auto wraps around content length -->
+            <div class="col-sm-8"> <!-- Auto wraps around content length -->
                 <span id="title">{{ position.gang }}: {{position.title}}</span>
                 <hr>
             </div>
@@ -66,7 +66,7 @@
     <!-- Position description (row centered) -->
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-sm-auto"> <!-- Auto wraps around content length -->
+            <div class="col-sm-8"> <!-- Auto wraps around content length -->
                 <span id="description">Description:</span>
                 <p>{{position.description|linebreaksbr}}</p>
             </div>
@@ -76,7 +76,7 @@
     <!-- Contact person (row centered) -->
     <div class="container">
         <div class="row justify-content-center">
-            <div id="contact-person" class="col-sm-auto"> <!-- Auto wraps around content length -->
+            <div id="contact-person" class="col-sm-8"> <!-- Auto wraps around content length -->
                 <p>
                     Contact person: {{position.contact_person.get_full_name}}<br>
                     Email address: {{position.contact_person.email}}<br>
