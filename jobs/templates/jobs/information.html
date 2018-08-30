@@ -44,6 +44,19 @@
             padding-right: 15px;
         }
 
+        .smooth-wrapper {
+            background-color: #23272b;
+            border: 1px solid #343a40;
+            border-top-style: none;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            padding: 10px;
+        }
+
+        #buttons-div button {
+            min-width: 100px;
+        }
+
         * {
             outline: 0;
         }
@@ -68,6 +81,12 @@
             text-align: -webkit-match-parent;
         }
 
+        .gangs-div {
+            display: grid;
+            text-align: center;
+            align-content: center;
+        }
+
     </style>
 {% endblock head %}
 
@@ -80,7 +99,17 @@
                 <div class="section-padding">
                     {% for section in sections %}
                         <section class="box-white">
-                            <h4>{{ section.name }}</h4>
+                            <!-- Buttons for showing section-info -->
+                            <button class="btn btn-dark btn-block" type="button" data-toggle="collapse" data-target="#section-info-box-{{ forloop.counter }}" aria-expanded="false">
+                                {{ section.name }}
+                            </button>
+                                <!-- Section information collapsible -->
+                                <div class="collapse" id="section-info-box-{{ forloop.counter }}">
+                                    <div class="smooth-wrapper">
+                                        <p>{{ section.information|linebreaksbr}}</p>
+                                    </div>
+                                </div>
+                            <!-- All positions in section -->
                             <ul class="row list-unstyled">
                                 {% for gang in section.gangs.all %}
                                     {% for position in gang.positions.all %}
