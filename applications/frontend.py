@@ -23,6 +23,6 @@ def create_dummy_user():
 @login_required()
 def appLength(request):
     # NOTE: Application creation is only for testing
-    Application.objects.create(applicant=create_dummy_user(), first=Position.objects.first())
+    #Application.objects.create(applicant=create_dummy_user(), first=Position.objects.first())
     appLength = Application.objects.exclude(first=None, second=None, third=None).count()
     return JsonResponse({'appLength': appLength})
