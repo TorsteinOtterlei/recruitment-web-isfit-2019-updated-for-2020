@@ -11,18 +11,6 @@ from applications.models import Application
 from jobs.models import Section, Gang, Position, Date, Interview
 from accounts.models import User
 
-# Create your views here.
-"""
-class ApplicationDetail(generic.DetailView):
-    model = Application
-    template_name = 'applications/applicant_text.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['text'] = Application.text
-        return context
-"""
-
 @login_required
 def apply(request):
     # vars
@@ -86,8 +74,6 @@ def manage_applications(request):
     # End manage_applications
 
 @login_required
-@user_passes_test(lambda u: u.is_superuser)
-def pling(request):
-    # Is compared to applications queryset in manage_applications
+def pling_fest(request):
     appLength = Application.objects.exclude(first=None, second=None, third=None).count()
-    return JsonResponse({'appLength': appLength})
+    return render(request, 'applications/pling_fest.html', {'appLength': appLength})

@@ -126,42 +126,11 @@
 {% else %}
     You have no power here
 {% endif %}
-    <audio id='pling'>
-        <source src="{% static 'applications/glass_pling.mp3' %}" type="audio/mpeg">
-        Your browser does not support the audio tag.
-    </audio>
 {% endblock %}
 
 {% block scriptblock %}
     <script>
         $(document).ready(function() {
-            // Pling:
-            var appNr = {{ applications.count }}; // or {{ applications | length }}
-
-            // Function wrapped around parentices and called with () immediately.
-            (function check_new_application() {
-                $.ajax({
-                    type: 'GET',
-                    url: "{% url 'applications:pling' %}",
-                    // success is fired if HTTP response was 200 OK
-                    success: function(data) {
-                        var newAppNr = data.appLength;
-                        if (newAppNr > appNr) {
-                            appNr = newAppNr
-                            $('#pling')[0].play();
-                        }
-                    },
-                    // complete is fired when completed, no matter what
-                    complete: function() {
-                        // Schedule the next request when the current one's complete
-                        var sec = 1000;
-                        setTimeout(check_new_application, 10*sec);
-                    }
-                });
-            })();
-
-            // -------------------------------------------------------------------------------------------------------------
-
             var sections_map = new Map()
             sections_map.set("All", new Map());
 

@@ -217,20 +217,7 @@ def change_password(request):
         'form': form,
     })
 
-def send_mail(request, userID):
-    emil, created = User.objects.get_or_create(email="twidex97@gmail.com")
-    user = get_object_or_404(User, id=userID)
 
-    msg = """You have got an interview with ISFiT
-            Your interview is {}
-            Interviewer: {}
-
-            Sent from {}""".format(user.application.pretty_date(), user.application.first, request.user)
-
-    emil.email_user(subject="Interview", message=msg, from_email="emil.telstad@live.no")
-    #user.email_user(subject="Interview", message=msg, from_email=request.user.email)
-    return HttpResponse()
-    #return manage_profile(request, userID)
 
 def widgets(request):
     form = WidgetsForm()

@@ -1,0 +1,73 @@
+{% extends 'jobs/base.html' %}
+{% load static %}
+{% block title %}Pling-fest{% endblock title %}
+
+{% block head %}
+    <style media="screen">
+        .btn-audio-control {
+            display: inline-block;
+        }
+    </style>
+{% endblock head %}
+
+{% block body %}
+    <!-- Dummy -->
+    <!-- Buttons (audio-control) -->
+    <div class="btn-audio-control">
+        <button id="start" class="btn btn-primary" type="button" name="button">Start</button>
+        <button id="pause" class="btn btn-primary" type="button" name="button">Pause</button>
+    </div>
+    <!-- Audio (pling) -->
+    <audio id='pling'>
+        <source src="{% static 'applications/glass_pling.mp3' %}" type="audio/mpeg">
+        Your browser does not support the audio tag.
+    </audio>
+{% endblock body %}
+
+{% block scriptblock %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // Vars:
+            var appLength = {{ appLength }};
+            var check_app_interval;
+            // -----------------------------------------------------------------
+            // Functions:
+            function getRandomColor() {
+                var color = '#';
+                var letters = '0123456789ABCDEF';
+                for (var i = 0; i < 6; i++) {
+                    color += letters[Math.floor(Math.random() * 16)];
+                }
+                return color;
+            }
+            function check_new_application() {
+                $.ajax({
+                    type: 'GET',
+                    url: "{% url 'applications:appLength' %}",
+                    // success (fired if HTTP response was 200 OK)
+                    success: function(data) {
+                        var newAppLength = data.appLength;
+                        if (newAppLength > appLength) {
+                            appLength = newAppLength
+                            $('#pling')[0].play();
+                            $('html').css('background-color', getRandomColor())
+                        }
+                    }, // End: Success
+                }); // End: Ajax
+            }; // End: Check new application -->
+            // -----------------------------------------------------------------
+            // Event listeners:
+            $('#start').click(function() {
+                $(this).attr("disabled", true);
+                var sec = 1000;
+                check_app_interval = setInterval(check_new_application, 3*sec);
+            }); // End: #start (click)
+            $('#pause').click(function() {
+                $('#start').attr("disabled", false);
+                clearInterval(check_app_interval);
+                $('html').css('background-color', 'black');
+            }); // End: #pause (click)
+            // -----------------------------------------------------------------
+        }); // End: document ready
+    </script>
+{% endblock scriptblock %}
