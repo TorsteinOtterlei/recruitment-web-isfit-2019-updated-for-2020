@@ -28,11 +28,13 @@ class Gang(models.Model):
     name = models.CharField(max_length=100)
     #leader = models.OneToOneField(User, on_delete=models.SET_NULL, null=True)
     section = models.ForeignKey(Section, on_delete=models.SET_NULL, null=True, related_name="gangs")
+    weight = models.IntegerField(default=100)
 
     class Meta:
         verbose_name = "gang"
         verbose_name_plural = "gangs"
-        order_with_respect_to = 'section'
+        #order_with_respect_to = 'section'
+        ordering = ['weight']
 
     def __str__(self):
         if self.name == None:
@@ -56,11 +58,13 @@ class Position(models.Model):
     interviewers = models.ManyToManyField(User, related_name="positions", blank=True)
     contact_person = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="position", blank=True)
     comment = models.TextField(max_length=100, default='', blank=True)
+    weight = models.IntegerField(default=100)
 
     class Meta:
         verbose_name = "position"
         verbose_name_plural = "positions"
-        order_with_respect_to = "gang"
+        #order_with_respect_to = "gang"
+        ordering = ['weight']
 
     def __str__(self):
         if self.title == None or self.gang == None:

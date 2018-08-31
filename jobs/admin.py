@@ -12,7 +12,7 @@ admin.site.register(Interview)
 
 class PositionAdmin(admin.ModelAdmin):
     fieldsets = (
-        (None, {'fields': ['title', 'description', 'comment'] } ),
+        (None, {'fields': ['title', 'description', 'comment', 'weight'] } ),
         ('Relations', {'fields': ['interviewers', 'contact_person', 'gang'] } ),
     )
     filter_horizontal = ['interviewers']

@@ -24,6 +24,7 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            color: orange;
             font-size: 1em;
             padding: 0 10px;
         }
@@ -81,12 +82,6 @@
             text-align: -webkit-match-parent;
         }
 
-        .gangs-div {
-            display: grid;
-            text-align: center;
-            align-content: center;
-        }
-
     </style>
 {% endblock head %}
 
@@ -101,7 +96,7 @@
                         <section class="box-white">
                             <!-- Buttons for showing section-info -->
                             <button class="btn btn-dark btn-block" type="button" data-toggle="collapse" data-target="#section-info-box-{{ forloop.counter }}" aria-expanded="false">
-                                {{ section.name }}
+                                <h4>{{ section.name }}</h4>
                             </button>
                                 <!-- Section information collapsible -->
                                 <div class="collapse" id="section-info-box-{{ forloop.counter }}">
@@ -113,9 +108,9 @@
                             <ul class="row list-unstyled">
                                 {% for gang in section.gangs.all %}
                                     {% for position in gang.positions.all %}
-                                        <li class="col-xs-12 col-sm-4">
-                                            <a href="{% url 'jobs:position_detail' position.pk %}">{{ position.title }}</a>
-                                        </li>
+                                            <li class="col-xs-12 col-sm-4">
+                                                <a href="{% url 'jobs:position_detail' position.pk %}">{{ position.title }}</a>
+                                            </li>
                                     {% endfor %}
                                 {% endfor %}
                             </ul>
