@@ -6,7 +6,6 @@ from jobs.models import Section, Gang, Position, Project, Calendar, Date, Interv
 admin.site.register(Section)
 admin.site.register(Gang)
 admin.site.register(Project)
-admin.site.register(Interview)
 #admin.site.register(Calendar)
 
 
@@ -36,6 +35,22 @@ class DateAdmin(admin.ModelAdmin):
     ordering = ['user']
     readonly_fields = ['dates']
 
+class InterviewAdmin(admin.ModelAdmin):
+    fieldsets = (
+        (None, {'fields': ['applicant', 'room', 'time'] } ),
+        ('Interviewers', {'fields': ['first', 'second', 'third'] } ),
+    )
+    list_display = ['applicant', 'room', 'pretty_interview_time', 'first', 'second', 'third']
+    list_filter = []
+    search_fields = [
+        'applicant__email', 'applicant__first_name', 'applicant__last_name', 'applicant__phone_number',
+        'first__email', 'first__first_name', 'first__last_name', 'first__phone_number',
+        'second__email', 'second__first_name', 'second__last_name', 'second__phone_number',
+        'third__email', 'third__first_name', 'third__last_name', 'third__phone_number',
+    ]
+    ordering = ['applicant']
+    readonly_fields = []
 
 admin.site.register(Position, PositionAdmin)
 admin.site.register(Date, DateAdmin)
+admin.site.register(Interview, InterviewAdmin)
