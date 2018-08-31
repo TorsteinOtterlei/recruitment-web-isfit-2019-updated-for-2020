@@ -152,9 +152,9 @@ class Calendar(models.Model): # NOT IN USE
 class Interview(models.Model):
     applicant = models.OneToOneField(User, on_delete=models.CASCADE, related_name='interview')
     interviewers = models.ManyToManyField(User, blank=True, related_name='interviews')
-    first = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='first_interviews')
-    second = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='second_interviews')
-    third = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='third_interviews')
+    first = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='first_interviews')
+    second = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='second_interviews')
+    third = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='third_interviews')
     room = models.CharField(max_length=40, default="")
     time = models.IntegerField(default=-1)
 

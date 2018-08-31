@@ -54,7 +54,7 @@ class UserAdmin(auth_admin.UserAdmin, ImportExportModelAdmin):
     )
 
     list_display = ('email', 'get_full_name', 'phone_number', 'gang', 'staff', 'superuser')
-    list_filter = ('recruiter', 'interviewer', 'staff', 'superuser', 'active', 'groups')
+    list_filter = ('staff', 'superuser', 'status', 'gang', 'active', 'recruiter', 'interviewer')
     search_fields = ('first_name', 'last_name', 'email', 'phone_number')
     ordering = ['email']
     readonly_fields = ['last_login', 'date_joined']
