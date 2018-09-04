@@ -130,6 +130,8 @@
 
 {% block scriptblock %}
     <script>
+        var sortOutGang;
+        var sortOut;
         $(document).ready(function() {
             var sections_map = new Map()
             sections_map.set("All", new Map());
@@ -162,7 +164,7 @@
                 }
             {% endfor %}
 
-            function sortOut(section){
+            sortOut = function(section){
                 for (var [key, value] of sections_map.get('All')) {
                     if (!sections_map.get(section).has(key)){
                         $('.' + key).css('display','none');
@@ -185,7 +187,7 @@
                 {% endfor %}
             }
 
-            function sortOutGang(gang){
+            sortOutGang = function(gang){
                 section = $('#selector').val();
                 for (var [key, value] of sections_map.get('All')) {
                     if (!gangs_map.get(gang).has(key)){
