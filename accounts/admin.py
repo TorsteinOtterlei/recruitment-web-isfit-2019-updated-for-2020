@@ -13,7 +13,7 @@ def make_staff(modeladmin, request, queryset):
 def make_normal_user(modeladmin, request, queryset):
     queryset.update(staff=False)
     queryset.update(superuser=False)
-    make_staff.short_description = "Mark selected users normal users without any permissions"
+    make_normal_user.short_description = "Mark selected users as normal users without any permissions"
 
 def make_superuser(modeladmin, request, queryset):
     queryset.update(superuser=True)
