@@ -10,6 +10,11 @@ def make_staff(modeladmin, request, queryset):
     queryset.update(staff=True)
     make_staff.short_description = "Mark selected users as staff"
 
+def make_normal_user(modeladmin, request, queryset):
+    queryset.update(staff=False)
+    queryset.update(superuser=False)
+    make_staff.short_description = "Mark selected users normal users without any permissions"
+
 def make_superuser(modeladmin, request, queryset):
     queryset.update(superuser=True)
     make_superuser.short_description = "Mark selected users as superuser"
@@ -59,7 +64,7 @@ class UserAdmin(auth_admin.UserAdmin, ImportExportModelAdmin):
     ordering = ['email']
     readonly_fields = ['last_login', 'date_joined']
     filter_horizontal = ('groups', 'user_permissions')
-    actions = [make_staff]
+    actions = [make_normal_user, make_staff, make_superuser, make_recruiter, make_interviewer]
 
 # Register your models here.
 admin.site.register(User, UserAdmin)
