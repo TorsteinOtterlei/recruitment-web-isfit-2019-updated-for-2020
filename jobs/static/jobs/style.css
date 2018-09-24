@@ -48,6 +48,16 @@ small {
     white-space: normal;
 }
 
+.base_footer{
+    color: black;
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    bottom: 0;
+    height: 60px;
+    background: #0d0d0d;
+}
+
 /* What is this for? Just curious :) */
 .media {
     flex-direction: column;
