@@ -82,6 +82,15 @@
             text-align: -webkit-match-parent;
         }
 
+        .gang_div{
+            background: none;
+            width: 100%;
+            text-align: center;
+            color: white;
+            border-radius: 5px;
+            font-size: 20px;
+        }
+
     </style>
 {% endblock head %}
 
@@ -107,11 +116,18 @@
                             <!-- All positions in section -->
                             <ul class="row list-unstyled">
                                 {% for gang in section.gangs.all %}
-                                    {% for position in gang.positions.all %}
-                                            <li class="col-xs-12 col-sm-4">
-                                                <a href="{% url 'jobs:position_detail' position.pk %}">{{ position.title }}</a>
-                                            </li>
-                                    {% endfor %}
+                                    <li class="col-xs-12 col-sm-4">
+                                        <section class="box-white">
+                                            <!-- Buttons for showing section-info -->
+                                            <div class="gang_div" data-target="#gang-box-{{ forloop.counter }}" aria-expanded="false">
+                                                <h4>{{ gang.name }}</h4>
+
+                                        {% for position in gang.positions.all %}
+                                            <a href="{% url 'jobs:position_detail' position.pk %}">{{ position.title }}</a><br>
+                                        {% endfor %}
+                                            </div>
+                                        </section>
+                                    </li>
                                 {% endfor %}
                             </ul>
                         </section>
