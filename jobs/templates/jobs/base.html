@@ -25,6 +25,9 @@
             {% block body %}
 
             {% endblock %}
+            <div class="base_footer" id="base_footer">
+                {% include 'accounts/GDPR_modal.html' %}
+            </div>
         </div>
 
         <!-- Optional JavaScript -->
@@ -39,8 +42,10 @@
         {% block scriptblock %}
             <!-- Place to add Javascript code in extended templates -->
         {% endblock %}
+
+
     </body>
-    <footer class="base_footer" id="base_footer">
-        {% include 'accounts/GDPR_modal.html' %}
-    </footer>
+
+
+
 </html>

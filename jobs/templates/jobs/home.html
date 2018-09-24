@@ -1,5 +1,6 @@
 {% extends 'jobs/base.html' %}
 {% block title %}Welcome{% endblock %}
+{% load static %}
 {% block head %}
 <style media="screen">
 
@@ -55,32 +56,32 @@ Admins have access to all information and the administration portion of the webs
     {% if user.is_authenticated %}
         <!-- Profile -->
         <form action="{% url 'accounts:profile' %}" method="get">
-            <input class="input-button" type="submit" value="See profile"><br>
+            <button class="view_profile_btn"><span>View profile</span></button><br>
         </form>
         {% if user.is_staff %}
             <!-- Set dates -->
             <form action="{% url 'applications:set_dates' %}" method="get">
-                <input class="input-button" type="submit" value="Set dates"><br>
+                <button class="set_times"><span>Set UNAVAILABLE times</span></button><br>
             </form>
             <!-- Manage applications -->
         {% if user.is_superuser %}
             <form action="{% url 'applications:manage_applications' %}" method="get">
-                <input class="input-button" type="submit" value="Manage applications"><br>
+                <button class="manage_appl_btn"><span>Manage applications</span></button><br>
             </form>
         {% endif %}
         {% else %} <!-- If normal user -->
             <!-- Edit application -->
             <form action="{% url 'applications:apply' %}" method="get">
                 {% if has_applied %}
-                <input class="input-button" type="submit" value="Edit application"><br>
+                    <button class="apply_now"><span>Edit application</span></button><br>
                 {% else %}
-                <input class="input-button" type="submit" value="Apply now!"><br>
+                    <button class="apply_now"><span>Apply now!</span></button><br>
                 {% endif %}
             </form>
         {% endif %}
         <!-- Logout -->
         <form action="{% url 'accounts:logout' %}" method="get">
-            <input class="input-button" type="submit" value="Log out"><br>
+            <input class="logout_btn" type="submit" value="Log out"><br>
         </form>
     {% else %}
         <form action="{% url 'accounts:signup' %}" method="get">

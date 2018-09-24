@@ -73,13 +73,13 @@
             </div>
             <br>
         <form action="{% url 'applications:apply' %}" method="get">
-            <input class="input-button" type="submit" value="Edit application"><br>
+            <button class="apply_now"><span>Edit application</span></button><br>
         </form>
         {% endif %}
     {% else %}
         <h2>You have not yet applied for any positions.</h2>
         <form action="{% url 'applications:apply' %}" method="get">
-            <input class="input-button" type="submit" value="Apply for a position now!"><br>
+            <button class="apply_now"><span>Apply for a position now!</span></button><br>
         </form>
     {% endif %}
 
@@ -90,7 +90,7 @@
         <input class="input-button" type="submit" value="Change password"><br>
     </form>
     <form action="{% url 'accounts:logout' %}" method="get">
-        <input class="input-button" type="submit" value="Log out"><br>
+        <input class="logout_btn" type="submit" value="Log out"><br>
     </form>
     <br>
 

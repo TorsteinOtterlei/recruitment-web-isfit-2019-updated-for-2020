@@ -96,15 +96,10 @@
             <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
                 {{ application.applicant.get_full_name }}:
             </a>
-            {% if application.first.gang == user.gang %}
                 <p>1: {{ application.first }}</p>
-            {% endif %}
-            {% if application.second.gang == user.gang %}
                 <p>2: {{ application.second }}</p>
-            {% endif %}
-            {% if application.third.gang == user.gang %}
                 <p>3: {{ application.third }}</p>
-            {% endif %}
+
             <br>
         {% endfor %}
     </div>
@@ -127,7 +122,7 @@
         <input class="input-button" type="submit" value="Change password"><br>
     </form>
     <form action="{% url 'accounts:logout' %}" method="get">
-        <input class="input-button" type="submit" value="Log out"><br>
+        <input class="logout_btn" type="submit" value="Log out"><br>
     </form>
 
 {% endblock %}
