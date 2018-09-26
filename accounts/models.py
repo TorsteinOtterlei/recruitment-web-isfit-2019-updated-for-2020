@@ -46,6 +46,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     INTERVIEWED = 'ID'
     ACCEPTED = 'AC'
     POSSIBLY_PARTICIPANT = 'PP'
+    NOT_MET = 'NM'
 
     STATUS_CHOISES = (
         (NOT_EVALUATED, 'Not evaluated'),
@@ -54,6 +55,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         (INTERVIEWED, 'Interviewed'),
         (ACCEPTED, 'Accepted'),
         (POSSIBLY_PARTICIPANT, 'Possibly participant'),
+        (NOT_MET, 'Not met'),
     )
 
     status = models.CharField(
