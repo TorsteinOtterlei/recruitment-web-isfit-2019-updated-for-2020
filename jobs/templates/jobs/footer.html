@@ -1,0 +1,47 @@
+{% load static %}
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<style>
+    a.footer{
+        color: white;
+    }
+
+    .col-md-4 a{
+        color: white;
+    }
+
+    .col-md-4 a:hover{
+        color: white;
+    }
+
+    .row{
+        color: white;
+    }
+
+    .fa-facebook{
+        font-size: 40px;
+    }
+
+    .fa-instagram{
+        font-size: 40px;
+    }
+</style>
+
+<div class="base_footer">
+    <div class="row">
+        <div class="col-md-4 col-xs-4">
+            <p> {% include 'accounts/GDPR_modal.html' %} </p>
+        </div>
+        <div class="col-md-4 col-xs-4">
+            <h3>Useful links</h3>
+            <a class="footer" href="https://www.isfit.org">www.isfit.org</a><br>
+            <a class="footer" href="https://www.studentpeaceprize.org/">Student Peace Prize</a>
+        </div>
+        <div class="col-md-4 col-xs-4">
+            <a href="https://www.facebook.com/ISFiTNorway/?ref=br_rs" class="fa fa-facebook" target="_blank"></a>
+            <a href="https://www.instagram.com/isfit19/?hl=nb" class="fa fa-instagram" target="_blank"></a>
+
+        </div>
+    </div>
+</div>

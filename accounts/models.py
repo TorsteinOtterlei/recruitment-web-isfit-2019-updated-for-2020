@@ -91,6 +91,22 @@ class User(AbstractBaseUser, PermissionsMixin):
             return 'error'
         return self.status
 
+    def get_pretty_status(self):
+        if self.status == None:
+            return 'error'
+        elif self.status == "NE":
+            return "Not Evaluated"
+        elif self.status == "IS":
+            return "Interview Set"
+        elif self.status == "IC":
+            return "Interview Confirmed"
+        elif self.status == "ID":
+            return "Interviewed"
+        elif self.status == "AC":
+            return "Accepted"
+        elif self.status == "PP":
+            return "Possibly Participant"
+
     @property
     def is_active(self):
         return self.active

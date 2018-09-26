@@ -19,15 +19,16 @@
     </head>
     <body>
 
-        {% include 'jobs/navbar.html' %}
 
+        {% include 'jobs/navbar.html' %}
         <div id="page-content-wrapper">
+
             {% block body %}
 
             {% endblock %}
-            <div class="base_footer" id="base_footer">
-                {% include 'accounts/GDPR_modal.html' %}
-            </div>
+
+            {% include 'jobs/footer.html'%}
+
         </div>
 
         <!-- Optional JavaScript -->
@@ -43,9 +44,6 @@
             <!-- Place to add Javascript code in extended templates -->
         {% endblock %}
 
-
     </body>
-
-
 
 </html>

@@ -32,15 +32,21 @@
             max-width: 300px;
             text-align: left;
         }
-        .interview-div {
-            text-align: center;
-            alignment: left;
+
+        .smooth-wrapper a{
+            font-size: 28px;
         }
 
-        .applicant_div {
+        .smooth-wrapper{
+            grid-auto-columns: 4fr 4fr 4fr;
             text-align: center;
-            alignment: right;
         }
+
+        .container a{
+            font-size: 30px;
+        }
+
+
     </style>
 {% endblock head %}
 
@@ -78,7 +84,7 @@
     <div class="container border applicant-div">
         {% for i in interviews %}
             <h3>Interview at: {{ i.room }}, {{ i.pretty_interview_time }}</h3>
-        <h4>Applicant:</h4> <a href="{% url 'accounts:manage_profile' i.applicant.id %}">{{ i.applicant.get_full_name }}</a><br />
+        <h4>Applicant:</h4> <a href="{% url 'accounts:manage_profile' i.applicant.id %}">{{ i.applicant.get_full_name }}: </a>{{ i.applicant.get_pretty_status }}<br />
         <h4>Interviewers:</h4>
             {% for j in i.interviewers.all %}
                 {{ j.get_full_name }},
@@ -88,21 +94,50 @@
         {% endfor %}
 
     </div>
-    <div class="container border interview-div">
+    <br>
+    <div class="container">
         {% if user_gang_applications %}
-            <h4>Applicants for your gang ({{ user.gang }}):</h4>
+        <button class="btn btn-dark btn-block" type="button" data-toggle="collapse" data-target="#applicants" aria-expanded="false">
+            <b>Applicants for your gang ({{ user.gang }})</b>
+        </button>
         {% endif %}
-        {% for application in user_gang_applications %}
-            <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
-                {{ application.applicant.get_full_name }}:
-            </a>
-                <p>1: {{ application.first }}</p>
-                <p>2: {{ application.second }}</p>
-                <p>3: {{ application.third }}</p>
-
-            <br>
-        {% endfor %}
+            <!-- Applicants collapsible -->
+            <div class="collapse" id="applicants">
+                <div class="smooth-wrapper">
+                    {% for application in user_gang_applications %}
+                        {% if application.first.gang == user.gang %}
+                            <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
+                                {{ application.applicant.get_full_name }}:
+                            </a>
+                            <p>1: {{ application.first }}
+                            <br>2: {{ application.second }}
+                            <br>3: {{ application.third }}</p>
+                        {% endif %}
+                    {% endfor %}
+                    {% for application in user_gang_applications %}
+                        {% if application.first.gang != user.gang and application.second.gang == user.gang %}
+                            <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
+                                {{ application.applicant.get_full_name }}:
+                            </a>
+                            <p>1: {{ application.first }}
+                            <br>2: {{ application.second }}
+                            <br>3: {{ application.third }}</p>
+                        {% endif %}
+                    {% endfor %}
+                    {% for application in user_gang_applications %}
+                        {% if application.first.gang != user.gang and application.second.gang != user.gang and application.third.gang == user.gang %}
+                            <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
+                                {{ application.applicant.get_full_name }}:
+                            </a>
+                            <p>1: {{ application.first }}
+                            <br>2: {{ application.second }}
+                            <br>3: {{ application.third }}</p>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
     </div>
+    <br>
 <!--{% if applications %}
         <div class="container border applicant-div">
             <h3>Your applicants:</h3>
