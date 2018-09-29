@@ -76,11 +76,6 @@ small {
     left: 0;
 }
 
-footer{
-    position: fixed;
-    bottom: 0;
-}
-
 
 #footer-content {
     background-color: #007FAA;
@@ -94,7 +89,6 @@ footer{
         height: 260px;
     }
 }
-
 
 .fa {
     padding: 20px;
