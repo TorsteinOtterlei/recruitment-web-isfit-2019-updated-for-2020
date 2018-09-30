@@ -49,78 +49,44 @@
                     <option value="{{ gang }}">{{ gang }}</option>
                     {% endfor %}
                 </select>
-            </div>
 
-            <div class="col-sm user_column">
-                <div class="column-header">Not Evaluated</div>
-                <div class="users-div">
-                    {% for application in applications %}
-                    <div  class="{{ application.applicant.id }}">
-                        {% if application.applicant.get_status == 'NE'%}
-                        <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
-                            {{ application.applicant }}<br>
-                        </a>
-                        {% endif %}
-                    </div>
-                    {% endfor %}
-                </div>
+                <form method="post" action="#">
+                    {% csrf_token %}
+                    <select id='selector3' name="display" onChange="form.submit();">
+                        <option value="email">Show email</option>
+                        <option value="name" {% if display == 'name' %} selected="selected" {% endif %}>Show name</option>
+                    </select>
+                </form>
+
+                <form method="post" action="#">
+                    {% csrf_token %}
+                    <select id='selector4' name="sorting" onChange="form.submit();">
+                        <option value="apply_time">Sort on apply time</option>
+                        <option value="interview_time" {% if sorting == 'interview_time' %} selected="selected" {% endif %}>Sort on interview time</option>
+                    </select>
+                </form>
+
             </div>
-            <div class="col-sm user_column">
-                <div class="column-header">Interview Set</div>
-                <div class="users-div">
-                    {% for application in applications_ordered %}
-                    <div class="{{ application.applicant.id }}">
-                        {% if application.applicant.get_status == 'IS'%}
-                        <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
-                            {{ application.applicant }}<br>
-                        </a>
-                        {% endif %}
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-            <div class="col-sm user_column">
-                <div class="column-header">Interview Confirmed</div>
-                <div class="users-div">
-                    {% for application in applications_ordered %}
-                    <div  class="{{ application.applicant.id }}">
-                        {% if application.applicant.get_status == 'IC'%}
-                        <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
-                            {{ application.applicant }}<br>
-                        </a>
-                        {% endif %}
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-            <div class="col-sm user_column">
-                <div class="column-header">Interviewed</div>
-                <div class="users-div">
-                    {% for application in applications_ordered %}
-                    <div  class="{{ application.applicant.id }}">
-                        {% if application.applicant.get_status == 'ID'%}
-                        <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
-                            {{ application.applicant }}<br>
-                        </a>
-                        {% endif %}
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-            <div class="col-sm user_column">
-                <div class="column-header">Accepted</div>
-                <div class="users-div">
-                    {% for application in applications_ordered %}
-                    <div  class="{{ application.applicant.id }}">
-                        {% if application.applicant.get_status == 'AC'%}
-                        <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
-                            {{ application.applicant }}<br>
-                        </a>
-                        {% endif %}
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
+            {% for choice in status_choices %}
+              <div class="col-sm user_column">
+                 <div class="column-header">{{ choice.1 }}</div>
+                 <div class="users-div">
+                     {% for application in applications %}
+                     <div  class="{{ application.applicant.id }}">
+                         {% if application.applicant.get_status == choice.0 %}
+                         <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
+                           {% if display == 'name' %}
+                             {{ application.applicant.last_name }}<br>
+                            {% else %}
+                            {{ application.applicant.email }}<br>
+                            {% endif %}
+                         </a>
+                         {% endif %}
+                     </div>
+                     {% endfor %}
+                 </div>
+             </div>
+           {% endfor %}
         </div>
     </div>
 {% else %}

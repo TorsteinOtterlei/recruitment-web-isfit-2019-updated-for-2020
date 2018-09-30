@@ -66,6 +66,14 @@ def set_dates(request):
 @login_required
 @user_passes_test(lambda u: u.is_staff)
 def manage_applications(request):
+    # Getting user defiend setup
+    display = 'email'
+    sorting = 'apply_time'
+    if request.method == 'POST':
+        display = request.POST.get('display', False)
+        sorting = request.POST.get('sorting', False)
+
+    # Showing data depending on user type
     if request.user.is_superuser:
         applications = Application.objects
     else:
@@ -74,11 +82,20 @@ def manage_applications(request):
             | Application.objects.filter(third__gang=request.user.gang)
     print(applications)
 
+    # Removing applications unfinished applications
+    applications = applications.exclude(first=None, second=None, third=None)
+
+    # Sorting based on user input
+    if sorting == 'interview_time':
+        applications = applications.order_by('interview_time')
+
     return render(request, 'applications/manage_applications.html', {
-        'applications': applications.exclude(first=None, second=None, third=None),
-        'applications_ordered': applications.exclude(first=None, second=None, third=None).order_by('interview_time'),
+        'applications': applications,
         'sections': Section.objects.all(),
-        'gangs': Gang.objects.all()
+        'gangs': Gang.objects.all(),
+        'status_choices': request.user.STATUS_CHOISES,
+        'display': display,
+        'sorting': sorting
     })
     # End manage_applications
 
