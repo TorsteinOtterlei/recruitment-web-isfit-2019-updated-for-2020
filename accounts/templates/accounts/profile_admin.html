@@ -155,13 +155,15 @@
         </div>
     {% endif %}-->
     <form action="{% url 'accounts:edit_profile' %}" method="get">
-        <input class="input-button" type="submit" value="Edit Profile"><br>
+        <button type="button" class="btn btn-outline-primary">Edit profile</button>
     </form>
+    <br>
     <form action="{% url 'accounts:change_password' %}" method="get">
-        <input class="input-button" type="submit" value="Change password"><br>
+        <button type="button" class="btn btn-outline-primary">Change password</button>
     </form>
+    <br>
     <form action="{% url 'accounts:logout' %}" method="get">
-        <input class="logout_btn" type="submit" value="Log out"><br>
+        <button type="button" class="btn btn-outline-danger">Logout</button>
     </form>
 
 {% endblock %}

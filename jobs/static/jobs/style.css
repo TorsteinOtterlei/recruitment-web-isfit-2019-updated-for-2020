@@ -21,6 +21,7 @@ body {
     padding-bottom: 110px;
     position: relative;
     margin: 0;
+    text-align: center;
 }
 
 @media (max-width: 768px) {
@@ -130,6 +131,15 @@ button {
     border: 1px solid gray;
     cursor: pointer;
     text-align: center;
+}
+
+.rectangle-8 {
+	box-sizing: border-box;
+	height: 51px;
+	width: 208px;
+	background-color: #FAFAFA;
+	border: 3px solid #09C;
+	box-shadow: 0 2px 4px 0 rgba(0,0,0,0.27);
 }
 
 .input-button {

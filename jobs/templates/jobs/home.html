@@ -19,6 +19,14 @@
         bottom: 0;
         opacity: 0.1;
     }
+
+    .col-md-1, .col-xs-1{
+        text-align: center;
+    }
+
+    .col{
+        text-align: center;
+    }
 </style>
 {% endblock %}
 
@@ -55,46 +63,53 @@ Admins have access to all information and the administration portion of the webs
 {% endif %}
     {% if user.is_authenticated %}
         <!-- Profile -->
-        <form action="{% url 'accounts:profile' %}" method="get">
-            <button class="view_profile_btn"><span>View profile</span></button><br>
-        </form>
+<div class="row">
+    <!--<div class="col-md-1 col-xs-1">-->
+            <form action="{% url 'accounts:profile' %}" method="get">
+                <button type="submit" class="btn btn-outline-primary">View profile</button>
+            </form>
         {% if user.is_staff %}
             <!-- Set dates -->
-            <form action="{% url 'applications:set_dates' %}" method="get">
-                <button class="set_times"><span>Set UNAVAILABLE times</span></button><br>
-            </form>
+                <form action="{% url 'applications:set_dates' %}" method="get">
+                    <button type="submit" class="btn btn-danger">Set UNAVAILABLE times</button>
+                </form>
             <!-- Manage applications -->
         {% if user.is_superuser %}
-            <form action="{% url 'applications:manage_applications' %}" method="get">
-                <button class="manage_appl_btn"><span>Manage applications</span></button><br>
-            </form>
+                <form action="{% url 'applications:manage_applications' %}" method="get">
+                    <button type="submit" class="btn btn-primary">Manage applications</button>
+                </form>
+
         {% endif %}
         {% else %} <!-- If normal user -->
             <!-- Edit application -->
             <form action="{% url 'applications:apply' %}" method="get">
                 {% if has_applied %}
-                    <button class="apply_now"><span>Edit application</span></button><br>
+                    <button type="submit" class="btn btn-primary">Edit application</button>
                 {% else %}
-                    <button class="apply_now"><span>Apply now!</span></button><br>
+                    <button type="submit" class="btn btn-primary">Apply now!</button>
                 {% endif %}
             </form>
         {% endif %}
         <!-- Logout -->
         <form action="{% url 'accounts:logout' %}" method="get">
-            <input class="logout_btn" type="submit" value="Log out"><br>
+            <br>
+            <button type="submit" class="btn btn-outline-danger">Logout</button>
         </form>
     {% else %}
         <form action="{% url 'accounts:signup' %}" method="get">
-            <input class="input-button" type="submit" value="Create profile"><br>
+            <button type="submit" class="btn btn-primary">Create user</button>
         </form>
         <form action="{% url 'accounts:login' %}" method="get">
-            <input class="input-button" type="submit" value="Login"><br>
+            <button type="submit" class="btn btn-outline-primary">Log in</button>
         </form>
         <!-- <br> -->
         <form action="{% url 'jobs:information' %}" method="get">
-            <input class="input-button" id='see-pos' type="submit" value="Browse all available positions"><br>
+            <button type="submit" class="btn btn-outline-primary">Browse all avilable positions</button>
         </form>
     {% endif %}
+    <!--</div>-->
+</div>
+
     <div id='easteregg'>&#9854;</div>
 {% endblock %}
 {% block scriptblock %}
