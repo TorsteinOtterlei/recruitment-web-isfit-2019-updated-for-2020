@@ -31,7 +31,7 @@
 {% endblock head %}
 
 {% block body %}
-{% if user.is_superuser %}
+{% if user.is_staff %}
 <h3>Manage applications</h3>
 <div class="container">
     <div class="row">
@@ -68,7 +68,7 @@
             <div class="col-sm user_column">
                 <div class="column-header">Interview Set</div>
                 <div class="users-div">
-                    {% for application in applications %}
+                    {% for application in applications_ordered %}
                     <div class="{{ application.applicant.id }}">
                         {% if application.applicant.get_status == 'IS'%}
                         <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
@@ -82,7 +82,7 @@
             <div class="col-sm user_column">
                 <div class="column-header">Interview Confirmed</div>
                 <div class="users-div">
-                    {% for application in applications %}
+                    {% for application in applications_ordered %}
                     <div  class="{{ application.applicant.id }}">
                         {% if application.applicant.get_status == 'IC'%}
                         <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
@@ -96,7 +96,7 @@
             <div class="col-sm user_column">
                 <div class="column-header">Interviewed</div>
                 <div class="users-div">
-                    {% for application in applications %}
+                    {% for application in applications_ordered %}
                     <div  class="{{ application.applicant.id }}">
                         {% if application.applicant.get_status == 'ID'%}
                         <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
@@ -110,7 +110,7 @@
             <div class="col-sm user_column">
                 <div class="column-header">Accepted</div>
                 <div class="users-div">
-                    {% for application in applications %}
+                    {% for application in applications_ordered %}
                     <div  class="{{ application.applicant.id }}">
                         {% if application.applicant.get_status == 'AC'%}
                         <a href="{% url 'accounts:manage_profile' application.applicant.id %}">

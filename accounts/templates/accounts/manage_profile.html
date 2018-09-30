@@ -291,7 +291,7 @@
                         <div class="container">
                             <div class="row">
                                 <div class="col-lg-9">
-                                    <h5><div id="week-div">Week 33 (29th Aug - 2nd Sep)</div></h5>
+                                    <h5><div id="week-div">Week 42 (18th Oct - 21th Oct)</div></h5>
                                     <div class="calendar">
                                         <div class="topleft">Time / Day</div>
 
@@ -391,14 +391,14 @@
             console.log('Chosen time: ' + chosen_time)
 
             week = 0;
-            week_text = ['Week 36 (29. Aug - 2. Sep)', 'Week 37 (3. Sep - 8. Sep)'];
+            week_text = ['Week 42 (18th Oct - 21th Oct)', 'Week 43 (22th Oct - 26th Oct)'];
             filler = "&#10004;";
 
             // Create divs inside grid. Easier than adding them manually
             for (var i=0; i<DATES_LENGTH/2; i++) {
                 var div = document.createElement("div");  // Create with DOM
                 div.id = i; // Give each cell their id according to grid
-                var tmp = (i%7==0 || i%7==1) ? 'gridcell-disabled' : 'gridcell';
+                var tmp = (i%7==0 || i%7==1 || i%7==2) ? 'gridcell-disabled' : 'gridcell';
                 div.className = tmp;
                 $(".grid1").append(div);
             } // End: cell-appending to grid
@@ -407,7 +407,7 @@
             for (var i=DATES_LENGTH/2; i<DATES_LENGTH; i++) {
                 var div = document.createElement("div");  // Create with DOM
                 div.id = i; // Give each cell their id according to grid
-                var tmp = (i%7==6) ? 'gridcell-disabled' : 'gridcell';
+                var tmp = (i%7==5) || (i%7==6) ? 'gridcell-disabled' : 'gridcell';
                 div.className = tmp;
                 $(".grid2").append(div);
             } // End: cell-appending to grid

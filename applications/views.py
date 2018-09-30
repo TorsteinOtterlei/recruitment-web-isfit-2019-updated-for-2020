@@ -48,8 +48,8 @@ def apply(request):
 @login_required
 def set_dates(request):
     # Temporal: deadline for interviewers was on 29. Aug -----------------------
-    if request.user.is_staff:
-        return render(request, 'applications/deadline_passed.html')
+    # if request.user.is_staff:
+    #     return render(request, 'applications/set_dates.html')
     # --------------------------------------------------------------------------
     if request.method == 'POST':
         times = request.POST.get('times')
@@ -64,10 +64,19 @@ def set_dates(request):
         })
 
 @login_required
-@user_passes_test(lambda u: u.is_superuser)
+@user_passes_test(lambda u: u.is_staff)
 def manage_applications(request):
+    if request.user.is_superuser:
+        applications = Application.objects
+    else:
+        applications = Application.objects.filter(first__gang=request.user.gang) \
+            | Application.objects.filter(second__gang=request.user.gang) \
+            | Application.objects.filter(third__gang=request.user.gang)
+    print(applications)
+
     return render(request, 'applications/manage_applications.html', {
-        'applications': Application.objects.exclude(first=None, second=None, third=None),
+        'applications': applications.exclude(first=None, second=None, third=None),
+        'applications_ordered': applications.exclude(first=None, second=None, third=None).order_by('interview_time'),
         'sections': Section.objects.all(),
         'gangs': Gang.objects.all()
     })
