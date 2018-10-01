@@ -4,9 +4,47 @@
     #main-logo{
         height: 55px;
     }
+    
+    .dropdown-menu a:hover{
+        color: gray;
+        background: black;
+    }
+
+    .dropdown-menu{
+        color: black;
+        background: black;
+    }
+
+    .navbar-expand-lg, .navbar-dark{
+        background: transparent;
+    }
+
+    .nav-item{
+        margin-left: 30px;
+    }
+
+    .social-buttons{
+        height: 30px;
+        right: 20px;
+        margin-left: 35rem;
+    }
+
+    .social-buttons a:hover{
+        color: gray;
+    }
+
+    .logout-item{
+        color: red;
+        margin-left: 50px;
+    }
+
+    .logout-item a:hover{
+        color: darkred;
+    }
+
 </style>
 {% endblock head %}
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark">
   <a class="navbar-brand" href="{% url 'home' %}" id="main-logo"></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -14,23 +52,30 @@
   <div class="collapse navbar-collapse" id="navbarNavDropdown">
     <ul class="navbar-nav">
       <li class="nav-item active">
-        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Features</a>
+        <a class="nav-link" href="{% url 'jobs:information' %}">Positions</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Pricing</a>
+        <a class="nav-link" href="#">Manage applications</a>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Dropdown link
+          More
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
           <a class="dropdown-item" href="#">Action</a>
           <a class="dropdown-item" href="#">Another action</a>
           <a class="dropdown-item" href="#">Something else here</a>
         </div>
+      </li>
+        <li class="nav-item logout-item">
+            <a class="nav-link" href="{% url 'accounts:logout' %}">Logout</a>
+        </li>
+      <li class="social-buttons">
+          <a href="https://www.facebook.com/ISFiTNorway/?ref=br_rs" class="fa fa-facebook" target="_blank"></a>
+          <a href="https://www.instagram.com/isfit19/?hl=nb" class="fa fa-instagram" target="_blank"></a>
       </li>
     </ul>
   </div>

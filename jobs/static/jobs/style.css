@@ -95,9 +95,9 @@ small {
 }
 
 .fa {
-    padding: 20px;
-    font-size: 30px;
-    width: 75px;
+    margin-left: 20px;
+    font-size: 10px;
+    width: 40px;
     text-align: center;
     text-decoration: none;
     border-radius: 50%;
@@ -106,13 +106,13 @@ small {
 
 .fa-facebook {
     background: none;
-    font-size: 30px;
+    font-size: 10px;
     color: white;
 }
 
 .fa-instagram{
     background: none;
-    font-size: 30px;
+    font-size: 10px;
     color: white;
 }
 
@@ -348,19 +348,11 @@ a:link:hover, a:visited:hover {
 }
 
 .migration-pattern-blue{
-    background: url("images/migration-pattern-blue.png");
+    background: url("images/isfit_logo72-22.png");
     height: 1000px;
     width: 500px;
     top: 32px;
     left: 0;
-}
-
-.migration-pattern-green {
-    background: url("images/migration-pattern-green.png");
-    height: 800px;
-    width: 400px;
-    top: 252px;
-    right: 0;
 }
 
 #main-logo,

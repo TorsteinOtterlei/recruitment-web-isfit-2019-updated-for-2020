@@ -1,2 +1,22 @@
 {% load static %}
-<div class=" migration-pattern-blue migration-pattern-green"></div>
+{% block head%}
+<style>
+    .migration-pattern-blue{
+    height: 1000px;
+    width: 500px;
+    top: 32px;
+    left: 0;
+    background-image: url("../../static/jobs/images/migration-pattern-blue.png");
+
+}
+
+    .migration-pattern-green {
+    height: 800px;
+    width: 400px;
+    top: 252px;
+    right: 0;
+    background-image: url("../../static/jobs/images/migration-pattern-green.png")
+}
+
+</style>
+{% endblock head %}
