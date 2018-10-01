@@ -87,7 +87,9 @@ def manage_applications(request):
 
     # Sorting based on user input
     if sorting == 'interview_time':
-        applications = applications.order_by('interview_time')
+        unsorted_applications = applications.all()
+        applications = sorted(unsorted_applications, key = lambda appl : appl.get_order_time())
+
 
     return render(request, 'applications/manage_applications.html', {
         'applications': applications,

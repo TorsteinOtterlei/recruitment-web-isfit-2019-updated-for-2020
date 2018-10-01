@@ -22,24 +22,27 @@ def profile(request):
         # Default: this staff/interviewer has no position, thus no applications applied for it
 
         # Getting interview objects where user is one of the interviewers
-        interviews = Interview.objects.filter(interviewers=request.user.pk)
-        interview_list = list(interviews)
-        all_interviewers = []
-        me = []
+        unsorted_interviews = Interview.objects.filter(interviewers=request.user.pk).all()
+        
+        interviews = sorted(unsorted_interviews, key = lambda inter : inter.get_order_time())
 
-        for i in interview_list:
-            all_interviewers.append(i.interviewers.all())
-
-        # Finding self.user from list of all interviewers and appending on me
-        for j in range(all_interviewers.__len__()):
-            for k in all_interviewers[j]:
-                if k == request.user and me == []:
-                    me.append(k)
-
-        # Getting user instance from me list
-        me_instance = None
-        if me != []:
-            me_instance = me[0]
+        # interview_list = list(interviews)
+        # all_interviewers = []
+        # me = []
+        #
+        # for i in interview_list:
+        #     all_interviewers.append(i.interviewers.all())
+        #
+        # # Finding self.user from list of all interviewers and appending on me
+        # for j in range(all_interviewers.__len__()):
+        #     for k in all_interviewers[j]:
+        #         if k == request.user and me == []:
+        #             me.append(k)
+        #
+        # # Getting user instance from me list
+        # me_instance = None
+        # if me != []:
+        #     me_instance = me[0]
 
         # Getting gang information from user
         user = request.user
@@ -48,8 +51,8 @@ def profile(request):
         )
 
         return render(request, 'accounts/profile_admin.html', {
-            'me' : me_instance,
-            'interviews' : interview_list,
+            # 'me' : me_instance,
+            'interviews' : interviews,
             'user_gang_applications': user_gang_applications,
         })
     # Normal profile
