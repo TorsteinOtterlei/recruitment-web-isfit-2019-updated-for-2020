@@ -6,6 +6,7 @@
 
     .text-area{
         text-align: center;
+        margin-bottom: 40px;
     }
 
     .input-button{
@@ -20,19 +21,28 @@
         opacity: 0.1;
     }
 
-    .col-md-1, .col-xs-1{
+    .col-md-12, .col-xs-12{
         text-align: center;
     }
 
     .col{
         text-align: center;
     }
+
+    .btn{
+        margin-bottom: 20px;
+    }
+
+
+
 </style>
 {% endblock %}
 
 {% block body %}
 {% if user.is_superuser %}
-Admins have access to all information and the administration portion of the website
+<div class="text-area container" id="admin-text">
+    <h3>Admins have access to all information and the administration portion of the website</h3>
+</div>
 {% elif user.is_staff %}
     <div class="text-area container" id="staff-text">
         <h1>How does the recruitmentweb work?</h1>
@@ -64,7 +74,7 @@ Admins have access to all information and the administration portion of the webs
     {% if user.is_authenticated %}
         <!-- Profile -->
 <div class="row">
-    <!--<div class="col-md-1 col-xs-1">-->
+    <div class="col-md-12 col-xs-12">
             <form action="{% url 'accounts:profile' %}" method="get">
                 <button type="submit" class="btn btn-outline-primary">View profile</button>
             </form>
@@ -93,7 +103,7 @@ Admins have access to all information and the administration portion of the webs
         <!-- Logout -->
         <form action="{% url 'accounts:logout' %}" method="get">
             <br>
-            <button type="submit" class="btn btn-outline-danger">Logout</button>
+            <button type="submit" class="btn btn-outline-danger" id="logout">Logout</button>
         </form>
     {% else %}
         <form action="{% url 'accounts:signup' %}" method="get">
@@ -107,7 +117,7 @@ Admins have access to all information and the administration portion of the webs
             <button type="submit" class="btn btn-outline-primary">Browse all avilable positions</button>
         </form>
     {% endif %}
-    <!--</div>-->
+    </div>
 </div>
 
     <div id='easteregg'>&#9854;</div>

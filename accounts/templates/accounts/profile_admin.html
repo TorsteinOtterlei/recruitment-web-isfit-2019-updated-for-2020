@@ -50,6 +50,10 @@
             font-size: 30px;
         }
 
+        .col-md-12, .col-xs-12{
+            text-align: center;
+        }
+
 
     </style>
 {% endblock head %}
@@ -154,16 +158,19 @@
             {% endfor %}
         </div>
     {% endif %}-->
-    <form action="{% url 'accounts:edit_profile' %}" method="get">
-        <button type="button" class="btn btn-outline-primary">Edit profile</button>
-    </form>
-    <br>
-    <form action="{% url 'accounts:change_password' %}" method="get">
-        <button type="button" class="btn btn-outline-primary">Change password</button>
-    </form>
-    <br>
-    <form action="{% url 'accounts:logout' %}" method="get">
-        <button type="button" class="btn btn-outline-danger">Logout</button>
-    </form>
+    <div class="col-md-12 col-xs-12">
+
+        <form action="{% url 'accounts:edit_profile' %}" method="get">
+            <button type="button" class="btn btn-primary">Edit profile</button>
+        </form>
+        <br>
+        <form action="{% url 'accounts:change_password' %}" method="get">
+            <button type="button" class="btn btn-primary">Change password</button>
+        </form>
+        <br>
+        <form action="{% url 'accounts:logout' %}" method="get">
+            <button type="button" class="btn btn-outline-danger">Logout</button>
+        </form>
+    </div>
 
 {% endblock %}

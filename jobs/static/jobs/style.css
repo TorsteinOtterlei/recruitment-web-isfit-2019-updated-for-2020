@@ -22,6 +22,9 @@ body {
     position: relative;
     margin: 0;
     text-align: center;
+    alignment: center;
+    align-content: center;
+    align-items: center;
 }
 
 @media (max-width: 768px) {
@@ -131,6 +134,10 @@ button {
     border: 1px solid gray;
     cursor: pointer;
     text-align: center;
+}
+
+.btn{
+    margin-bottom: 20px;
 }
 
 .rectangle-8 {
@@ -337,7 +344,23 @@ a:link:hover, a:visited:hover {
 #main-logo {
     background: url("images/isfit_logo72-22.png");
     width: 200px;
-    height: 80px;
+    height: 50px;
+}
+
+.migration-pattern-blue{
+    background: url("images/migration-pattern-blue.png");
+    height: 1000px;
+    width: 500px;
+    top: 32px;
+    left: 0;
+}
+
+.migration-pattern-green {
+    background: url("images/migration-pattern-green.png");
+    height: 800px;
+    width: 400px;
+    top: 252px;
+    right: 0;
 }
 
 #main-logo,

@@ -113,12 +113,12 @@
                                         <p>{{ section.information|linebreaksbr}}</p>
                                     </div>
                                 </div>
-                            <!-- All positions in section -->
+                            <!-- All gangs and positions in section -->
                             <ul class="row list-unstyled">
                                 {% for gang in section.gangs.all %}
                                     <li class="col-xs-12 col-sm-4">
                                         <section class="box-white">
-                                            <!-- Buttons for showing section-info -->
+                                            <!-- Gangs in section -->
                                             <div class="gang_div" data-target="#gang-box-{{ forloop.counter }}" aria-expanded="false">
                                                 <h4>{{ gang.name }}</h4>
 
