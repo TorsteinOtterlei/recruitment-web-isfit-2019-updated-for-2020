@@ -8,7 +8,7 @@ from django.db.models import Q
 from django.urls import reverse
 import json
 # local:
-from accounts.forms import SignUpForm, StatusForm, WidgetsForm, CustomAuthenticationForm, EditUserForm, CustomPasswordChangeForm
+from accounts.forms import SignUpForm, StatusForm, RestrictedStatusForm, WidgetsForm, CustomAuthenticationForm, EditUserForm, CustomPasswordChangeForm
 from accounts.models import User
 # other apps:
 from applications.models import Application
@@ -23,7 +23,7 @@ def profile(request):
 
         # Getting interview objects where user is one of the interviewers
         unsorted_interviews = Interview.objects.filter(interviewers=request.user.pk).all()
-        
+
         interviews = sorted(unsorted_interviews, key = lambda inter : inter.get_order_time())
 
         # interview_list = list(interviews)
@@ -117,6 +117,7 @@ def manage_profile(request, userID):
     # ----------------------------------------------------------------------------------------
     # TODO CHANGE INTERVIEW TO FIRST SECOND THIRD!
     # ----------------------------------------------------------------------------------------
+    allowed_statuses = ['ID', 'AC', 'PP', 'NM', 'IC']
     application = get_object_or_404(Application, applicant_id=userID)
     positions = application.get_positions()
     if len(positions) == 1:
@@ -132,11 +133,17 @@ def manage_profile(request, userID):
     )
 
     if request.method == 'POST':
-        form = StatusForm(instance=applicant)
+        if user.is_superuser:
+            form = StatusForm(instance=applicant)
+        else:
+            form = RestrictedStatusForm(instance=applicant)
         chosen_time = request.POST.get('interviewtime') # Get the time marked in front-end
 
         if chosen_time == None:
-            form = StatusForm(request.POST, instance=applicant)
+            if user.is_superuser:
+                form = StatusForm(request.POST, instance=applicant)
+            else:
+                form = RestrictedStatusForm(request.POST, instance=applicant)
 
             if form.is_valid():
                 print('form valid')
@@ -196,7 +203,12 @@ def manage_profile(request, userID):
 
     # GET or form failed:
     else:
-        form = StatusForm(instance=applicant)
+        if user.is_superuser:
+            form = StatusForm(instance=applicant)
+        elif userstatus in allowed_statuses:
+            form = RestrictedStatusForm(instance=applicant)
+        else:
+            form = None
 
     return render(request, 'accounts/manage_profile.html', {
         'application': application,

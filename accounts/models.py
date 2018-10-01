@@ -58,6 +58,14 @@ class User(AbstractBaseUser, PermissionsMixin):
         (POSSIBLY_PARTICIPANT, 'Possibly participant'),
     )
 
+    RESTRICTED_STATUS_CHOISES = (
+        (INTERVIEW_CONFIRMED, 'Interview confirmed'),
+        (INTERVIEWED, 'Interviewed'),
+        (NOT_MET, 'Not met'),
+        (ACCEPTED, 'Accepted'),
+        (POSSIBLY_PARTICIPANT, 'Possibly participant'),
+    )
+
     status = models.CharField(
         max_length=2,
         choices=STATUS_CHOISES,
