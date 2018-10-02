@@ -11,25 +11,26 @@ html{
 body {
     /*background: white url("images/background.jpg");*/
     font-family: MyriadPro !important;
-    background-color: black;
+    background-color: #0d0d0d;
+    background-image: url("../../../static/jobs/images/migration-pattern-blue.png");
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
     color: white;
     min-height: 100%;
-    padding-bottom: 110px;
     position: relative;
     margin: 0;
     text-align: center;
     alignment: center;
     align-content: center;
     align-items: center;
+    padding-bottom: 50px;
 }
 
 @media (max-width: 768px) {
     body {
-        padding-bottom: 260px;
+        padding-bottom: 50px;
     }
 }
 
@@ -55,65 +56,17 @@ small {
     margin-bottom: 20px;
 }
 
-.navbar-nav > a,
+/*.navbar-nav > a,
 .navbar-nav > li a {
     color: white;
 }
 
 .dropdown-nav {
     background-color: black;
-}
+}*/
 
 .dropdown-item {
     white-space: normal;
-}
-
-.base_footer{
-    display: block;
-    color: white;
-    width: 100%;
-    text-align: center;
-    position: absolute;
-    bottom: 0;
-    height: 110px;
-    background: #0d0d0d;
-    left: 0;
-}
-
-
-#footer-content {
-    background-color: #007FAA;
-    height: 150px;
-    padding: 8px;
-    color: white;
-}
-
-@media (max-width: 768px) {
-    .base_footer {
-        height: 260px;
-    }
-}
-
-.fa {
-    margin-left: 20px;
-    font-size: 10px;
-    width: 40px;
-    text-align: center;
-    text-decoration: none;
-    border-radius: 50%;
-    color: white;
-}
-
-.fa-facebook {
-    background: none;
-    font-size: 10px;
-    color: white;
-}
-
-.fa-instagram{
-    background: none;
-    font-size: 10px;
-    color: white;
 }
 
 /* What is this for? Just curious :) */
@@ -297,7 +250,7 @@ a:link:hover, a:visited:hover {
     min-height: 100%;
 }
 
-.navbar {
+/*.navbar {
     padding-top: 20px;
 }
 
@@ -329,7 +282,7 @@ a:link:hover, a:visited:hover {
 .navbar-header .icon-bar {
     width: 100px;
     height: 5px;
-}
+}*/
 
 #footprints_long {
     border-width: 3px;
@@ -345,14 +298,6 @@ a:link:hover, a:visited:hover {
     background: url("images/isfit_logo72-22.png");
     width: 200px;
     height: 50px;
-}
-
-.migration-pattern-blue{
-    background: url("images/isfit_logo72-22.png");
-    height: 1000px;
-    width: 500px;
-    top: 32px;
-    left: 0;
 }
 
 #main-logo,
@@ -371,11 +316,11 @@ a:link:hover, a:visited:hover {
     justify-content: space-between;
 }
 
-.navbar-default .navbar-toggle .icon-bar {
+/*.navbar-default .navbar-toggle .icon-bar {
     background-color: white;
     width: 25px;
     height: 2px;
-}
+}*/
 
 .clearfix {
     display: block;

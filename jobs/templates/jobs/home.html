@@ -7,6 +7,7 @@
     .text-area{
         text-align: center;
         margin-bottom: 40px;
+        margin-top: 200px;
     }
 
     .input-button{
@@ -81,7 +82,7 @@
         {% if user.is_staff %}
             <!-- Set dates -->
                 <form action="{% url 'applications:set_dates' %}" method="get">
-                    <button type="submit" class="btn btn-danger">Set UNAVAILABLE times</button>
+                    <button type="submit" class="btn btn-danger">Set <u>UNAVAILABLE</u> times</button>
                 </form>
             <!-- Manage applications -->
         {% if user.is_superuser %}
