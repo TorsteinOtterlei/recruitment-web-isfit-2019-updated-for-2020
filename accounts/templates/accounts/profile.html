@@ -33,6 +33,7 @@
         h5, #title{
             text-align: center;
         }
+
     </style>
 {% endblock head %}
 
@@ -73,25 +74,24 @@
             </div>
             <br>
         <form action="{% url 'applications:apply' %}" method="get">
-            <button class="apply_now"><span>Edit application</span></button><br>
+            <button class="btn btn-success" type="submit">Edit application</button>
         </form>
         {% endif %}
     {% else %}
         <h2>You have not yet applied for any positions.</h2>
         <form action="{% url 'applications:apply' %}" method="get">
-            <button class="apply_now"><span>Apply for a position now!</span></button><br>
+            <button class="btn btn-success" type="submit">Apply for a position now!</button>
         </form>
     {% endif %}
 
     <form action="{% url 'accounts:edit_profile' %}" method="get">
-        <input class="input-button" type="submit" value="Edit Profile"><br>
+        <button class="btn btn-primary" type="submit">Edit Profile</button>
     </form>
     <form action="{% url 'accounts:change_password' %}" method="get">
-        <input class="input-button" type="submit" value="Change password"><br>
+        <button class="btn btn-primary" type="submit">Change password</button>
     </form>
     <form action="{% url 'accounts:logout' %}" method="get">
-        <input class="logout_btn" type="submit" value="Log out"><br>
+        <button type="submit" class="btn btn-outline-danger">Logout</button>
     </form>
-    <br>
 
 {% endblock %}

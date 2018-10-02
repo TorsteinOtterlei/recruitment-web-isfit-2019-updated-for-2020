@@ -10,9 +10,9 @@ html{
 
 body {
     /*background: white url("images/background.jpg");*/
+    background-image: url("../../../static/jobs/images/migration-pattern-blue.png");
     font-family: MyriadPro !important;
     background-color: #0d0d0d;
-    background-image: url("../../../static/jobs/images/migration-pattern-blue.png");
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -93,6 +93,16 @@ button {
     margin-bottom: 20px;
 }
 
+.btn-primary:hover{
+    background-color: white;
+    color: #007bff;
+}
+
+.btn-success:hover{
+    background-color: white;
+    color: #28a745;
+}
+
 .rectangle-8 {
 	box-sizing: border-box;
 	height: 51px;
@@ -111,119 +121,6 @@ button {
     cursor: pointer;
 }
 
-/* -- Custom apply and set times buttons -- */
-.apply_now {
-  border-radius: 4px;
-  background-color: green;
-  border: none;
-  color: #FFFFFF;
-  text-align: center;
-  font-size: 28px;
-  padding: 20px;
-  width: 350px;
-  transition: all 0.5s;
-  cursor: pointer;
-  margin: 5px;
-}
-
-.manage_appl_btn {
-  border-radius: 4px;
-  background-color: blue;
-  border: none;
-  color: #FFFFFF;
-  text-align: center;
-  font-size: 20px;
-  padding: 10px;
-  width: 350px;
-  transition: all 0.5s;
-  cursor: pointer;
-  margin: 5px;
-}
-
-.view_profile_btn {
-  border-radius: 4px;
-  background-color: brown;
-  border: none;
-  color: #FFFFFF;
-  text-align: center;
-  font-size: 20px;
-  padding: 10px;
-  width: 350px;
-  transition: all 0.5s;
-  cursor: pointer;
-  margin: 5px;
-}
-
-.set_times{
-  border-radius: 4px;
-  background-color: red;
-  border: none;
-  color: #FFFFFF;
-  text-align: center;
-  font-size: 28px;
-  padding: 20px;
-  width: 350px;
-  transition: all 0.5s;
-  cursor: pointer;
-  margin: 5px;
-}
-
-.apply_now span, .set_times span, .manage_appl_btn span, .view_profile_btn span {
-  cursor: pointer;
-  display: inline-block;
-  position: relative;
-  transition: 0.5s;
-}
-
-.apply_now span:after, .set_times span:after, .manage_appl_btn span:after, .view_profile_btn span:after {
-  content: '\00bb';
-  position: absolute;
-  opacity: 0;
-  top: 0;
-  right: -20px;
-  transition: 0.5s;
-}
-
-.apply_now:hover span, .set_times:hover span, .manage_appl_btn:hover span, .view_profile_btn span {
-  padding-right: 25px;
-}
-
-.apply_now:hover span:after, .set_times:hover span:after, .manage_appl_btn:hover span:after, .view_profile_btn span:after {
-  opacity: 1;
-  right: 0;
-}
-
-.apply_now:hover, button:hover {
-    background-color: forestgreen;
-}
-
-.set_times:hover, button:hover {
-    background-color: darkred;
-}
-
-.manage_appl_btn:hover, button:hover {
-    background-color: darkblue;
-}
-
-.view_profile_btn:hover, button:hover {
-    background-color: rosybrown;
-}
-
-/* -- Custom logout button -- */
-.logout_btn {
-    background-color: red;
-    margin: 7px;
-    width: 120px;
-    border: 1px solid white;
-    border-radius: 3%;
-    cursor: pointer;
-}
-
-.logout_btn:hover, button:hover {
-    background-color: darkred;
-    border-color: lightgray;
-}
-
 .have-user-button{
     cursor: pointer;
 }
@@ -234,11 +131,11 @@ button {
 }
 /* Maybe not necessary to have style on visited links */
 a:link, a:visited{
-    color: #cc8102;
+    color: #007bff;
 }
 a:link:hover, a:visited:hover {
-    color: orange;
-    text-underline: orange;
+    color: #00bdff;
+    text-underline: #007bff;
 }
 
 #page-content-wrapper {
