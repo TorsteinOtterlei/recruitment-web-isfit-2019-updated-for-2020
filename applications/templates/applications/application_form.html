@@ -6,8 +6,33 @@
         ul {
             list-style-type: none; /* Removes bullet */
         }
+
+        .form-control{
+            width: 50%;
+            margin-left: 25vw;
+        }
+
+        @media (max-width: 892px) {
+            .form-control {
+                width: 90vw;
+                margin-left: 0;
+            }
+        }
+
         .container {
-            max-width: 1000px;
+            max-width: 100%;
+        }
+
+        .row{
+            alignment: center;
+            text-align: center;
+            position: center;
+        }
+
+        @media (max-width: 1048px) {
+            .row {
+                margin-left: 0;
+            }
         }
         .options {
             cursor: pointer;
@@ -40,6 +65,7 @@
             height: 280px;
             max-width: 400px;
         }
+
         #chosenList li {
             border-radius: 5px;
             border-style: solid;
@@ -47,31 +73,13 @@
             color: gray;
             line-height: 1rem;
             margin-top: 1rem;
-            margin-right: 50px;
+            margin-right: 0;
             padding: 8px 8px 8px 20px;
             list-style-position: inside;
-            width: 90%;
+            width: 100%;
         }
+
         #chosenList li:hover {
-            cursor: url(https://ssl.gstatic.com/ui/v1/icons/mail/images/2/openhand.cur), default !important;
-            cursor: grabbing;
-            color: #007bff;
-        }
-
-        #finishedList li {
-            border-radius: 5px;
-            border-style: solid;
-            border-width: 1px;
-            color: gray;
-            line-height: 1rem;
-            margin-top: 1rem;
-            margin-right: 50px;
-            padding: 8px 8px 8px 20px;
-            list-style-position: inside;
-            width: 90%;
-        }
-
-        #finishedList li:hover {
             cursor: url(https://ssl.gstatic.com/ui/v1/icons/mail/images/2/openhand.cur), default !important;
             cursor: grabbing;
             color: #007bff;
@@ -158,7 +166,7 @@ Click the link down below to browse all positions with details. <br>
             <ol id="chosenList"></ol>
         </div>
 </div>
-    <button onclick="submit()" style="width: 60%; margin: 20px 0 10px 0;" class="btn button-primary">Set UNAVAILABLE times for interview</button>
+    <button onclick="submit()" style="width: 60%; margin: 20px 0 10px 0;" class="btn button-primary">UNAVAILABLE times</button>
 {% else %}
 You have already been set up on an interview and cannot edit your application. If you want to reprioritize, make sure to tell your interviewers
 {% endif %}

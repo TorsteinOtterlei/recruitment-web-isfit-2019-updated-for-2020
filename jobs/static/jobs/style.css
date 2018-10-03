@@ -112,18 +112,6 @@ Textarea{
     height: 100px;
 }
 
-.form-control{
-    width: 50%;
-    margin-left: 25vw;
-}
-
-@media (max-width: 892px) {
-    .form-control {
-        width: 90vw;
-        margin-left: 0;
-    }
-}
-
 @media (max-width: 892px) {
     .pattern-green, .pattern-blue {
         display: none;

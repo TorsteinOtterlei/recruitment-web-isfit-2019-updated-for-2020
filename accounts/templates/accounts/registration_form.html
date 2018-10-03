@@ -140,7 +140,7 @@
     <h3>Already have an account?</h3>
     <form action="{% url 'accounts:login' %}" method="post">
         {% csrf_token %}
-        <input type="submit" value="Login"><br>
+        <button type="submit" class="btn btn-outline-primary">Login</button>
     </form>
 
 <!-- ------------------------- Here comes the modal for GDPR -------------------------------- -->
