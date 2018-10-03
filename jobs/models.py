@@ -162,6 +162,14 @@ class Interview(models.Model):
     room = models.CharField(max_length=40, default="")
     time = models.IntegerField(default=-1)
 
+    # Shitty quickfix backup fix
+    def get_order_time(self):
+        if self.time == -1:
+            return 99999
+        if self.time > 90:
+            return 1000 + self.time + (self.time % 7) * 100
+        return self.time + (self.time % 7) * 100
+
 
     def set_interview_time(self, time):
         if time == 'none':
@@ -184,10 +192,10 @@ class Interview(models.Model):
         "11:15 - 12:00", "12:15 - 13:00", "13:15 - 14:00", "14:15 - 15:00",
         "15:15 - 16:00", "16:15 - 17:00", "17:15 - 18:00", "18:15 - 19:00",
         "19:15 - 20:00", "20:15 - 21:00"]
-        first_week = ["Monday 27 Aug", "Tuesday 28 Aug", "Wednesday 29 Aug",
-         "Thursday 30 Aug", "Friday 31 Aug", "Saturday 1 Sept", "Sunday 2 Sept"]
-        second_week = ["Monday 3 Sept", "Tuesday 4 Sept", "Wednesday 5 Sept", "Thursday 6 Sept",
-         "Friday 7 Sept", "Saturday 8 Sept", "Sunday 9 Sept"]
+        first_week = ["Monday 15 Oct", "Tuesday 16 Oct", "Wednesday 17 Oct",
+         "Thursday 18 Oct", "Friday 19 Oct", "Saturday 20 Oct", "Sunday 21 Oct"]
+        second_week = ["Monday 22 Oct", "Tuesday 23 Oct", "Wednesday 24 Oct", "Thursday 25 Oct",
+         "Friday 26 Oct", "Saturday 27 Oct", "Sunday 28 Oct"]
 
         tmp = float(self.get_interview_time())
         if int(tmp) < dates_range//2:

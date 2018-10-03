@@ -58,6 +58,15 @@ class StatusForm(forms.ModelForm):
         model = User
         fields = ['status']
 
+class RestrictedStatusForm(forms.ModelForm):
+    status = forms.ChoiceField(choices=User.RESTRICTED_STATUS_CHOISES)
+    # Only giving class name for CSS access
+    status.widget.attrs.update({'class': 'status-field'})
+
+    class Meta:
+        model = User
+        fields = ['status']
+
 # Possible to customise login:
 class CustomAuthenticationForm(AuthenticationForm): # Not currently in use. Can be passed to login view
     error_messages = dict(AuthenticationForm.error_messages) # Inherit from parent. invalid_login and inactive

@@ -205,7 +205,7 @@
         <!-- Title -->
         <div class="title">
             <h1>Applicant: {{ application.applicant.get_full_name }}</h1>
-            {% if user.is_superuser %}
+            {% if form %}
             <form id="statusForm" method="post" action="#">
                 {% csrf_token %}
                 &emsp;Status: {{ form.status }}

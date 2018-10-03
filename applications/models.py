@@ -13,6 +13,14 @@ class Application(models.Model):
     text = models.TextField(max_length=2000)
     interview_time = models.IntegerField(default=-1)
 
+    # Shitty quickfix backup fix
+    def get_order_time(self):
+        if self.interview_time == -1:
+            return 99999
+        if self.interview_time > 90:
+            return 1000 + self.interview_time + (self.interview_time % 7) * 100
+        return self.interview_time + (self.interview_time % 7) * 100
+
     def get_interview_time(self):
         if self.interview_time == -1:
             return 'none'
