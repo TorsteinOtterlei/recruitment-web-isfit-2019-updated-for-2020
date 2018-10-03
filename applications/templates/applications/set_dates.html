@@ -253,7 +253,7 @@
                 });
                 var tmp = (week == 0) ? all_dates.slice(0, 91) : all_dates.slice(90);
                 tmp.forEach(function(elem) {
-                    if ((week == 0 && elem%7==0)  || (week==0 && elem%7==1) || (week==0 && elem%7==3) || (week==1 && elem%7==5) || (week==1 && elem%7==6)) return;
+                    if ((week == 0 && elem%7==0)  || (week==0 && elem%7==1) || (week==0 && elem%7==2) || (week==1 && elem%7==5) || (week==1 && elem%7==6)) return;
                     user_dates.push(elem);
                     $("#" + elem).html(filler);
                     $("#" + elem).addClass('gridcell-selected');
@@ -266,7 +266,7 @@
                 tmp.forEach(function(elem) {
                     var index = user_dates.indexOf(elem);
                     if (index > -1) {
-                      if ((week == 0 && elem%7==0)  || (week==0 && elem%7==1) || (week==0 && elem%7==3) || (week==1 && elem%7==5) || (week==1 && elem%7==6)) return;
+                      if ((week == 0 && elem%7==0)  || (week==0 && elem%7==1) || (week==0 && elem%7==2) || (week==1 && elem%7==5) || (week==1 && elem%7==6)) return;
                         user_dates.splice(index, 1);
                         $("#" + elem).html("");
                         $("#" + elem).removeClass('gridcell-selected');
