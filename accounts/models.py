@@ -62,8 +62,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         (INTERVIEW_CONFIRMED, 'Interview confirmed'),
         (INTERVIEWED, 'Interviewed'),
         (NOT_MET, 'Not met'),
-        (ACCEPTED, 'Accepted'),
-        (POSSIBLY_PARTICIPANT, 'Possibly participant'),
     )
 
     status = models.CharField(
