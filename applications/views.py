@@ -67,7 +67,7 @@ def set_dates(request):
 @user_passes_test(lambda u: u.is_staff)
 def manage_applications(request):
     # Getting user defiend setup
-    display = 'email'
+    display = 'email' # TODO fix so active display/sorting is saved
     sorting = 'apply_time'
     if request.method == 'POST':
         display = request.POST.get('display', False)

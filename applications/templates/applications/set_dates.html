@@ -15,6 +15,7 @@
             padding: 0.7em;
             text-align: center;
             color: DeepSkyBlue;
+            background-color: black;
         }
         .times {
             display: grid;
@@ -121,20 +122,32 @@
                     </div>
 
                     <div class="times">
-                        <div>08:15 - 09:00</div>
-                        <div>09:15 - 10:00</div>
-                        <div>10:15 - 11:00</div>
-                        <div>11:15 - 12:00</div>
-                        <div>12:15 - 13:00</div>
-                        <div>13:15 - 14:00</div>
-                        <div>14:15 - 15:00</div>
-                        <div>15:15 - 16:00</div>
-                        <div>16:15 - 17:00</div>
-                        <div>17:15 - 18:00</div>
-                        <div>18:15 - 19:00</div>
-                        <div>19:15 - 20:00</div>
-                        <div>20:15 - 21:00</div>
-
+                        <div>08:00 - 08:30</div>
+                        <div>08:30 - 09:00</div>
+                        <div>09:00 - 09:30</div>
+                        <div>09:30 - 10:00</div>
+                        <div>10:00 - 10:30</div>
+                        <div>10:30 - 11:00</div>
+                        <div>11:00 - 11:30</div>
+                        <div>11:30 - 12:00</div>
+                        <div>12:00 - 12:30</div>
+                        <div>12:30 - 13:00</div>
+                        <div>13:00 - 13:30</div>
+                        <div>13:30 - 14:00</div>
+                        <div>14:00 - 14:30</div>
+                        <div>14:30 - 15:00</div>
+                        <div>15:00 - 15:30</div>
+                        <div>15:30 - 16:00</div>
+                        <div>16:00 - 16:30</div>
+                        <div>16:30 - 17:00</div>
+                        <div>17:00 - 17:30</div>
+                        <div>17:30 - 18:00</div>
+                        <div>18:00 - 18:30</div>
+                        <div>18:30 - 19:00</div>
+                        <div>19:00 - 19:30</div>
+                        <div>19:30 - 20:00</div>
+                        <div>20:00 - 20:30</div>
+                        <div>20:30 - 21:00</div>
                     </div>
 
                     <div class="grid1">
@@ -176,7 +189,7 @@
             $('.grid2').css('display', 'none');
             $('#bt0').prop("disabled", true);
 
-            dates_range = 182
+            dates_range = 364
             week = 0;
             week_text = ['Week 42 (18th Oct - 21th Oct)', 'Week 43 (22th Oct - 26th Oct)'];
             // closed_dates = [0,1,7,8,14,15,21,22,28,29,35,36,42]
@@ -249,9 +262,9 @@
                 user_dates.forEach(function(elem) {
                     var index = user_dates.indexOf(elem);
                     if (week == 0 && elem < 91) user_dates.splice(index, 1);
-                    if (week == 1 && user_dates[i] > 90) user_dates.splice(index, 1);
+                    if (week == 1 && user_dates[i] > dates_range/2 -1) user_dates.splice(index, 1);
                 });
-                var tmp = (week == 0) ? all_dates.slice(0, 91) : all_dates.slice(90);
+                var tmp = (week == 0) ? all_dates.slice(0, dates_range/2) : all_dates.slice(dates_range/2 -1);
                 tmp.forEach(function(elem) {
                     if ((week == 0 && elem%7==0)  || (week==0 && elem%7==1) || (week==0 && elem%7==2) || (week==1 && elem%7==5) || (week==1 && elem%7==6)) return;
                     user_dates.push(elem);
@@ -262,7 +275,7 @@
             });
 
             $("#unselect_all").click(function() {
-                var tmp = (week == 0) ? all_dates.slice(0, 91) : all_dates.slice(90);
+                var tmp = (week == 0) ? all_dates.slice(0, dates_range/2) : all_dates.slice(dates_range/2 -1);
                 tmp.forEach(function(elem) {
                     var index = user_dates.indexOf(elem);
                     if (index > -1) {

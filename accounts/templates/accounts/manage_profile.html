@@ -181,10 +181,6 @@
             background-color: rgba(250, 240, 230, 0.4);
         }
 
-        .btn:hover{
-            margin-top: 2px;
-            margin-bottom: -2px;
-        }
 
     </style>
 {% endblock %}
@@ -306,19 +302,32 @@
                                         </div>
 
                                         <div class="times">
-                                            <div>08:15 - 09:00</div>
-                                            <div>09:15 - 10:00</div>
-                                            <div>10:15 - 11:00</div>
-                                            <div>11:15 - 12:00</div>
-                                            <div>12:15 - 13:00</div>
-                                            <div>13:15 - 14:00</div>
-                                            <div>14:15 - 15:00</div>
-                                            <div>15:15 - 16:00</div>
-                                            <div>16:15 - 17:00</div>
-                                            <div>17:15 - 18:00</div>
-                                            <div>18:15 - 19:00</div>
-                                            <div>19:15 - 20:00</div>
-                                            <div>20:15 - 21:00</div>
+                                            <div>08:00 - 08:30</div>
+                                            <div>08:30 - 09:00</div>
+                                            <div>09:00 - 09:30</div>
+                                            <div>09:30 - 10:00</div>
+                                            <div>10:00 - 10:30</div>
+                                            <div>10:30 - 11:00</div>
+                                            <div>11:00 - 11:30</div>
+                                            <div>11:30 - 12:00</div>
+                                            <div>12:00 - 12:30</div>
+                                            <div>12:30 - 13:00</div>
+                                            <div>13:00 - 13:30</div>
+                                            <div>13:30 - 14:00</div>
+                                            <div>14:00 - 14:30</div>
+                                            <div>14:30 - 15:00</div>
+                                            <div>15:00 - 15:30</div>
+                                            <div>15:30 - 16:00</div>
+                                            <div>16:00 - 16:30</div>
+                                            <div>16:30 - 17:00</div>
+                                            <div>17:00 - 17:30</div>
+                                            <div>17:30 - 18:00</div>
+                                            <div>18:00 - 18:30</div>
+                                            <div>18:30 - 19:00</div>
+                                            <div>19:00 - 19:30</div>
+                                            <div>19:30 - 20:00</div>
+                                            <div>20:00 - 20:30</div>
+                                            <div>20:30 - 21:00</div>
 
                                         </div>
 
@@ -370,7 +379,7 @@
 {% block scriptblock %}
     <script type="text/javascript">
         var week, week_text, filler, interview_time, chosen_time, avail_times, interviewers_times;
-        var DATES_LENGTH = 182;
+        var DATES_LENGTH = 364;
 
         $(document).ready(function() {
             $("#statusForm").change(function() {
@@ -380,6 +389,11 @@
             // interview_time = "{{interview_time}}";
             interview_time = "{{ application.get_interview_time }}";
             chosen_time = interview_time;
+
+            // Collapse on load
+            $('#info-box').collapse();
+            $('#applied-positions').collapse();
+            $('#available-times').collapse();
 
 
             // avail_times = "{{avail_times}}".substring(1,"{{avail_times}}".length -1).split(', ')
