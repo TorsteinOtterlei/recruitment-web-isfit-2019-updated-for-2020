@@ -3,16 +3,37 @@
     src: url("fonts/MyriadPro-Regular.otf") format("truetype"), local("abc");
 }
 /* color seem to have no effect */
+
+html{
+    height: 100%;
+}
+
 body {
     /*background: white url("images/background.jpg");*/
+    background-image: url("../../../static/jobs/images/migration-pattern-blue.png");
     font-family: MyriadPro !important;
-    background-color: black;
+    background-color: #0d0d0d;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
     color: white;
+    min-height: 100%;
+    position: relative;
+    margin: 0;
+    text-align: center;
+    alignment: center;
+    align-content: center;
+    align-items: center;
+    padding-bottom: 50px;
 }
+
+@media (max-width: 768px) {
+    body {
+        padding-bottom: 50px;
+    }
+}
+
 /* Problematic to add in a base styling. All extended documents inherits this */
 h3 {
     margin-top: 10px;
@@ -35,14 +56,18 @@ small {
     margin-bottom: 20px;
 }
 
-.navbar-nav > a,
+.form-text{
+    height: 150px;
+}
+
+/*.navbar-nav > a,
 .navbar-nav > li a {
     color: white;
 }
 
 .dropdown-nav {
     background-color: black;
-}
+}*/
 
 .dropdown-item {
     white-space: normal;
@@ -58,38 +83,70 @@ small {
     padding: 25px;
 }
 
+Textarea{
+    height: 100px;
+    width: 50%;
+}
+
 /* ------ Buttons ------ */
 button {
-    display: flex;
+    /*display: flex;*/
     height: auto;
-    background-color: #cc8102;
+    background-color: #007bff;
     border: 1px solid gray;
     cursor: pointer;
+    text-align: center;
+    color: white;
+}
+
+.btn{
+    margin-bottom: 20px;
+}
+
+.btn-primary:hover{
+    background-color: white;
+    color: #007bff;
+}
+
+.btn-success:hover{
+    background-color: white;
+    color: #28a745;
+}
+
+.rectangle-8 {
+	box-sizing: border-box;
+	height: 51px;
+	width: 208px;
+	background-color: #FAFAFA;
+	border: 3px solid #09C;
+	box-shadow: 0 2px 4px 0 rgba(0,0,0,0.27);
 }
 
 .input-button {
-    background-color: #cc8102;
+    background-color: #007bff;
     margin: 7px;
     width: 180px;
     border: 1px solid gray;
     border-radius: 3%;
     cursor: pointer;
 }
+
 .have-user-button{
     cursor: pointer;
 }
 
 .input-button:hover, button:hover {
-    background-color: #f79b00;
-    border-color: lightgray;
+    background-color: white;
+    color: #007bff;
+    border-color: #007bff;
 }
 /* Maybe not necessary to have style on visited links */
 a:link, a:visited{
-    color: #cc8102;
+    color: #007bff;
 }
 a:link:hover, a:visited:hover {
-    color: #ffcc00;
-    text-underline: orange;
+    color: #00bdff;
+    text-underline: #007bff;
 }
 
 #page-content-wrapper {
@@ -98,9 +155,10 @@ a:link:hover, a:visited:hover {
     justify-content: center;
     align-items: center;
     margin-top: 5vh;
+    min-height: 100%;
 }
 
-.navbar {
+/*.navbar {
     padding-top: 20px;
 }
 
@@ -132,7 +190,7 @@ a:link:hover, a:visited:hover {
 .navbar-header .icon-bar {
     width: 100px;
     height: 5px;
-}
+}*/
 
 #footprints_long {
     border-width: 3px;
@@ -147,7 +205,7 @@ a:link:hover, a:visited:hover {
 #main-logo {
     background: url("images/isfit_logo72-22.png");
     width: 200px;
-    height: 80px;
+    height: 50px;
 }
 
 #main-logo,
@@ -166,11 +224,11 @@ a:link:hover, a:visited:hover {
     justify-content: space-between;
 }
 
-.navbar-default .navbar-toggle .icon-bar {
+/*.navbar-default .navbar-toggle .icon-bar {
     background-color: white;
     width: 25px;
     height: 2px;
-}
+}*/
 
 .clearfix {
     display: block;

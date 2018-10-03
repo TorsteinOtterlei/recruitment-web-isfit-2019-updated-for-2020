@@ -1,48 +1,47 @@
 {% load static %}
 <style>
-    .foot-cont{
-        color: white;
-        bottom: 0;
+    /*.right{
+        right: 10vw;
         position: absolute;
-        width: 100%;
-        margin-top: 30px;
-    }
-
-    .foot-cont a{
         color: white;
-    }
-
-    .right{
-        right: 50px;
-        position: absolute;
     }
 
     .left{
-        left: 50px;
+        left: 10vw;
         position: absolute;
+        color: white;
+    }*/
+
+    footer .left{
+        color: white;
+    }
+    footer .middle{
+        color: white;
+    }
+    footer .right{
         color: white;
     }
 
-    .foot-cont a:hover{
-        color: gray;
-    }
-
-    footer{
+    .footer{
         bottom: 0;
         position: absolute;
         width: 100%;
         margin-top: 30px;
+        color: white;
     }
 
-    #myBTN{
+
+    .footer a{
         color: white;
+    }
+
+    .footer a:hover{
+        color: gray;
     }
 </style>
 
 <footer class="footer footer-transparent">
-    <div class="container foot-cont">
-        <a class="footer left"> {% include 'accounts/GDPR_modal.html' %} </a>
-        <a class="footer middle" href="https://www.isfit.org">www.isfit.org</a>
-        <a class="footer right" href="https://www.studentpeaceprize.org/">Student Peace Prize</a>
-    </div>
+    <a class="left" href="https://www.isfit.org">www.isfit.org</a> ||
+    <a class="middle">{% include "accounts/GDPR_modal.html"%}</a>||
+    <a class="right" href="https://www.studentpeaceprize.org/">Student Peace Prize</a>
 </footer>

@@ -10,13 +10,11 @@ html{
 
 body {
     /*background: white url("images/background.jpg");*/
-    background-image: url("../../../static/jobs/images/migration-pattern-blue.png");
     font-family: MyriadPro !important;
     background-color: #0d0d0d;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
-    background-size: cover;
     color: white;
     min-height: 100%;
     position: relative;
@@ -26,6 +24,33 @@ body {
     align-content: center;
     align-items: center;
     padding-bottom: 50px;
+    overflow-x: hidden;
+}
+
+.pattern-blue{
+    background-image: url("../../static/jobs/images/migration-pattern-blue.png");
+    top: 25vh;
+    height: 1000px;
+    width: 500px;
+    background-size: contain;
+    background-position: center;
+    left: -10vw;
+    position: fixed;
+    z-index: -10;
+    overflow-y: hidden;
+}
+
+.pattern-green{
+    background-image: url("../../static/jobs/images/migration-pattern-green.png");
+    top: 35vh;
+    height: 800px;
+    width: 400px;
+    background-size: contain;
+    background-position: center;
+    right: -5vw;
+    position: fixed;
+    z-index: -10;
+    overflow-y: hidden;
 }
 
 @media (max-width: 768px) {
@@ -56,6 +81,10 @@ small {
     margin-bottom: 20px;
 }
 
+.form-text{
+    height: 150px;
+}
+
 /*.navbar-nav > a,
 .navbar-nav > li a {
     color: white;
@@ -79,14 +108,45 @@ small {
     padding: 25px;
 }
 
+Textarea{
+    height: 100px;
+}
+
+.form-control{
+    width: 50%;
+    margin-left: 25vw;
+}
+
+@media (max-width: 892px) {
+    .form-control {
+        width: 90vw;
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 892px) {
+    .pattern-green, .pattern-blue {
+        display: none;
+    }
+}
+
+a.nav-link:hover{
+    color: #00bdff;
+}
+
+.nav-link a{
+
+}
+
 /* ------ Buttons ------ */
 button {
     /*display: flex;*/
     height: auto;
-    background-color: #cc8102;
+    background-color: #007bff;
     border: 1px solid gray;
     cursor: pointer;
     text-align: center;
+    color: white;
 }
 
 .btn{
@@ -113,7 +173,7 @@ button {
 }
 
 .input-button {
-    background-color: #cc8102;
+    background-color: #007bff;
     margin: 7px;
     width: 180px;
     border: 1px solid gray;
@@ -126,8 +186,9 @@ button {
 }
 
 .input-button:hover, button:hover {
-    background-color: #f79b00;
-    border-color: lightgray;
+    background-color: white;
+    color: #007bff;
+    border-color: #007bff;
 }
 /* Maybe not necessary to have style on visited links */
 a:link, a:visited{

@@ -15,7 +15,7 @@
             line-height: 2rem;
         }
         .options span:hover {
-            color: orange;
+            color: #007bff;
         }
         .sections {
             font-size: 1.5rem;
@@ -30,13 +30,13 @@
             padding-right: 15px;
         }
         .positions li:hover {
-            color: orange;
+            color: #007bff;
         }
         .dropzone {
             border-radius: 20px;
             border: solid;
             border-style: inset;
-            border-color: orange;
+            border-color: #007bff;
             height: 280px;
             max-width: 400px;
         }
@@ -55,7 +55,26 @@
         #chosenList li:hover {
             cursor: url(https://ssl.gstatic.com/ui/v1/icons/mail/images/2/openhand.cur), default !important;
             cursor: grabbing;
-            color: orange;
+            color: #007bff;
+        }
+
+        #finishedList li {
+            border-radius: 5px;
+            border-style: solid;
+            border-width: 1px;
+            color: gray;
+            line-height: 1rem;
+            margin-top: 1rem;
+            margin-right: 50px;
+            padding: 8px 8px 8px 20px;
+            list-style-position: inside;
+            width: 90%;
+        }
+
+        #finishedList li:hover {
+            cursor: url(https://ssl.gstatic.com/ui/v1/icons/mail/images/2/openhand.cur), default !important;
+            cursor: grabbing;
+            color: #007bff;
         }
 
         .remove{
@@ -133,15 +152,15 @@ Click the link down below to browse all positions with details. <br>
         </ul>
         <a href={% url 'jobs:information' %} target="_blank">Browse all positions</a>
     </div>
-    <div class="col-md-5 dropzone">
-        <h2>Chosen:</h2>
-        <p>Click to remove, drag to reorder.</p>
-        <ol id="chosenList"></ol>
-    </div>
+        <div class="col-md-5 dropzone">
+            <h2>Chosen:</h2>
+            <p>Click to remove, drag to reorder.</p>
+            <ol id="chosenList"></ol>
+        </div>
 </div>
-<button onclick="submit()" style="width: 60%; margin: 20px 0 10px 0;" class="btn button-form">Set UNAVAILABLE times for interview</button>
+    <button onclick="submit()" style="width: 60%; margin: 20px 0 10px 0;" class="btn button-primary">Set UNAVAILABLE times for interview</button>
 {% else %}
-Once an interview is set, you cannot edit your application. Contact recruiting@isfit.no if you want to change your application
+You have already been set up on an interview and cannot edit your application. If you want to reprioritize, make sure to tell your interviewers
 {% endif %}
 {% endblock %}
 
@@ -163,7 +182,6 @@ Once an interview is set, you cannot edit your application. Contact recruiting@i
             document.getElementById("chosenList").appendChild(li);
         }
     }
-
 
     Sortable.create(chosenList, {animation: 150 });
 
