@@ -1,0 +1,18 @@
+version: 0.1
+
+phases:
+  install:
+    - pip install -r requirements.txt -t .
+    # Upgrade AWS CLI to the latest version
+    - pip install --upgrade awscli
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Compiling the Python code...
+  post_build:
+    commands:
+      - echo Build completed on `date`
+artifacts:
+  files:
+    - recruitment-web-isfit-2019.zip
+    - .ebextensions/**/*
