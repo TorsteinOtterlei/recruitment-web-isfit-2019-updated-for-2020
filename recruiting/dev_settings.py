@@ -27,25 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'apikey'
-EMAIL_HOST_PASSWORD = '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'
-EMAIL_USE_TLS = True
-
-# Sendgrid profile
-# username = isfit2019
-# password = isfitdomain2019
-
-# Example:
-# send_mail('subject', 'body of the message', 'emil.telstad@live.no', ['twidex97@gmail.com'])
-
-# Other ports:
-#unencrypted, TLS = 25, 587
-#SSL = 465
-
-
-
 # Application definition
 
 INSTALLED_APPS = [

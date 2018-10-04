@@ -25,14 +25,16 @@ SECRET_KEY = os.environ['SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['recruitment-web-isfit-2019.eu-west-1.elasticbeanstalk.com',
-                'www.recruitment-web-isfit-2019.eu-west-1.elasticbeanstalk.com',
-                'recruiting.isfit.org', 'www.recruiting.isfit.org']
+ALLOWED_HOSTS = ['*.elasticbeanstalk.com', '*.isfit.org']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'import_export',
+    'django_extensions',
+    'accounts.apps.AccountsConfig',
+    'applications.apps.ApplicationsConfig',
     'jobs.apps.JobsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -76,14 +78,19 @@ WSGI_APPLICATION = 'recruiting.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
+'''
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'recruiting',
+            'USER': 'camilla',
+            'PASSWORD': 'camilla',
+            'HOST': 'localhost',
+            'PORT': '5432',
+        }
+    }
 
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#    }
-#}
-
+'''
 if 'RDS_DB_NAME' in os.environ:
     DATABASES = {
         'default': {
@@ -98,12 +105,8 @@ if 'RDS_DB_NAME' in os.environ:
 else:
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'recruiting',
-            'USER': 'camilla',
-            'PASSWORD': 'camilla',
-            'HOST': 'localhost',
-            'PORT': '5432',
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         }
     }
 
