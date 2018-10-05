@@ -11,3 +11,6 @@ phases:
 artifacts:
   files:
     - .ebextensions/**/*
+eb_codebuild_settings:
+  CodeBuildServiceRole: role-name
+  ComputeType: BUILD_GENERAL1_SMALL
