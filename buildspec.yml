@@ -14,5 +14,4 @@ phases:
       - echo Build completed on `date`
 artifacts:
   files:
-    - recruitment-web-isfit-2019.zip
     - .ebextensions/**/*
