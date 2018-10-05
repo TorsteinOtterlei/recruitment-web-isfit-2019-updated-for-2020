@@ -2,7 +2,7 @@ version: 0.1
 
 phases:
   install:
-    - pip install -r requirements.txt -t .
+    - pip install -r requirements.txt
     # Upgrade AWS CLI to the latest version
     - pip install --upgrade awscli
   build:
