@@ -56,10 +56,6 @@
                         <option value="email">Show email</option>
                         <option value="name" {% if display == 'name' %} selected="selected" {% endif %}>Show name</option>
                     </select>
-                </form>
-
-                <form method="post" action="#">
-                    {% csrf_token %}
                     <select id='selector4' name="sorting" onChange="form.submit();">
                         <option value="apply_time">Sort on apply time</option>
                         <option value="interview_time" {% if sorting == 'interview_time' %} selected="selected" {% endif %}>Sort on interview time</option>
