@@ -1,16 +1,16 @@
-version: 0.1
-
-phases:
-  build:
-    commands:
-      - echo Build started on `date`
-      - echo Compiling the Python code...
-  post_build:
-    commands:
-      - echo Build completed on `date`
 artifacts:
   files:
-    - .ebextensions/**/*
+  - .ebextensions/**/*
 eb_codebuild_settings:
   CodeBuildServiceRole: role-name
   ComputeType: BUILD_GENERAL1_SMALL
+  Image: aws/codebuild/eb-python-3.4-amazonlinux-64:2.3.2
+phases:
+  build:
+    commands:
+    - echo Build started on `date`
+    - echo Compiling the Python code...
+  post_build:
+    commands:
+    - echo Build completed on `date`
+version: 0.1
