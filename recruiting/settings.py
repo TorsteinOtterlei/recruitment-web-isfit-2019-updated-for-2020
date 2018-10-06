@@ -25,7 +25,7 @@ SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['tf-test-name.vrqijrq9ad.eu-west-1.elasticbeanstalk.com', '*.isfit.org']
+ALLOWED_HOSTS = ['localhost', '.isfit.org', '.eu-west-1.elasticbeanstalk.com']
 
 
 # Application definition
