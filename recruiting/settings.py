@@ -169,7 +169,7 @@ STATIC_URL = 'https://%s/%s%s' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION, MEDIA_URL)
 
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
-LOGIN_REDIRECT_URL = 'account'
+LOGIN_REDIRECT_URL = '/account/'
 
 LOGOUT_REDIRECT_URL = 'home'
 
