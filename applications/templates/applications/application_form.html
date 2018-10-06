@@ -192,6 +192,10 @@ You have already been set up on an interview and cannot edit your application. I
 <script>
 
     var chosen = {};
+    var close_string = '06 Oct 2018 12:01:00 GMT'; // This has to be changed to applicant close time
+    var isclosed = ((Date.parse(close_string) - 7200000) - Date.now())
+    // var closed = (tmp < 0); wtf?!?
+
 
     // Getting saved application
     var rankings = {{ applied_to | safe }};
@@ -217,22 +221,26 @@ You have already been set up on an interview and cannot edit your application. I
             $(this).parent().children().toggle();
             $(this).toggle();
         });
+        if (isclosed > 0){
+            console.log("not closed");
+            $(".positions li").on("click", function (e) {
+                console.log(chosen);
+                if ($("#chosenList li").length < 3 && chosen[this.id] == null) {
+                    chosen[this.id] = "chosen";
+                    li = document.createElement("li");
+                    li.innerHTML = this.innerHTML + '<div class="remove">&times;</div>';
+                    li.id = this.id;
+                    document.getElementById("chosenList").appendChild(li);
+                }
+            });
 
-        $(".positions li").on("click", function (e) {
-            console.log(chosen);
-            if ($("#chosenList li").length < 3 && chosen[this.id] == null) {
-                chosen[this.id] = "chosen";
-                li = document.createElement("li");
-                li.innerHTML = this.innerHTML + '<div class="remove">&times;</div>';
-                li.id = this.id;
-                document.getElementById("chosenList").appendChild(li);
-            }
-        });
+            $("#chosenList").on("click", "li", function (e) {
+                delete chosen[this.id];
+                this.parentNode.removeChild(this);
+            });
 
-        $("#chosenList").on("click", "li", function (e) {
-            delete chosen[this.id];
-            this.parentNode.removeChild(this);
-        });
+        }
+
     });
 
     function submit(){
