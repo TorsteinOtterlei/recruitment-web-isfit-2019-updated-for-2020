@@ -159,12 +159,15 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'jobs/static'),
 ]
 
-STATIC_ROOT = os.path.join(BASE_DIR, "..", "www", "static")
+STATIC_ROOT = os.path.join(BASE_DIR, "..", "static")
 
-STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+STATIC_URL = '/static/'
+STATIC_URL = 'https://%s/%s%s' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION, STATIC_URL)
+
+MEDIA_URL = '/media/'
+STATIC_URL = 'https://%s/%s%s' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION, MEDIA_URL)
 
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-#STATIC_URL = '/static/'
 
 LOGIN_REDIRECT_URL = 'account'
 
