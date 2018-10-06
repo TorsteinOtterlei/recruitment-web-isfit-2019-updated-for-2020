@@ -137,6 +137,7 @@ def manage_profile(request, userID):
             form = StatusForm(instance=applicant)
         else:
             form = RestrictedStatusForm(instance=applicant)
+
         chosen_time = request.POST.get('interviewtime') # Get the time marked in front-end
 
         if chosen_time == None:
@@ -176,10 +177,11 @@ def manage_profile(request, userID):
                         userdate = Date.objects.get(user=inter)
                         userdate.remove_time(chosen_time)
                         userdate.save()
-                print('Interview time changed to ' + str(chosen_time))
 
                 application.set_interview_time(chosen_time)
                 application.save()
+                print('Interview time set to: ' + application.pretty_interview_time())
+
 
             # Update/create interview object
             if interview:

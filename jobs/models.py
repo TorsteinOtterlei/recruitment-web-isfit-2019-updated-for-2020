@@ -113,18 +113,19 @@ class Date(models.Model):
     def pretty_dates_list(self):        # NOT TESTED
         if self.dates == '':
             return 'none'
-        dates_range = 182
-        all_times = ["08:15 - 09:00", "09:15 - 10:00", "10:15 - 11:00",
-        "11:15 - 12:00", "12:15 - 13:00", "13:15 - 14:00", "14:15 - 15:00",
-        "15:15 - 16:00", "16:15 - 17:00", "17:15 - 18:00", "18:15 - 19:00",
-        "19:15 - 20:00", "20:15 - 21:00"]
-        all_days = ["Monday 27 Aug", "Tuesday 28 Aug", "Wednesday 29 Aug",
-         "Thursday 30 Aug", "Friday 31 Aug", "Saturday 1 Sept", "Sunday 2 Sept",
-         "Monday 3 Sept", "Tuesday 4 Sept", "Wednesday 5 Sept", "Thursday 6 Sept",
-         "Friday 7 Sept", "Saturday 8 Sept", "Sunday 9 Sept"]
+        dates_range = 364
+        all_times = ["08:00 - 08:30", "08:30 - 09:00", "09:00 - 09:30",
+        "09:30 - 10:00", "10:00 - 10:30", "10:30 - 11:00", "11:00 - 11:30",
+        "11:30 - 12:00", "12:00 - 12:30", "12:30 - 13:00", "13:00 - 13:30",
+        "13:30 - 14:00", "14:00 - 14:30", "14:30 - 15:00", "15:00 - 15:30", "15:30 - 16:00", "16:00 - 16:30", "16:30 - 17:00",
+        "17:00 - 17:30", "17:30 - 18:00", "18:00 - 18:30", "18:30 - 19:00", "19:00 - 19:30", "19:30 - 20:00", "20:00 - 20:30", "20:30 - 21:00"]
+        first_week = ["Monday 15 Oct", "Tuesday 16 Oct", "Wednesday 17 Oct", "Thursday 18 Oct", "Friday 19 Oct", "Saturday 20 Oct",
+         "Sunday 21 Oct"]
+        second_week = ["Monday 22 Oct", "Tuesday 23 Oct", "Wednesday 24 Oct", "Thursday 25 Oct",
+         "Friday 26 Oct", "Saturday 27 Oct", "Sunday 28 Oct"]
 
         res = []
-        for date in self.dates:
+        for date in self.dates_list():
             tmp = float(date)
             if int(tmp) < dates_range//2:
                 res.append((first_week[int(tmp)%7] + ' - ' + all_times[int(math.trunc(tmp/7))]))
@@ -187,13 +188,14 @@ class Interview(models.Model):
     def pretty_interview_time(self):
         if self.get_interview_time() == 'none':
             return 'none'
-        dates_range = 182
-        all_times = ["08:15 - 09:00", "09:15 - 10:00", "10:15 - 11:00",
-        "11:15 - 12:00", "12:15 - 13:00", "13:15 - 14:00", "14:15 - 15:00",
-        "15:15 - 16:00", "16:15 - 17:00", "17:15 - 18:00", "18:15 - 19:00",
-        "19:15 - 20:00", "20:15 - 21:00"]
-        first_week = ["Monday 15 Oct", "Tuesday 16 Oct", "Wednesday 17 Oct",
-         "Thursday 18 Oct", "Friday 19 Oct", "Saturday 20 Oct", "Sunday 21 Oct"]
+        dates_range = 364
+        all_times = ["08:00 - 08:30", "08:30 - 09:00", "09:00 - 09:30",
+        "09:30 - 10:00", "10:00 - 10:30", "10:30 - 11:00", "11:00 - 11:30",
+        "11:30 - 12:00", "12:00 - 12:30", "12:30 - 13:00", "13:00 - 13:30",
+        "13:30 - 14:00", "14:00 - 14:30", "14:30 - 15:00", "15:00 - 15:30", "15:30 - 16:00", "16:00 - 16:30", "16:30 - 17:00",
+        "17:00 - 17:30", "17:30 - 18:00", "18:00 - 18:30", "18:30 - 19:00", "19:00 - 19:30", "19:30 - 20:00", "20:00 - 20:30", "20:30 - 21:00"]
+        first_week = ["Monday 15 Oct", "Tuesday 16 Oct", "Wednesday 17 Oct", "Thursday 18 Oct", "Friday 19 Oct", "Saturday 20 Oct",
+         "Sunday 21 Oct"]
         second_week = ["Monday 22 Oct", "Tuesday 23 Oct", "Wednesday 24 Oct", "Thursday 25 Oct",
          "Friday 26 Oct", "Saturday 27 Oct", "Sunday 28 Oct"]
 

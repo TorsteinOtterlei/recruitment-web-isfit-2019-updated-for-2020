@@ -47,6 +47,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     ACCEPTED = 'AC'
     POSSIBLY_PARTICIPANT = 'PP'
     NOT_MET = 'NM'
+    APPLICATION_WITHDRAWN = 'AW'
 
     STATUS_CHOISES = (
         (NOT_EVALUATED, 'Not evaluated'),
@@ -56,6 +57,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         (NOT_MET, 'Not met'),
         (ACCEPTED, 'Accepted'),
         (POSSIBLY_PARTICIPANT, 'Possibly participant'),
+        (APPLICATION_WITHDRAWN, 'Application Withdrawn'),
     )
 
     RESTRICTED_STATUS_CHOISES = (

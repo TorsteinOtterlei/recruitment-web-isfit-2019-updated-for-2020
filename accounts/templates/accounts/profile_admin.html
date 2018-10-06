@@ -74,7 +74,6 @@
                         Email address: {{ user.email }}
                         <br>
                         Phone number: {{ user.phone_number }}
-
                 </div>
             </div>
         </div>
@@ -90,6 +89,7 @@
         </div>
     {% endif %}-->
     <div class="container border applicant-div">
+        <h2><u>List of your interviews</u></h2>
         {% for i in interviews %}
             <h3>Interview at: {{ i.room }}, {{ i.pretty_interview_time }}</h3>
         <h4>Applicant:</h4> <a href="{% url 'accounts:manage_profile' i.applicant.id %}">{{ i.applicant.get_full_name }}: </a>{{ i.applicant.get_pretty_status }}<br />
@@ -104,9 +104,10 @@
     </div>
     <br>
     <div class="container">
+        <h4><u>All gang applicants</u></h4>
         {% if user_gang_applications %}
         <button class="btn btn-dark btn-block" type="button" data-toggle="collapse" data-target="#applicants" aria-expanded="false">
-            <b>Applicants for your gang ({{ user.gang }})</b>
+            Applicants for {{ user.gang }}
         </button>
         {% endif %}
             <!-- Applicants collapsible -->

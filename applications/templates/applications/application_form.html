@@ -36,7 +36,7 @@
         }
         .options {
             cursor: pointer;
-            color: gray;
+            color: whitesmoke;
             line-height: 2rem;
         }
         .options span:hover {
@@ -54,8 +54,10 @@
             padding-left: 15px;
             padding-right: 15px;
         }
+
         .positions li:hover {
             color: #007bff;
+            padding-left: 0.5em;
         }
         .dropzone {
             border-radius: 20px;
@@ -64,6 +66,7 @@
             border-color: #007bff;
             height: 280px;
             max-width: 400px;
+            background-color: rgba(20, 20, 20, 0.9);
         }
 
         #chosenList li {
@@ -97,6 +100,13 @@
         .error-field {
             color: red;
         }
+
+        #next-info{
+            margin-top: 3em;
+            margin-bottom: -0.5em;
+            width: 80%;
+            margin-left: 10%;
+        }
     </style>
 {% endblock %}
 
@@ -107,7 +117,7 @@ On this page you are required to write an application text
 and select the positions you would like to apply for.<br>
 On the next page you can select certain times where you're defininitely
 UNABLE to have an interview. <br>
-You can edit your application until 2. Sep. <br>
+You can edit your application until 21. Oct. <br>
 Click the link down below to browse all positions with details. <br>
 <br>
 1. Write application text <br>
@@ -166,7 +176,11 @@ Click the link down below to browse all positions with details. <br>
             <ol id="chosenList"></ol>
         </div>
 </div>
-    <button onclick="submit()" style="width: 60%; margin: 20px 0 10px 0;" class="btn button-primary">UNAVAILABLE times</button>
+    <div id='next-info'>Next step is to tell us the times where you are not able to have an
+         interview. By clicking here your choices on this page will be saved, so you can
+         continue your application at a later time. However your application will
+           not be submitted before finishing the application on the next page.</div>
+    <button onclick="submit()" style="width: 60%; margin: 20px 0 10px 0;" class="btn button-primary">Set UNAVAILABLE times</button>
 {% else %}
 You have already been set up on an interview and cannot edit your application. If you want to reprioritize, make sure to tell your interviewers
 {% endif %}
@@ -178,6 +192,10 @@ You have already been set up on an interview and cannot edit your application. I
 <script>
 
     var chosen = {};
+    var close_string = '06 Oct 2018 12:01:00 GMT'; // This has to be changed to applicant close time
+    var isclosed = ((Date.parse(close_string) - 7200000) - Date.now())
+    // var closed = (tmp < 0); wtf?!?
+
 
     // Getting saved application
     var rankings = {{ applied_to | safe }};
@@ -203,22 +221,26 @@ You have already been set up on an interview and cannot edit your application. I
             $(this).parent().children().toggle();
             $(this).toggle();
         });
+        if (isclosed > 0){
+            console.log("not closed");
+            $(".positions li").on("click", function (e) {
+                console.log(chosen);
+                if ($("#chosenList li").length < 3 && chosen[this.id] == null) {
+                    chosen[this.id] = "chosen";
+                    li = document.createElement("li");
+                    li.innerHTML = this.innerHTML + '<div class="remove">&times;</div>';
+                    li.id = this.id;
+                    document.getElementById("chosenList").appendChild(li);
+                }
+            });
 
-        $(".positions li").on("click", function (e) {
-            console.log(chosen);
-            if ($("#chosenList li").length < 3 && chosen[this.id] == null) {
-                chosen[this.id] = "chosen";
-                li = document.createElement("li");
-                li.innerHTML = this.innerHTML + '<div class="remove">&times;</div>';
-                li.id = this.id;
-                document.getElementById("chosenList").appendChild(li);
-            }
-        });
+            $("#chosenList").on("click", "li", function (e) {
+                delete chosen[this.id];
+                this.parentNode.removeChild(this);
+            });
 
-        $("#chosenList").on("click", "li", function (e) {
-            delete chosen[this.id];
-            this.parentNode.removeChild(this);
-        });
+        }
+
     });
 
     function submit(){
