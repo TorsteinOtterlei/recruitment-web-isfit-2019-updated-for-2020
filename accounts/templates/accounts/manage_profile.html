@@ -518,8 +518,8 @@
                 $('#submit-error').html('No interviewers are selected');
                 return;
             }
-            if (chosen_time == 'none' && $("#interviewers").val() != 'None,None,None'){
-                $('#submit-error').html('No.');
+            if (chosen_time == 'none' && ($("#interviewers").val() != 'None,None,None' && $("#interviewers").val() != 'None,None' && $("#interviewers").val() != 'None')){
+                $('#submit-error').html('Remove all interviewers first');
                 return;
             }
             console.log(chosen_time);
