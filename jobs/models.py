@@ -76,7 +76,7 @@ class Position(models.Model):
 
 class Date(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="date")
-    dates = models.TextField(max_length=2000, default=makeDates(182), blank=True)
+    dates = models.TextField(max_length=2000, default=makeDates(364), blank=True)
 
     class Meta:
         verbose_name = "date"
