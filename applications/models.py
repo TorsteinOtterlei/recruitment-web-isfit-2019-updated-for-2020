@@ -72,10 +72,10 @@ class Application(models.Model):
         "11:30 - 12:00", "12:00 - 12:30", "12:30 - 13:00", "13:00 - 13:30",
         "13:30 - 14:00", "14:00 - 14:30", "14:30 - 15:00", "15:00 - 15:30", "15:30 - 16:00", "16:00 - 16:30", "16:30 - 17:00",
         "17:00 - 17:30", "17:30 - 18:00", "18:00 - 18:30", "18:30 - 19:00", "19:00 - 19:30", "19:30 - 20:00", "20:00 - 20:30", "20:30 - 21:00"]
-        first_week = ["Thursday 18 Oct", "Friday 19 Oct", "Saturday 20 Oct",
+        first_week = ["Monday 15 Oct", "Tuesday 16 Oct", "Wednesday 17 Oct", "Thursday 18 Oct", "Friday 19 Oct", "Saturday 20 Oct",
          "Sunday 21 Oct"]
         second_week = ["Monday 22 Oct", "Tuesday 23 Oct", "Wednesday 24 Oct", "Thursday 25 Oct",
-         "Friday 26 Oct"]
+         "Friday 26 Oct", "Saturday 27 Oct", "Sunday 28 Oct"]
 
         tmp = float(self.get_interview_time())
         if int(tmp) < dates_range//2:
