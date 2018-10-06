@@ -67,18 +67,19 @@
         </div>
         <br>
         {% if interview != None %}
+            You have been put up for an interview!
             <div class="interview-div">
                 <h5>Interview information</h5>
-                <b style="color: orangered">Room:</b> {{ interview.room }}<br>
-                <b style="color: orangered">Time:</b> {{ interview.pretty_interview_time }}<br>
-                <b style="color: orangered">Interviewers:</b><br>
+                <b style="color: orangered">Room: </b> {{ interview.room }}<br>
+                <b style="color: orangered">Time: </b> {{ interview.pretty_interview_time }}<br>
+                <b style="color: orangered">Interviewers: </b><br>
                                 {% for j in interview.interviewers.all %}
                                     <b>{{ j.get_full_name }}: </b> {{ j.email }}<br>
                                 {% endfor %}
 
             </div>
             <br>
-            If you still want to edit your application, send us an Email on recruiting@isfit.no
+            <p>If you still want to edit your application, send us an Email on recruiting@isfit.no</p>
         {% else %}
             <div class="interview-div">
                 <h5>Your interview has not been set. Interview information will appear here.</h5>
