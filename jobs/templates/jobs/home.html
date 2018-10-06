@@ -94,7 +94,7 @@
         {% else %} <!-- If normal user -->
             <!-- Edit application -->
             <form action="{% url 'applications:apply' %}" method="get">
-                {% if has_applied and user.get_status == "NE" %}
+                {% if has_applied %}
                     <button type="submit" class="btn btn-primary">Edit application</button>
                 {% elif not has_applied and user.get_status == "NE" %}
                     <button type="submit" class="btn btn-primary">Apply now!</button>

@@ -1,7 +1,7 @@
 from django.db import models
 import math
 from accounts.models import User
-# local
+from datetime import datetime
 
 # other apps
 #from accounts.models import User
@@ -208,3 +208,13 @@ class Interview(models.Model):
 
     def __str__(self):
         return str(self.room) + ', ' + str(self.pretty_interview_time())
+
+class Availability(models.Model):
+    interview_open = models.DateTimeField(default=datetime(2018, 10, 1, 18, 00))
+    interview_close = models.DateTimeField(default=datetime(2018, 10, 30, 21, 00))
+
+    def get_close_datetime(self):
+        return self.interview_close.replace(tzinfo=None)
+
+    def get_open_datetime(self):
+        return self.interview_open.replace(tzinfo=None)
