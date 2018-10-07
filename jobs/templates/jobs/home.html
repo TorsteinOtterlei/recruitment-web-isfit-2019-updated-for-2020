@@ -94,7 +94,7 @@
         {% else %} <!-- If normal user -->
             <!-- Edit application -->
             <form action="{% url 'applications:apply' %}" method="get">
-                {% if has_applied and status in rep_list %}
+                {% if has_applied and status in rep_list and status != "NE" %}
                     <button type="submit" class="btn btn-success">Reprioritize positions</button>
                 {% elif has_applied and status in rep_list %}
                     <button type="submit" class="btn btn-success">Edit application</button>
