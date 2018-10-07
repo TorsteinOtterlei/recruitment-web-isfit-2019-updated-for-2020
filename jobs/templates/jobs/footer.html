@@ -1,47 +1,105 @@
 {% load static %}
 <style>
-    /*.right{
-        right: 10vw;
-        position: absolute;
-        color: white;
-    }
-
-    .left{
-        left: 10vw;
-        position: absolute;
-        color: white;
-    }*/
-
-    footer .left{
-        color: white;
-    }
-    footer .middle{
-        color: white;
-    }
-    footer .right{
-        color: white;
-    }
-
-    .footer{
+    .footer {
         bottom: 0;
         position: absolute;
         width: 100%;
         margin-top: 30px;
         color: white;
     }
-
-
-    .footer a{
+    #gdpr-link {
+        color: blue;
+    }
+    #gdpr-link:hover {
+        cursor: pointer;
+    }
+    #gdpr-modal {
+        color: black;
+    }
+    .footer a {
         color: white;
     }
-
-    .footer a:hover{
+    .footer a:hover {
         color: gray;
     }
 </style>
 
+<div id="gdpr-modal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title">Our privacy policy</h1>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div> <!-- End: modal-header -->
+            <div class="modal-body">
+                <p>
+                    The International Student Festival in Trondheim (ISFiT) of 2019 are concerned with your rights to privacy and before you submit an application, we would like for you to review and agree with the terms of our privacy policy for this website. If you do not wish to proceed with the submission of your application, please exit the website without submitting anything in the application. The details of the privacy policy can be found in the text below.
+                </p>
+                <hr>
+                <h4><b>Legal Basis</b></h4>
+                <p>
+                    To create a user and submit an application you need to give your consent to the processing of your personal data for the purposes specified in this Privacy Policy (Purpose for gathered information/How will we use your information?). To withdraw your consent, you can delete your user at any time. Giving your consent is voluntary, but necessary for processing your application. If you do not wish to give your consent, you are welcome to exit the website without submitting any information.
+                </p>
+                <hr>
+                <h4><b>How will we use your information?</b></h4>
+                <p>
+                    The personal information submitted through the Recruitment management system is collected for evaluation and statistical purposes, and will be further used to contact applicants for volunteer positions in ISFiT19.
+                </p>
+                <ul>
+                    <li>
+                        Information like your name, e-mail and phonenumber will be used to contact you regarding interviews for your chosen positions, as well as to deliver the final answer after the recruitment period ends.
+                    </li>
+                    <li>
+                        It is only current students affiliated with a University in Trondheim who will be considered for the volunteer positions, therefore we ask for confirmation on whether you are currently enrolled as well as if you live in Trondheim.
+                    </li>
+                </ul>
+                <p>
+                    All personal information you disclose in your application text may be reviewed by volunteers within ISFiT who need such access in order to evaluate your application for recruiting purposes only.
+                </p>
+                <p>
+                    Providing information is voluntary, but is required in order for ISFiT to evaluate you as an applicant.
+                </p>
+                <hr>
+                <h4><b>Disclosure of information</b></h4>
+                <p>
+                    This website is created by a group of volunteers working within ISFiT, with servers hosted by Amazon Web Services located in Ireland. The team responsible for creating and maintaining the website may need access to the personal data stored in the system for administration and maintenance purposes only.
+                </p>
+                <hr>
+                <h4><b>Rights of the data subject</b></h4>
+                <br>
+                <h5>The right to access and rectify information:</h5>
+                <p>
+                    You can access your personal information and application status by logging onto your account at any time before and after the application has been submitted. You are able to rectify your personal information at any time after you have submitted your application and until the end of the application deadline.  After the deadline you also have the right to correct any inaccurate information about you. . You can achieve this  by contacting ISFiT at privacy@isfit.no and notify us about any inaccuracies
+                </p>
+                <h5>The right to withdraw consent and be deleted</h5>
+                <p>
+                    You have, at any time, the right to withdraw your consent or delete your information from our systems. This can be done by contacting us using the contact detail on the bottom of this page.
+                    The information that you share will be stored for no longer than necessary and no more than 2 months after the end of the recruitment..
+                </p>
+                <h5>The right of data portability</h5>
+                <p>
+                    At any time, you have the right to receive the personal data we, as the data controller, has stored on you, in a structured, easy-to-read and machine-readable manner if you ever want to transmit your data to another data controller.
+                </p>
+                <h5>The right to object or restrict the use of your information</h5>
+                <p>
+                    You can object to the processing of your personal information or ask us to restrict the processing of your personal information.
+                </p>
+                <h5>The right to complain</h5>
+                <p>
+                    You have the right to lodge a complaint to a data protection authority about our collection and processing of your personal information. Our main establishment is in Trondheim, Norway. A complaint to the Norwegian Data Protection Authority can be sent to: Datatilsynet, Postboks 458 Sentrum, 0105 Oslo. For more information on how to complain, please visit their site here. ISFiT is the data controller of your personal information. For further questions about our use of your personal information, please contact us at privacy@isfit.no
+                </p>
+            </div> <!-- End: modal-body -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+            </div> <!-- End: modal-footer -->
+        </div> <!-- End: modal-content -->
+    </div> <!-- End: modal-dialog -->
+</div> <!-- End: modal -->
+
 <footer class="footer footer-transparent">
-    <a class="left" href="https://www.isfit.org" target="_blank">www.isfit.org</a> ||
-    <a class="middle">{% include "accounts/GDPR_modal.html"%}</a>||
-    <a class="right" href="https://www.studentpeaceprize.org/" target="_blank">Student Peace Prize</a>
+    <a href="https://www.isfit.org" target="_blank">www.isfit.org</a> ||
+    <a id="gdpr-link" data-toggle="modal" data-target="#gdpr-modal">View provacy policy</a> ||
+    <a href="https://www.studentpeaceprize.org/" target="_blank">Student Peace Prize</a>
 </footer>
