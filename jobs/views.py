@@ -5,15 +5,20 @@ from django.contrib.auth.decorators import login_required
 from jobs.models import Section, Gang, Position, Project, Calendar
 # other apps
 from applications.models import Application
+from accounts.models import *
 
 def home(request):
     try:
         has_applied = Application.objects.get(applicant=request.user).first != None
+        status = User.objects.get(id=request.user.id).get_status()
+        rep_list = User.objects.get(id=request.user.id).get_rep_list()
         return render(request, 'jobs/home.html', {
-            'has_applied': has_applied
+            'has_applied': has_applied,
+            'status': status,
+            'rep_list': rep_list
         })
     except Exception as e: # if user not signed in
-        return render(request, 'jobs/home.html')
+       return render(request, 'jobs/home.html')
 
 def information(request):
     return render(request, 'jobs/information.html', {

@@ -91,7 +91,7 @@
                 </li>
             {% endif %}
             {% if user.is_authenticated %}
-                {% if not user.is_staff and user.get_status == "NE" %}
+                {% if not user.is_staff and user.get_status in user.get_rep_list %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'applications:apply' %}">Application</a>
                     </li>

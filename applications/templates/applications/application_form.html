@@ -131,6 +131,7 @@
 {% endblock %}
 
 {% block body %}
+{% if user.get_status in rep_list %}
 <h2>Your application:</h2>
 <div id='page-info'>
 On this page you are required to write an application text
@@ -209,6 +210,10 @@ Click the link 'Browse all positions' to see all available positions in more det
         not be submitted before finishing the application on the next page.</div>
         <button onclick="submit()" style="width: 60%; margin: 20px 0 10px 0;" class="btn button-primary">Set UNAVAILABLE times</button>
     {% endif %}
+
+{% else %}
+You can no longer edit your application
+{% endif %}
 {% endblock %}
 
 {% block scriptblock %}

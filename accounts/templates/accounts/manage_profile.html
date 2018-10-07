@@ -186,7 +186,6 @@
 {% endblock %}
 
 {% block body %}
-{% if user_gang_applications.first %}
 {% if user.is_superuser or application in user_gang_applications %}
     <div class="container">
 
@@ -370,9 +369,6 @@
             {% endif %}
 {% else %}
             You have no power here
-{% endif %}
-{% else %}
-            No one has applied for a position in your gang :(
 {% endif %}
 {% endblock body %}
 

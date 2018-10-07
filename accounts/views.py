@@ -57,6 +57,7 @@ def profile(request):
         })
     # Normal profile
     application = Application.objects.filter(applicant=request.user).first()
+    rep_list = User.objects.get(id=request.user.id).get_rep_list()
 
     # If interview exixsts for this user, get interview instance
     if Interview.objects.filter(applicant=request.user).first():
@@ -71,6 +72,7 @@ def profile(request):
     return render(request, 'accounts/profile.html', {
         'positions': positions,
         'interview': interview,
+        'rep_list': rep_list
     })
 
 @login_required
