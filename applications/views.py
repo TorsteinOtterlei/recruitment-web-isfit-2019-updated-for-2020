@@ -19,6 +19,8 @@ def apply(request):
     # closed = close_datetime < now_timezoned
     # print("Page closed: " + str(closed))
     # vars
+    rep_list = User.objects.get(id=request.user.id).get_rep_list()
+
     application, created = Application.objects.get_or_create(applicant=request.user)
     applied_to = None
     if application.has_positions():
@@ -57,7 +59,8 @@ def apply(request):
         'gangs': Gang.objects.all(),
         'applied_to': json.dumps(applied_to),
         'interview': interview,
-        'closed': closed
+        'closed': closed,
+        'rep_list': rep_list
     })
     # End: apply
 
