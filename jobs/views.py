@@ -12,6 +12,8 @@ def home(request):
         has_applied = Application.objects.get(applicant=request.user).first != None
         status = User.objects.get(id=request.user.id).get_status()
         rep_list = User.objects.get(id=request.user.id).get_rep_list()
+        print(rep_list)
+        print(status)
         return render(request, 'jobs/home.html', {
             'has_applied': has_applied,
             'status': status,
