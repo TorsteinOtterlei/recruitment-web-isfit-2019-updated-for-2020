@@ -21,6 +21,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 if 'DJANGO_SECRET_KEY' in os.environ:
     SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
+    ACCOUNT_DEFAULT_HTTP_PROTOCOL = "https"
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
 else:
     SECRET_KEY = '*o#&hk_xb@tga0cvru5ny&#djv5)8spo6)_s^=8vkphb345&gf'
 
