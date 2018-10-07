@@ -60,7 +60,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'storages'
+    'django.contrib.sites',  # <--- Required for django-allauth
+    'storages',
+
+    # Django allauth:
+    'volunteerLogin',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
 
 MIDDLEWARE = [
@@ -183,3 +191,27 @@ LOGIN_REDIRECT_URL = '/account/'
 LOGOUT_REDIRECT_URL = ''
 
 AUTH_USER_MODEL = 'accounts.User'
+
+# ---------------------–--------------------------
+#  Settings for django-allauth
+#
+
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'allauth.account.auth_backends.AuthenticationBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'django.contrib.auth.backends.ModelBackend',  # TODO: Check if it works without
+]
+
+SITE_ID = 1
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_ADAPTER = 'volunteerLogin.adapter.CustomAccountAdapter'
+SOCIALACCOUNT_ADAPTER = 'volunteerLogin.adapter.CustomSocialAccountAdapter'
+
+#
+#  End of settings for django-allauth
+# ---------------------–--------------------------

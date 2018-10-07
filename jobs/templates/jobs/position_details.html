@@ -30,23 +30,20 @@
                 font-size: 1em;
             }
         }
+        #div-back{
+            text-align: left;
+            font-size: 150%;
+            margin-bottom: 1em;
+        }
+        #div-back a:hover{
+            margin-left: -0.15em;
+        }
     </style>
 {% endblock head %}
 
 {% block body %}
-    <!-- User logged in ------------------------------------------------------->
-    {% if user.is_authenticated %}
-        <!-- Back to profile -->
-        <div class="container">
-            <a href="{% url 'accounts:profile' %}">
-                <img class="arrow-left" src="{% static 'applications/arrow_left.png' %}" alt="Arrow left">
-                Profile
-            </a>
-        </div>
-    {% endif %} <!-- End: User logged in -->
-    <!------------------------------------------------------------------------->
     <!-- Back to positions -->
-    <div class="container">
+    <div class="container" id='div-back'>
         <a href="{% url 'jobs:information' %}">
             <img class="arrow-left" src="{% static 'applications/arrow_left.png' %}" alt="Arrow left">
             Positions

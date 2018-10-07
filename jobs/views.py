@@ -45,7 +45,7 @@ class PositionDetail(generic.DetailView):
         context['description'] = Position.description
         return context
 
-# BUG: Not finished at all
+# TODO BUG: Not finished at all
 @login_required
 def calendar(request):
     return render(request, 'jobs/calendar.html', {
