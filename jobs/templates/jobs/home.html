@@ -77,7 +77,7 @@
         {% if user.is_staff %}
             <!-- Set dates -->
                 <form action="{% url 'applications:set_dates' %}" method="get">
-                    <button type="submit" class="btn btn-success">Set <u>UNAVAILABLE</u> times</button>
+                    <button type="submit" class="btn btn-primary btn-lg">Set <u>UNAVAILABLE</u> times</button>
                 </form>
             <!-- Manage applications -->
         {% if user.is_superuser %}
@@ -90,18 +90,18 @@
             <!-- Edit application -->
             <form action="{% url 'applications:apply' %}" method="get">
                 {% if has_applied and status in rep_list and status != "NE" %}
-                    <button type="submit" class="btn btn-success">Reprioritize positions</button>
+                    <button type="submit" class="btn btn-primary">Reprioritize positions</button>
                 {% elif has_applied and status in rep_list %}
-                    <button type="submit" class="btn btn-success">Edit application</button>
+                    <button type="submit" class="btn btn-primary">Edit application</button>
                 {% elif not has_applied %}
-                    <button type="submit" class="btn btn-primary">Apply now!</button>
+                    <button type="submit" class="btn btn-primary btn-lg">Apply now!</button>
                 {% endif %}
             </form>
         {% endif %}
         <!-- Logout -->
         <form action="{% url 'accounts:logout' %}" method="get">
             <br>
-            <button type="submit" class="btn btn-outline-danger" id="logout">Logout</button>
+            <button type="submit" class="btn btn-danger" id="logout">Logout</button>
         </form>
     {% else %}
         <form action="{% url 'accounts:signup' %}" method="get">
@@ -112,7 +112,7 @@
         </form>
         <!-- <br> -->
         <form action="{% url 'jobs:information' %}" method="get">
-            <button type="submit" class="btn btn-outline-primary">Browse all avilable positions</button>
+            <button type="submit" class="btn btn-primary">Browse all avilable positions</button>
         </form>
     {% endif %}
     </div>
