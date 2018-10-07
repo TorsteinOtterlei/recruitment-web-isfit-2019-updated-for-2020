@@ -152,14 +152,17 @@ def manage_profile(request, userID):
         else:
             chosen_room = request.POST.get('interviewroom') # Get the room chosen in front-end
             chosen_interviewers = []
+            delete_op = True
             for inter in request.POST.get('interviewers').split(','):
                 if inter == 'None':
                     chosen_interviewers.append(None)
                 else:
                     chosen_interviewers.append(User.objects.get(email=inter))
+                    delete_op = False
             print('Chosen time: ' + str(chosen_time))
             print('Chosen room: ' + str(chosen_room))
             print('Chosen interviewers: ' + str(chosen_interviewers))
+            print(delete_op)
 
 
             # Updating the interviewers availability
@@ -186,22 +189,23 @@ def manage_profile(request, userID):
             # Update/create interview object
             if interview:
                 interview.delete()
-            interview = Interview.objects.create(applicant=application.applicant)
-            for i in range(len(chosen_interviewers)):
-                if chosen_interviewers[i]:
-                    interview.interviewers.add(chosen_interviewers[i])
-                    if i == 0:
-                        interview.first = chosen_interviewers[i]
-                    elif i == 1:
-                        interview.second = chosen_interviewers[i]
-                    elif i == 2:
-                        interview.third = chosen_interviewers[i]
-            interview.room = chosen_room
-            interview.set_interview_time(chosen_time)
-            interview.save()
-            print('Created interview object!')
+                interview = None
+            if not delete_op: # If not delete operation
+                interview = Interview.objects.create(applicant=application.applicant)
+                for i in range(len(chosen_interviewers)):
+                    if chosen_interviewers[i]:
+                        interview.interviewers.add(chosen_interviewers[i])
+                        if i == 0:
+                            interview.first = chosen_interviewers[i]
+                        elif i == 1:
+                            interview.second = chosen_interviewers[i]
+                        elif i == 2:
+                            interview.third = chosen_interviewers[i]
+                interview.room = chosen_room
+                interview.set_interview_time(chosen_time)
+                interview.save()
+                print('Created interview object!')
 
-            print('request.POST, instance=applicant')
 
     # GET or form failed:
     else:

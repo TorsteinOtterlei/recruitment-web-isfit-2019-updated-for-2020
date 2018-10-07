@@ -77,7 +77,7 @@
         {% if user.is_staff %}
             <!-- Set dates -->
                 <form action="{% url 'applications:set_dates' %}" method="get">
-                    <button type="submit" class="btn btn-danger">Set <u>UNAVAILABLE</u> times</button>
+                    <button type="submit" class="btn btn-outline-success">Set <u>UNAVAILABLE</u> times</button>
                 </form>
             <!-- Manage applications -->
         {% if user.is_superuser %}
@@ -89,7 +89,7 @@
         {% else %} <!-- If normal user -->
             <!-- Edit application -->
             <form action="{% url 'applications:apply' %}" method="get">
-                {% if has_applied and user.get_status == "NE" %}
+                {% if has_applied %}
                     <button type="submit" class="btn btn-primary">Edit application</button>
                 {% elif not has_applied and user.get_status == "NE" %}
                     <button type="submit" class="btn btn-primary">Apply now!</button>
