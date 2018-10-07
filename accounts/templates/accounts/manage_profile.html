@@ -501,7 +501,8 @@
             $('#' + chosen_time).removeClass('chosen-gridcell');
             $('#submit-button').attr("disabled", "disabled");
             $('#submit-error').html('No interview selected');
-            if(avail_times[chosen_time] == 4){
+            console.log(avail_times[chosen_time]);
+            if(avail_times[chosen_time] == 4 || (none_selected && $('#submit-button').html() == 'Remove interview')){
                 $('#' + chosen_time).addClass('chosen-gridcell');
                 $('#submit-button').removeAttr("disabled");
                 $('#submit-error').html('');
@@ -579,6 +580,7 @@
 
             var tmp = match($('#i1').val(), $('#i2').val(), $('#i3').val());
             fillCalendar(tmp);
+
         }
 
     </script>
