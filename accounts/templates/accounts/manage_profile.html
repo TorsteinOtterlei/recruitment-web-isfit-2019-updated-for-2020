@@ -15,9 +15,10 @@
         .status-field { /* classname given in StatusForm */
             border: black 1px solid;
             border-radius: 3px;
-            background-color: rgb(35, 35, 35);
-            color: orange;
+            background-color: rgb(45, 45, 45);
             cursor: pointer;
+            color: whitesmoke;
+            padding: 5px 2px 8px 2px;
         }
         .status-field:hover{
             background-color: rgb(45, 45, 45);
@@ -180,7 +181,11 @@
             cursor: pointer;
             background-color: rgba(250, 240, 230, 0.4);
         }
-
+        #back-btn{
+            text-align: left;
+            font-size: 120%;
+            margin-bottom: 2em;
+        }
 
     </style>
 {% endblock %}
@@ -192,10 +197,12 @@
 
         {% if user.is_superuser %}
         <!-- Back button -->
-        <a href="{% url 'applications:manage_applications' %}">
-            <img id="arrow-left" src="{% static 'applications/arrow_left.png' %}" alt="Arrow left">
-            Manage applications
-        </a>
+        <div id='back-btn'>
+            <a href="{% url 'applications:manage_applications' %}">
+                <img id="arrow-left" src="{% static 'applications/arrow_left.png' %}" alt="Arrow left">
+                Manage applications
+            </a>
+        </div>
         {% endif %}
 
         <!-- Title -->
