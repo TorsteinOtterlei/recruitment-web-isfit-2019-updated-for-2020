@@ -8,12 +8,19 @@ from django.http import JsonResponse
 from applications.forms import ApplicationForm
 from applications.models import Application
 # other apps
-from jobs.models import Section, Gang, Position, Date, Interview
+from jobs.models import Section, Gang, Position, Date, Interview, Availability
 from accounts.models import User
+from datetime import datetime, timedelta
 
 @login_required
 def apply(request):
+    # close_datetime = Availability.objects.first().get_close_datetime()
+    # now_timezoned = datetime.now() + timedelta(hours=2)
+    # closed = close_datetime < now_timezoned
+    # print("Page closed: " + str(closed))
     # vars
+    rep_list = User.objects.get(id=request.user.id).get_rep_list()
+
     application, created = Application.objects.get_or_create(applicant=request.user)
     applied_to = None
     if application.has_positions():
@@ -21,8 +28,11 @@ def apply(request):
 
     if Interview.objects.filter(applicant=request.user).first():
         interview = Interview.objects.get(applicant=request.user)
+        closed = True
     else:
         interview = None
+        closed = False
+
 
     if request.method == "POST":
         form = ApplicationForm(request.POST, instance=application)
@@ -31,7 +41,14 @@ def apply(request):
             application = form.save(commit=False)
             application.set_positions(selected_positions)
             application.save()
-            return redirect('applications:set_dates')
+
+        if closed: # quickfix heheh
+            selected_positions = request.POST.get('selected_positions', '').split('||')
+            application.set_positions(selected_positions)
+            application.save()
+            return redirect('../../account/')
+
+        return redirect('applications:set_dates')
 
     # GET or form failed
     print(json.dumps(applied_to))
@@ -42,6 +59,8 @@ def apply(request):
         'gangs': Gang.objects.all(),
         'applied_to': json.dumps(applied_to),
         'interview': interview,
+        'closed': closed,
+        'rep_list': rep_list
     })
     # End: apply
 

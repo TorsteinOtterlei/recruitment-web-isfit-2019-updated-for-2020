@@ -13,6 +13,7 @@ from accounts.models import User
 # other apps:
 from applications.models import Application
 from jobs.models import Section, Gang, Position, Date, Interview
+from allauth.exceptions import ImmediateHttpResponse
 
 @login_required
 def profile(request):
@@ -57,6 +58,7 @@ def profile(request):
         })
     # Normal profile
     application = Application.objects.filter(applicant=request.user).first()
+    rep_list = User.objects.get(id=request.user.id).get_rep_list()
 
     # If interview exixsts for this user, get interview instance
     if Interview.objects.filter(applicant=request.user).first():
@@ -71,6 +73,7 @@ def profile(request):
     return render(request, 'accounts/profile.html', {
         'positions': positions,
         'interview': interview,
+        'rep_list': rep_list
     })
 
 @login_required
@@ -93,8 +96,10 @@ def signup(request):
     else: # POST
         form = SignUpForm(request.POST)
         if form.is_valid():
-            form.save()
             email = form.cleaned_data.get('email')
+            if email.split('@')[1] == "isfit.no":
+                return HttpResponseRedirect(reverse('google_login'))
+            form.save()
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(email=email, password=raw_password)
             login(request, user)
@@ -152,14 +157,17 @@ def manage_profile(request, userID):
         else:
             chosen_room = request.POST.get('interviewroom') # Get the room chosen in front-end
             chosen_interviewers = []
+            delete_op = True
             for inter in request.POST.get('interviewers').split(','):
                 if inter == 'None':
                     chosen_interviewers.append(None)
                 else:
                     chosen_interviewers.append(User.objects.get(email=inter))
+                    delete_op = False
             print('Chosen time: ' + str(chosen_time))
             print('Chosen room: ' + str(chosen_room))
             print('Chosen interviewers: ' + str(chosen_interviewers))
+            print(delete_op)
 
 
             # Updating the interviewers availability
@@ -186,22 +194,23 @@ def manage_profile(request, userID):
             # Update/create interview object
             if interview:
                 interview.delete()
-            interview = Interview.objects.create(applicant=application.applicant)
-            for i in range(len(chosen_interviewers)):
-                if chosen_interviewers[i]:
-                    interview.interviewers.add(chosen_interviewers[i])
-                    if i == 0:
-                        interview.first = chosen_interviewers[i]
-                    elif i == 1:
-                        interview.second = chosen_interviewers[i]
-                    elif i == 2:
-                        interview.third = chosen_interviewers[i]
-            interview.room = chosen_room
-            interview.set_interview_time(chosen_time)
-            interview.save()
-            print('Created interview object!')
+                interview = None
+            if not delete_op: # If not delete operation
+                interview = Interview.objects.create(applicant=application.applicant)
+                for i in range(len(chosen_interviewers)):
+                    if chosen_interviewers[i]:
+                        interview.interviewers.add(chosen_interviewers[i])
+                        if i == 0:
+                            interview.first = chosen_interviewers[i]
+                        elif i == 1:
+                            interview.second = chosen_interviewers[i]
+                        elif i == 2:
+                            interview.third = chosen_interviewers[i]
+                interview.room = chosen_room
+                interview.set_interview_time(chosen_time)
+                interview.save()
+                print('Created interview object!')
 
-            print('request.POST, instance=applicant')
 
     # GET or form failed:
     else:

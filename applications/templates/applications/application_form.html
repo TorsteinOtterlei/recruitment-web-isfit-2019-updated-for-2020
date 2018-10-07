@@ -104,27 +104,50 @@
         #next-info{
             margin-top: 3em;
             margin-bottom: -0.5em;
-            width: 80%;
-            margin-left: 10%;
+            width: 70%;
+            margin-left: 15%;
+        }
+        #page-info{
+            margin-top: 2em;
+            width: 60%;
+            margin-left: 20%;
+            text-align: left;
+            background-color: rgba(30, 30, 30, 0.7);
+            padding: 1em;
+            margin-bottom: 2em;
+        }
+
+        @media (max-width: 50em) {
+            #next-info{
+                width: 90%;
+                margin-left: 5%;
+            }
+            #page-info{
+                width: 90%;
+                margin-left: 5%;
+            }
         }
     </style>
 {% endblock %}
 
 {% block body %}
-{% if interview == None %}
+{% if user.get_status in rep_list %}
 <h2>Your application:</h2>
+<div id='page-info'>
 On this page you are required to write an application text
-and select the positions you would like to apply for.<br>
+and select the positions you would like to apply for.
 On the next page you can select certain times where you're defininitely
-UNABLE to have an interview. <br>
-You can edit your application until 21. Oct. <br>
-Click the link down below to browse all positions with details. <br>
-<br>
+UNABLE to have an interview. This is to help us coordinate interview times.<p><p>
+You can edit your application until 21. Oct. After you have been scheduled for an interview
+it will not be possible to change this application, apart from changing the position prioritization.
+<p><p>
+Click the link 'Browse all positions' to see all available positions in more detail.
+<br><br>
 1. Write application text <br>
 2. Click to add positions (max 3) <br>
 3. Prioritize your positions with drag and drop <br>
-4. Click positions to remove <br>
 <br>
+</div>
 <form method="post" name='application_form'>
     {% csrf_token %}
     {% for field in form %}
@@ -168,7 +191,7 @@ Click the link down below to browse all positions with details. <br>
             </li>
             {% endfor %}
         </ul>
-        <a href={% url 'jobs:information' %} target="_blank">Browse all positions</a>
+        <a href={% url 'jobs:information' %} target="_blank"><h5>Browse all positions</h5></a>
     </div>
         <div class="col-md-5 dropzone">
             <h2>Chosen:</h2>
@@ -176,13 +199,20 @@ Click the link down below to browse all positions with details. <br>
             <ol id="chosenList"></ol>
         </div>
 </div>
+    {% if closed %}
+    <div id='next-info'>You have already recieved an interview so you can no longer change
+         your application. However you can still change the position prioritization in the 'Chosen'-box.</div>
+    <button onclick="submit()" style="width: 60%; margin: 20px 0 10px 0;" class="btn button-primary">Update prioritization</button>
+    {% else %}
     <div id='next-info'>Next step is to tell us the times where you are not able to have an
-         interview. By clicking here your choices on this page will be saved, so you can
-         continue your application at a later time. However your application will
-           not be submitted before finishing the application on the next page.</div>
-    <button onclick="submit()" style="width: 60%; margin: 20px 0 10px 0;" class="btn button-primary">Set UNAVAILABLE times</button>
+        interview. <b>By clicking here your choices on this page will be saved</b>, so you can
+        continue your application at a later time. However your application will
+        not be submitted before finishing the application on the next page.</div>
+        <button onclick="submit()" style="width: 60%; margin: 20px 0 10px 0;" class="btn button-primary">Set UNAVAILABLE times</button>
+    {% endif %}
+
 {% else %}
-You have already been set up on an interview and cannot edit your application. If you want to reprioritize, make sure to tell your interviewers
+You can no longer edit your application
 {% endif %}
 {% endblock %}
 
@@ -193,7 +223,7 @@ You have already been set up on an interview and cannot edit your application. I
 
     var chosen = {};
     var close_string = '06 Oct 2018 12:01:00 GMT'; // This has to be changed to applicant close time
-    var isclosed = ((Date.parse(close_string) - 7200000) - Date.now())
+    // var isclosed = ((Date.parse(close_string) - 7200000) - Date.now())
     // var closed = (tmp < 0); wtf?!?
 
 
@@ -221,7 +251,9 @@ You have already been set up on an interview and cannot edit your application. I
             $(this).parent().children().toggle();
             $(this).toggle();
         });
-        if (isclosed > 0){
+
+        // Disable after interview close time
+        if (! {{ closed|yesno:"true,false" }} ){
             console.log("not closed");
             $(".positions li").on("click", function (e) {
                 console.log(chosen);
@@ -240,6 +272,7 @@ You have already been set up on an interview and cannot edit your application. I
             });
 
         }
+        else $('#id_text').attr("disabled", "disabled");
 
     });
 

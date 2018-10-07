@@ -54,6 +54,26 @@
             text-align: center;
         }
 
+        .left-col{
+            text-align: right;
+        }
+
+        .right-col{
+            text-align: left;
+        }
+
+        @media (max-width: 768px){
+            .right-col, .left-col{
+                text-align: center;
+            }
+        }
+
+        #interviews{
+            border: solid;
+            border-width: 1px;
+            background: #0d0d0d;
+        }
+
 
     </style>
 {% endblock head %}
@@ -88,17 +108,23 @@
             {% endfor %}
         </div>
     {% endif %}-->
-    <div class="container border applicant-div">
+    <div class="container applicant-div">
         <h2><u>List of your interviews</u></h2>
         {% for i in interviews %}
-            <h3>Interview at: {{ i.room }}, {{ i.pretty_interview_time }}</h3>
-        <h4>Applicant:</h4> <a href="{% url 'accounts:manage_profile' i.applicant.id %}">{{ i.applicant.get_full_name }}: </a>{{ i.applicant.get_pretty_status }}<br />
-        <h4>Interviewers:</h4>
-            {% for j in i.interviewers.all %}
-                {{ j.get_full_name }},
-            {% endfor %}
-        <br />
-        <br />
+        <div class="row" id="interviews">
+            <div class="col-md-6 col-xs-6 left-col">
+                <h3>Interview at:<br> Room: {{ i.room }} <br> Time: {{ i.pretty_interview_time }}</h3>
+            </div>
+            <div class="col-md-6 col-xs-6 right-col">
+                <a href="{% url 'accounts:manage_profile' i.applicant.id %}">{{ i.applicant.get_full_name }}: </a>{{ i.applicant.get_pretty_status }}<br />
+                <h4>Interviewers:</h4>
+                    {% for j in i.interviewers.all %}
+                        {{ j.get_full_name }},
+                    {% endfor %}
+            </div>
+        </div>
+
+
         {% endfor %}
 
     </div>

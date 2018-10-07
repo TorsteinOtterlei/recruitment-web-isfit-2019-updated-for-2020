@@ -1,0 +1,17 @@
+{% extends 'jobs/base.html' %}
+{% load socialaccount %}
+{% load static %}
+
+{% block body %}
+    <h1 style="color: red">Error: You tried to login from an account not associated with ISFiT.</h1>
+    <br>
+    <p>
+        This page only allows login from an ISFiT account. If you want to try again <a href="{% provider_login_url 'google' %}">click here</a>.
+    </p>
+    <br>
+    <p>
+        Not a part of ISFiT? Try one of the following links instead:
+    </p>
+    <p><a class="btn btn-outline-primary" href="{% url 'accounts:signup' %}">Sign up</a></p>
+    <p><a class="btn btn-outline-primary" href="{% url 'accounts:login' %}">Log in</a></p>
+{% endblock body %}

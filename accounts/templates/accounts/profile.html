@@ -66,7 +66,7 @@
             {% endfor %}
         </div>
         <br>
-        {% if interview != None %}
+        {% if interview != None and user.get_status in rep_list %}
             You have been put up for an interview!
             <div class="interview-div">
                 <h5>Interview information</h5>
@@ -79,8 +79,20 @@
 
             </div>
             <br>
-            <p>If you still want to edit your application, send us an Email on recruiting@isfit.no</p>
-        {% else %}
+            {% if user.get_status in rep_list %}
+                <p>You can still reprioritize already chosen positions</p>
+                <form action="{% url 'applications:apply' %}" method="get">
+                    <button class="btn btn-success" type="submit">Reprioritize positions</button>
+                </form>
+            {% else %}
+                <p>You can no longer edit your application</p>
+            {% endif %}
+        {% elif interview != None and user.get_status not in rep_list %}
+            <div class="interview-div">
+                <h5>Thank you for your interest in ISFiT!</h5>
+            </div>
+            <br>
+        {% elif interview == None %}
             <div class="interview-div">
                 <h5>Your interview has not been set. Interview information will appear here.</h5>
             </div>

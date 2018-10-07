@@ -66,6 +66,12 @@ class User(AbstractBaseUser, PermissionsMixin):
         (NOT_MET, 'Not met'),
     )
 
+    REPRIORITIZATION_ABLE = (
+        (NOT_EVALUATED, 'Not evaluated'),
+        (INTERVIEW_SET, 'Interview set'),
+        (INTERVIEW_CONFIRMED, 'Interview confirmed')
+    )
+
     status = models.CharField(
         max_length=2,
         choices=STATUS_CHOISES,
@@ -100,6 +106,9 @@ class User(AbstractBaseUser, PermissionsMixin):
         if self.status == None:
             return 'error'
         return self.status
+
+    def get_rep_list(self):
+        return [str(User.REPRIORITIZATION_ABLE[0][0]),str(User.REPRIORITIZATION_ABLE[1][0]),str(User.REPRIORITIZATION_ABLE[2][0])]
 
     def get_pretty_status(self):
         if self.status == None:
