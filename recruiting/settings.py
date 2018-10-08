@@ -28,7 +28,7 @@ else:
     SECRET_KEY = '*o#&hk_xb@tga0cvru5ny&#djv5)8spo6)_s^=8vkphb345&gf'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['localhost','127.0.0.1', '.isfit.org', '.eu-west-1.elasticbeanstalk.com']
 
