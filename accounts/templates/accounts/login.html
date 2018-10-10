@@ -1,6 +1,5 @@
 {% extends 'jobs/base.html' %}
 {% load static %}
-{% load socialaccount %}
 {% block head %}
     <link rel="stylesheet" type="text/css" href="{% static 'accounts/login.css' %}">
 {% endblock %}
@@ -41,8 +40,6 @@
             <form action="{% url 'accounts:signup' %}" method="get">
                 <input class="have-user have-user-button" type="submit" value="Don't have a user?"><br>
             </form>
-            <br>
-            <a href="{% provider_login_url 'google' %}">Volunteer login</a>
         </div>
     </div>
     {% endif %}

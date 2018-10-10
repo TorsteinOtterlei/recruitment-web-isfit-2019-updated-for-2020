@@ -13,7 +13,6 @@ from accounts.models import User
 # other apps:
 from applications.models import Application
 from jobs.models import Section, Gang, Position, Date, Interview
-from allauth.exceptions import ImmediateHttpResponse
 
 @login_required
 def profile(request):
@@ -96,10 +95,8 @@ def signup(request):
     else: # POST
         form = SignUpForm(request.POST)
         if form.is_valid():
-            email = form.cleaned_data.get('email')
-            if email.split('@')[1] == "isfit.no":
-                return HttpResponseRedirect(reverse('google_login'))
             form.save()
+            email = form.cleaned_data.get('email')
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(email=email, password=raw_password)
             login(request, user)

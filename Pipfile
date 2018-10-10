@@ -34,6 +34,7 @@ PyYAML = "==3.12"
 semantic_version = "==2.5.0"
 
 [dev-packages]
+halo = "*"
 
 [requires]
 python_version = "3.6"

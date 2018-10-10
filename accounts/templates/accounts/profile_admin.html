@@ -129,9 +129,9 @@
 
     </div>
     <br>
+        {% if user_gang_applications and user.gang != None %}
     <div class="container">
         <h4><u>All gang applicants</u></h4>
-        {% if user_gang_applications %}
         <button class="btn btn-dark btn-block" type="button" data-toggle="collapse" data-target="#applicants" aria-expanded="false">
             Applicants for {{ user.gang }}
         </button>
