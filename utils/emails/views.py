@@ -9,8 +9,9 @@ def send_email(user):
     # Hent ut autentiseringsnøkkel
     ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
     SECRET_ACCESS_KEY = os.environ['SECRET_ACCESS_KEY']
-
     the_interview = Interview.objects.get(applicant=user)
+
+
     # Adressen må være verifisert i Amazon SES.
     SENDER = "ISFiT <apply@isfit.no>"
     RECIPIENT = the_interview.applicant.email
@@ -28,8 +29,8 @@ def send_email(user):
             <h2>Hi, """ + str(user.get_full_name()) + """!</h2>
             <h3>Thanks for your application to ISFiT 2019. 
             We have scheduled you for the following interview:</h3>
-            <p>Time: """ + str(the_interview.pretty_interview_time()) + """</p>
-            <p>Place: """ + str(the_interview.room) + """</p>
+            <h4>Time:</h4> <p>""" + str(the_interview.pretty_interview_time()) + """</p>
+            <h4>Place:</h4> <p>""" + str(the_interview.room) + """</p>
             <h3>IMPORTANT!</h3>
             <p>Tip: download the Mazemap app so you can easily find the room you'll be meeting in.</p>
             <p>Good luck at your interview -- we look forward to meeting you!</p>
@@ -52,6 +53,15 @@ def send_email(user):
                       aws_secret_access_key=SECRET_ACCESS_KEY,
                           region_name=AWS_REGION)
 
+    if the_interview.first != None and the_interview.second != None and the_interview.third != None:
+        bcc_list = [str(the_interview.first.email), str(the_interview.second.email), str(the_interview.third.email)]
+    elif the_interview.first != None and the_interview.second == None and the_interview.third != None:
+        bcc_list = [str(the_interview.first.email), str(the_interview.third.email)]
+    else:
+        bcc_list = [str(the_interview.first.email), str(the_interview.second.email)]
+
+
+
     try:
         response = client.send_email(
             Destination={
@@ -59,7 +69,7 @@ def send_email(user):
                     RECIPIENT,
                 ],
                 'CcAddresses': [],
-                'BccAddresses': [str(the_interview.first.email), str(the_interview.second.email), str(the_interview.third.email)]
+                'BccAddresses': bcc_list
             },
             Message={
                 'Body': {
