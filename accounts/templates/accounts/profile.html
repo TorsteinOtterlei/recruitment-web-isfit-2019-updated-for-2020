@@ -84,14 +84,13 @@
                 <form action="{% url 'applications:apply' %}" method="get">
                     <button class="btn btn-success" type="submit">Reprioritize positions</button>
                 </form>
-            {% else %}
-                <p>You can no longer edit your application</p>
             {% endif %}
         {% elif interview != None and user.get_status not in rep_list %}
             <div class="interview-div">
                 <h5>Thank you for your interest in ISFiT!</h5>
             </div>
             <br>
+            <p>You can no longer edit your application, but if you still want to reprioritize you can send us an email on recruiting@isfit.no</p>
         {% elif interview == None %}
             <div class="interview-div">
                 <h5>Your interview has not been set. Interview information will appear here.</h5>
