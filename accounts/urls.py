@@ -19,6 +19,5 @@ urlpatterns = [
     path('change_password', views.change_password, name='change_password'),
 
     # Front-end requests:
-    path('send_mail/<int:userID>', frontend.send_mail, name="send_mail"),
     path('delete_user/', frontend.delete_user, name="delete_user"),
 ]

@@ -13,6 +13,7 @@ from accounts.models import User
 # other apps:
 from applications.models import Application
 from jobs.models import Section, Gang, Position, Date, Interview
+from utils.emails import views
 
 @login_required
 def profile(request):
@@ -125,6 +126,7 @@ def manage_profile(request, userID):
     if len(positions) == 1:
         positions = positions * 2
     applicant = application.applicant
+    #email = views.send_email(applicant)
     date, created = Date.objects.get_or_create(user=applicant)
     userstatus = applicant.get_status()
     interview = Interview.objects.filter(applicant=application.applicant).first()
@@ -133,6 +135,10 @@ def manage_profile(request, userID):
     user_gang_applications = Application.objects.filter(
         Q(first__gang=user.gang) | Q(second__gang=user.gang) | Q(third__gang=user.gang)
     )
+
+    if "send_email" in request.POST:
+        if applicant.status in applicant.get_rep_list():
+            views.send_email(applicant)
 
     if request.method == 'POST':
         if user.is_superuser:
@@ -224,7 +230,7 @@ def manage_profile(request, userID):
         'form': form,
         'positions': positions,
         'interview': interview,
-        'user_gang_applications': user_gang_applications
+        'user_gang_applications': user_gang_applications,
     })
 
 def change_password(request):
