@@ -8,8 +8,8 @@
         .user_column{
             margin: 1px;
             text-align: center;
-            max-width: 20em;
-            min-width: 10em;
+            max-width: 40em;
+            min-width: 20em;
         }
         .users-div{
             border: 2px solid gray;
@@ -77,16 +77,16 @@
             </div>
             {% for choice in status_choices %}
               <div class="col-sm user_column">
-                 <div class="column-header">{{ choice.1 }}</div>
+                 <div class="column-header">{{ choice.1 }}: {% for key, value in counter.items %}{% if key == choice.0 %}{{ value }}{% endif %}{% endfor %}<!-- This glorious line is brought to you by Emil Telstad --></div>
                  <div class="users-div">
                      {% for application in applications %}
                      <div  class="{{ application.applicant.id }}">
                          {% if application.applicant.get_status == choice.0 %}
                          <a href="{% url 'accounts:manage_profile' application.applicant.id %}">
-                           {% if display == 'name' %}
-                             {{ application.applicant.last_name }}<br>
+                            {% if display == 'name' %}
+                                {{ application.applicant.last_name }}<br>
                             {% else %}
-                            {{ application.applicant.email }}<br>
+                                {{ application.applicant.email }}<br>
                             {% endif %}
                          </a>
                          {% endif %}

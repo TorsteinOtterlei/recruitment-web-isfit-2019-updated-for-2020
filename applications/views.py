@@ -109,6 +109,10 @@ def manage_applications(request):
         unsorted_applications = applications.all()
         applications = sorted(unsorted_applications, key = lambda appl : appl.get_order_time())
 
+    counter = {}
+    for choice in request.user.STATUS_CHOISES:
+        counter[choice[0]] = sum(1 for ap in applications if ap.applicant.get_status() == choice[0])
+    print(counter)
 
     return render(request, 'applications/manage_applications.html', {
         'applications': applications,
@@ -116,7 +120,8 @@ def manage_applications(request):
         'gangs': Gang.objects.all(),
         'status_choices': request.user.STATUS_CHOISES,
         'display': display,
-        'sorting': sorting
+        'sorting': sorting,
+        'counter': counter
     })
     # End manage_applications
 
