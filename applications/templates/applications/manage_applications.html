@@ -77,7 +77,7 @@
             </div>
             {% for choice in status_choices %}
               <div class="col-sm user_column">
-                 <div class="column-header">{{ choice.1 }}: {% for key, value in counter.items %}{% if key == choice.0 %}{{ value }}{% endif %}{% endfor %}<!-- This glorious line is brought to you by Emil Telstad --></div>
+                 <div class="column-header"><b>{{ choice.1 }}</b> - Total applicants: {% for key, value in counter.items %}{% if key == choice.0 %}{{ value }}{% endif %}{% endfor %}<!-- This glorious line is brought to you by Emil Telstad --></div>
                  <div class="users-div">
                      {% for application in applications %}
                      <div  class="{{ application.applicant.id }}">
