@@ -11,6 +11,9 @@ def send_email(user):
     SECRET_ACCESS_KEY = os.environ['SECRET_ACCESS_KEY']
     the_interview = Interview.objects.get(applicant=user)
 
+    contact_phone = ""
+    if the_interview.first.phone_number != None:
+        contact_phone = str(the_interview.first.phone_number)
 
     # Adressen må være verifisert i Amazon SES.
     SENDER = "ISFiT <apply@isfit.no>"
@@ -33,6 +36,7 @@ def send_email(user):
             <h4>Place:</h4> <p>""" + str(the_interview.room) + """</p>
             <h3>IMPORTANT!</h3>
             <p>Tip: download the Mazemap app so you can easily find the room you'll be meeting in.</p>
+            <p>Phone number to interviewer: """ + contact_phone + """.</p>
             <p>Good luck at your interview -- we look forward to meeting you!</p>
         </body>
     </html>
@@ -46,12 +50,14 @@ def send_email(user):
                 "Time: " + str(the_interview.pretty_interview_time()) +""
                 "IMPORTANT!"
                 "Tip: download the Mazemap app so you can easily find the room you'll be meeting in."
+                "Phone number to interviewer: " + contact_phone +"."
                 "Good luck at your interview -- we look forward to meeting you!")
 
 
     client = boto3.client('ses',  aws_access_key_id=ACCESS_KEY_ID,
                       aws_secret_access_key=SECRET_ACCESS_KEY,
                           region_name=AWS_REGION)
+
 
     if the_interview.first != None and the_interview.second != None and the_interview.third != None:
         bcc_list = [str(the_interview.first.email), str(the_interview.second.email), str(the_interview.third.email)]
