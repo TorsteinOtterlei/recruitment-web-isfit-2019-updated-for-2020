@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
@@ -46,9 +45,16 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.messages',
+    'django.contrib.messages',  # <--- Required for django-allauth
     'django.contrib.staticfiles',
-    'storages'
+    'django.contrib.sites',  # <--- Required for django-allauth
+    'storages',
+
+    # Django allauth:
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
 
 MIDDLEWARE = [
@@ -71,7 +77,7 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
-                'django.template.context_processors.request',
+                'django.template.context_processors.request',  # <--- Required for django-allauth
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
@@ -80,7 +86,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'recruiting.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
@@ -134,7 +139,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
@@ -147,7 +151,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
@@ -172,7 +175,6 @@ if 'DJANGO_SECRET_KEY' in os.environ:
 
     MEDIA_URL = '/media/'
     STATIC_URL = 'https://%s/%s%s' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION, MEDIA_URL)
-    STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
     STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 else:
@@ -183,3 +185,27 @@ LOGIN_REDIRECT_URL = '/account/'
 LOGOUT_REDIRECT_URL = '/'
 
 AUTH_USER_MODEL = 'accounts.User'
+
+# ---------------------–--------------------------
+#  Settings for django-allauth
+#
+
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'allauth.account.auth_backends.AuthenticationBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'django.contrib.auth.backends.ModelBackend',  # TODO: Check if it works without
+]
+
+SITE_ID = 1
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_ADAPTER = 'volunteerLogin.adapter.CustomAccountAdapter'
+SOCIALACCOUNT_ADAPTER = 'volunteerLogin.adapter.CustomSocialAccountAdapter'
+
+#
+#  End of settings for django-allauth
+# ---------------------–--------------------------
