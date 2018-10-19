@@ -362,7 +362,7 @@
                                         <button onclick="submit_interview()" style="width: 100%; margin: 20px 0 10px 0;" id='submit-button' class="btn button-form">Set interview</button>
                                         <p id='submit-error'>Nothing to change</p>
                                         </form>
-                                        {% if application.applicant.status in application.applicant.get_rep_list %}
+                                        {% if application.applicant.status in application.applicant.get_rep_list and interview.applicant != None %}
                                         <form method="post"> {% csrf_token %}
                                             <button type="submit" id="btn-mail"  name="send_email">Notify interview to {{ application.applicant }}</button>
                                         </form>
