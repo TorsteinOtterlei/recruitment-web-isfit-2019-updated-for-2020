@@ -10,6 +10,7 @@ def send_email(user):
     ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
     SECRET_ACCESS_KEY = os.environ['SECRET_ACCESS_KEY']
 
+
     the_interview = Interview.objects.get(applicant=user)
 
     contact_phone = ""

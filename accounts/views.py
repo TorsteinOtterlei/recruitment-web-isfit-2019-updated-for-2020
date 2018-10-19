@@ -10,6 +10,7 @@ import json
 # local:
 from accounts.forms import SignUpForm, StatusForm, RestrictedStatusForm, WidgetsForm, CustomAuthenticationForm, EditUserForm, CustomPasswordChangeForm
 from accounts.models import User
+from utils.emails import views
 # other apps:
 from applications.models import Application
 from jobs.models import Section, Gang, Position, Date, Interview
@@ -136,6 +137,10 @@ def manage_profile(request, userID):
     user_gang_applications = Application.objects.filter(
         Q(first__gang=user.gang) | Q(second__gang=user.gang) | Q(third__gang=user.gang)
     )
+
+    if "send_email" in request.POST:
+        if applicant.status in applicant.get_rep_list():
+            views.send_email(applicant)
 
     if request.method == 'POST':
         if user.is_superuser:
