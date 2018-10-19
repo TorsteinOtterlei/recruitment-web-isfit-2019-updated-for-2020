@@ -4,8 +4,8 @@ import os
 from botocore.exceptions import ClientError
 
 # Hent ut autentiseringsnøkkel
-ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
-SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
+AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
+AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
 
 # Adressen må være verifisert i Amazon SES.
 SENDER = "ISFiT <noreply@isfit.no>"
@@ -39,8 +39,8 @@ BODY_TEXT = ("Amazon SES Test (Python)\r\n"
              "AWS SDK for Python (Boto)."
              )
 
-client = boto3.client('ses', aws_access_key_id=ACCESS_KEY_ID,
-                      aws_secret_access_key=SECRET_ACCESS_KEY,
+client = boto3.client('ses', aws_access_key_id=AWS_ACCESS_KEY_ID,
+                      aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
                       region_name=AWS_REGION)
 
 try:

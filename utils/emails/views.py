@@ -7,8 +7,8 @@ from accounts.models import *
 
 def send_email(user):
     # Hent ut autentiseringsnøkler
-    ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
-    SECRET_ACCESS_KEY = os.environ['SECRET_ACCESS_KEY']
+    AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
+    AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
 
 
     the_interview = Interview.objects.get(applicant=user)
@@ -32,7 +32,7 @@ def send_email(user):
         <head></head>
         <body>
             <h2>Hi, """ + str(user.get_full_name()) + """!</h2>
-            <h3>Thanks for your application to ISFiT 2019. 
+            <h3>Thanks for your application to ISFiT 2019.
             We have scheduled you for the following interview:</h3>
             <h4>Time:</h4> <p>""" + str(the_interview.pretty_interview_time()) + """</p>
             <h4>Place:</h4> <p>""" + str(the_interview.room) + """</p>
@@ -56,8 +56,8 @@ def send_email(user):
                 "Good luck at your interview -- we look forward to meeting you!")
 
 
-    client = boto3.client('ses',  aws_access_key_id=ACCESS_KEY_ID,
-                      aws_secret_access_key=SECRET_ACCESS_KEY,
+    client = boto3.client('ses',  aws_access_key_id=AWS_ACCESS_KEY_ID,
+                      aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
                           region_name=AWS_REGION)
 
 
