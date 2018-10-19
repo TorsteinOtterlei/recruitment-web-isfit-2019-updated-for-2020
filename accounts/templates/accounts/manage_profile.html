@@ -169,6 +169,7 @@
         }
 
         #btn-mail{
+            display: none;
         }
 
         .select-interviewers{
@@ -358,15 +359,17 @@
                                             <input id="interviewtime" name="interviewtime"></input>
                                             <input id="interviewroom" name="interviewroom" value="{{ interview.room }}"></input>
                                             <input id="interviewers" name="interviewers"></input>
-
+                                        </form>
                                         <button onclick="submit_interview()" style="width: 100%; margin: 20px 0 10px 0;" id='submit-button' class="btn button-form">Set interview</button>
                                         <p id='submit-error'>Nothing to change</p>
+
                                         </form>
                                         {% if application.applicant.status in application.applicant.get_rep_list and interview.applicant != None%}
                                         <form method="post"> {% csrf_token %}
                                             <button type="submit" id="btn-mail"  name="send_email">Notify interview to {{ application.applicant }}</button>
                                         </form>
                                         {% endif %}
+
 
                                     </div>
                                 </div>
@@ -440,6 +443,26 @@
             if (saved_inters[2] != '') $($('#i3')[0]).val(saved_inters[2]);
             updateCalendar();
 
+
+            // Send interview time to user by mail:
+            $("#btn-mail").click(function() {
+                // Check if interview is actually set:
+                // if ( "{{ application.pretty_date | safe }}" != "No time set" ) {
+                if (true) { // Substitute for line over temporary
+                    // Confirm that admin wants to send a mail:
+                    if (confirm(`\n                    Are you sure?\n
+                        It would be unfortunate to send mail if
+                        the interview might change later.`)) {
+                            // Code to send mail
+                            console.log("ok")
+                            $.get("{% url 'accounts:send_mail' application.applicant.id %}")
+                    }
+                } // End: applicant has interview
+                // No interview set
+                else {
+                    alert("This user hasn't got an interview time yet")
+                }
+            })
 
         $('#interviewroom').click(function() {
             $('#submit-error').html('')
