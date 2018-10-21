@@ -61,7 +61,8 @@
 
 
 {% else %}
-    {% if close_time.deadline %}
+
+    {% if not close_time.deadline %}
     <div class="text-area container" id="intro-text">
           <h1>ISFiT19 is looking for new <b><u>volunteers!</u></b></h1>
            We are looking for volunteers interested in
@@ -69,6 +70,7 @@
            administration and communication. If you are a current student living
            in Trondheim, don’t hesitate to submit your application and we look
            forward to meeting you!
+
     </div>
     {% else %}
       <div class="text-area container" id="intro-text">
