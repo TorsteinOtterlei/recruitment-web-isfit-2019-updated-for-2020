@@ -1,0 +1,33 @@
+a,
+#status {
+  color: #09c !important;
+}
+
+footer > a,
+.nav-link {
+  color: white !important;
+}
+
+footer > #gdpr-link {
+  color: #09c !important;
+}
+
+.btn-primary {
+  background-color: #09c;
+  border-color: #09c;
+}
+
+.btn-primary:hover {
+  color: #09c;
+  border-color: #09c;
+}
+
+.btn-outline-primary {
+  border-color: #09c;
+  color: #09c;
+}
+
+.btn-outline-primary:hover {
+  background-color: #09c;
+  border-color: #09c;
+}

@@ -6,7 +6,7 @@ import json
 from django.http import JsonResponse
 # local
 from applications.forms import ApplicationForm
-from applications.models import Application
+from applications.models import Application, CloseTime
 # other apps
 from jobs.models import Section, Gang, Position, Date, Interview, Availability
 from accounts.models import User
@@ -19,36 +19,45 @@ def apply(request):
     # closed = close_datetime < now_timezoned
     # print("Page closed: " + str(closed))
     # vars
-    rep_list = User.objects.get(id=request.user.id).get_rep_list()
-
-    application, created = Application.objects.get_or_create(applicant=request.user)
-    applied_to = None
-    if application.has_positions():
-        applied_to = [pos.title for pos in application.get_positions()]
-
-    if Interview.objects.filter(applicant=request.user).first():
-        interview = Interview.objects.get(applicant=request.user)
-        closed = True
+    position = None
+    application = Application.objects.filter(applicant=request.user).first()
+    if application != None:
+        position = application.first
+    if CloseTime.objects.all().first().deadline() == True and position == None:
+        alert_message = 'The deadline for applications has passed. For questions please contact question@isfit.no'
+        #messages.warning(request, alert_message)
+        return redirect('home')
     else:
-        interview = None
-        closed = False
+        rep_list = User.objects.get(id=request.user.id).get_rep_list()
+
+        application, created = Application.objects.get_or_create(applicant=request.user)
+        applied_to = None
+        if application.has_positions():
+            applied_to = [pos.title for pos in application.get_positions()]
+
+        if Interview.objects.filter(applicant=request.user).first():
+            interview = Interview.objects.get(applicant=request.user)
+            closed = True
+        else:
+            interview = None
+            closed = False
 
 
-    if request.method == "POST":
-        form = ApplicationForm(request.POST, instance=application)
-        if form.is_valid(): # if any jobs were selected
-            selected_positions = request.POST.get('selected_positions', '').split('||')
-            application = form.save(commit=False)
-            application.set_positions(selected_positions)
-            application.save()
+        if request.method == "POST":
+            form = ApplicationForm(request.POST, instance=application)
+            if form.is_valid(): # if any jobs were selected
+                selected_positions = request.POST.get('selected_positions', '').split('||')
+                application = form.save(commit=False)
+                application.set_positions(selected_positions)
+                application.save()
 
-        if closed: # quickfix heheh
-            selected_positions = request.POST.get('selected_positions', '').split('||')
-            application.set_positions(selected_positions)
-            application.save()
-            return redirect('../../account/')
+            if closed: # quickfix heheh
+                selected_positions = request.POST.get('selected_positions', '').split('||')
+                application.set_positions(selected_positions)
+                application.save()
+                return redirect('../../account/')
 
-        return redirect('applications:set_dates')
+            return redirect('applications:set_dates')
 
     # GET or form failed
     print(json.dumps(applied_to))
@@ -109,6 +118,10 @@ def manage_applications(request):
         unsorted_applications = applications.all()
         applications = sorted(unsorted_applications, key = lambda appl : appl.get_order_time())
 
+    counter = {}
+    for choice in request.user.STATUS_CHOISES:
+        counter[choice[0]] = sum(1 for ap in applications if ap.applicant.get_status() == choice[0])
+    print(counter)
 
     return render(request, 'applications/manage_applications.html', {
         'applications': applications,
@@ -116,7 +129,8 @@ def manage_applications(request):
         'gangs': Gang.objects.all(),
         'status_choices': request.user.STATUS_CHOISES,
         'display': display,
-        'sorting': sorting
+        'sorting': sorting,
+        'counter': counter
     })
     # End manage_applications
 

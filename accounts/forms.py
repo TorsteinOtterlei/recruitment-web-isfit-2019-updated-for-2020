@@ -93,6 +93,14 @@ class CustomPasswordChangeForm(PasswordChangeForm):
         self.fields['new_password1'].widget.attrs.update({'class': 'form-control'})
         self.fields['new_password2'].widget.attrs.update({'class': 'form-control'})
 
+class EmailForm(forms.Form):
+    body = forms.CharField(widget=forms.Textarea)
+
+    def __init__(self, *args, **kwargs):
+        super(EmailForm, self).__init__(*args, **kwargs)
+        #for field in self.fields.values():
+            #field.widget.attrs.update({'class': 'form-control'})
+        self.fields['body'].widget.attrs.update({'id': 'field-body', 'class': 'form-control'})
 
 
 class WidgetsForm(forms.Form):

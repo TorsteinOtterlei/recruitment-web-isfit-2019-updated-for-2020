@@ -34,6 +34,10 @@
         margin-bottom: 20px;
     }
 
+    a {
+      color: #09C !important;
+    }
+
 
 
 </style>
@@ -57,14 +61,28 @@
 
 
 {% else %}
+
+    {% if not close_time.deadline %}
     <div class="text-area container" id="intro-text">
-          <h1>ISFiT19 is looking for new <b><u>volunteers!</u></b>!</h1>
+          <h1>ISFiT19 is looking for new <b><u>volunteers!</u></b></h1>
            We are looking for volunteers interested in
            <a href={% url 'jobs:information' %}>positions</a> within culture,
            administration and communication. If you are a current student living
            in Trondheim, don’t hesitate to submit your application and we look
            forward to meeting you!
+
     </div>
+    {% else %}
+      <div class="text-area container" id="intro-text">
+            <h1>Unfortunately, the application period for ISFiT19 is now closed.</h1>
+             <p>
+               We thank you for your interest in being a part of building the world's biggest international festival.
+             </p>
+             <p>
+               We hope you decide to become a part of ISFiT21! Keep checking <a href="https://isfit.org" target="_blank">ISFiT.org</a> for updates.
+             </p>
+      </div>
+    {% endif %}
 
 {% endif %}
     {% if user.is_authenticated %}
@@ -94,7 +112,9 @@
                 {% elif has_applied and status in rep_list %}
                     <button type="submit" class="btn btn-primary">Edit application</button>
                 {% elif not has_applied %}
+                    {% if close_time.deadline %}
                     <button type="submit" class="btn btn-primary btn-lg">Apply now!</button>
+                    {% endif %}
                 {% endif %}
             </form>
         {% endif %}

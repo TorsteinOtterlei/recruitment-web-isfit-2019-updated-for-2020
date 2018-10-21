@@ -17,8 +17,8 @@ urlpatterns = [
     path('widgets/', views.widgets, name='widgets'),
     path('edit', views.edit_profile, name='edit_profile'),
     path('change_password', views.change_password, name='change_password'),
+    path('email/<int:userID>', views.email, name='email'),
 
     # Front-end requests:
-    path('send_mail/<int:userID>', frontend.send_mail, name="send_mail"),
     path('delete_user/', frontend.delete_user, name="delete_user"),
 ]
