@@ -17,7 +17,8 @@ def home(request):
         return render(request, 'jobs/home.html', {
             'has_applied': has_applied,
             'status': status,
-            'rep_list': rep_list
+            'rep_list': rep_list,
+            'close_time': CloseTime.objects.all().first(),
         })
     except Exception as e: # if user not signed in
        return render(request, 'jobs/home.html')
