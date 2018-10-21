@@ -1,3 +1,6 @@
+import boto3
+import os
+from botocore.exceptions import ClientError
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
@@ -8,7 +11,7 @@ from django.db.models import Q
 from django.urls import reverse
 import json
 # local:
-from accounts.forms import SignUpForm, StatusForm, RestrictedStatusForm, WidgetsForm, CustomAuthenticationForm, EditUserForm, CustomPasswordChangeForm
+from accounts.forms import * # EmailForm, SignUpForm, StatusForm, RestrictedStatusForm, WidgetsForm, CustomAuthenticationForm, EditUserForm, CustomPasswordChangeForm
 from accounts.models import User
 from utils.emails import views
 # other apps:
@@ -248,7 +251,95 @@ def change_password(request):
         'form': form,
     })
 
+def email(request, userID):
+    application = get_object_or_404(Application, applicant_id=userID)
+    applicant = application.applicant
+    the_interview = Interview.objects.get(applicant=applicant)
 
+    # Hent ut autentiseringsnøkler
+    AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
+    AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
+
+    contact_phone = ""
+    if the_interview.first.phone_number != None:
+        contact_phone = str(the_interview.first.phone_number)
+
+    # Adressen må være verifisert i Amazon SES.
+    SENDER = "ISFiT <apply@isfit.no>"
+    RECIPIENT = applicant.email
+
+    AWS_REGION = "eu-west-1"
+    CHARSET = "UTF-8"
+
+    # The subject line for the email.
+    SUBJECT = "Interview ISFiT 2019"
+
+    # BODY_TEXT brukes dersom mottakerens epost-klient ikke støtter HTML.
+    BODY_TEXT = "Hi, " + str(applicant.get_full_name()) + "!"
+    BODY_TEXT += "\nThanks for your application to ISFiT 2019."
+    BODY_TEXT += "\nWe have scheduled you for the following interview:"
+    BODY_TEXT += "\nRoom: " + str(the_interview.room)
+    BODY_TEXT += "\nTime: " + str(the_interview.pretty_interview_time())
+    BODY_TEXT += "\nIMPORTANT!"
+    BODY_TEXT += "\nTip: download the Mazemap app so you can easily find the room you'll be meeting in."
+    BODY_TEXT += "\nPhone number to interviewer: " + contact_phone + "."
+    BODY_TEXT += "\nGood luck at your interview -- we look forward to meeting you!"
+
+    client = boto3.client(
+        'ses',
+        aws_access_key_id=AWS_ACCESS_KEY_ID,
+        aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+        region_name=AWS_REGION
+    )
+
+    if the_interview.first != None and the_interview.second != None and the_interview.third != None:
+        bcc_list = [str(the_interview.first.email), str(the_interview.second.email), str(the_interview.third.email)]
+    elif the_interview.first != None and the_interview.second == None and the_interview.third != None:
+        bcc_list = [str(the_interview.first.email), str(the_interview.third.email)]
+    else:
+        bcc_list = [str(the_interview.first.email), str(the_interview.second.email)]
+
+    if request.method == 'POST':
+        form = EmailForm(data=request.POST)
+        if form.is_valid():
+            edited_body = form.cleaned_data['body']
+            print(len(BODY_TEXT))
+            print(len(edited_body))
+
+            try:
+                response = client.send_email(
+                    Source = SENDER,
+                    Destination = {
+                        'ToAddresses': [RECIPIENT],
+                        'CcAddresses': [],
+                        'BccAddresses': bcc_list
+                    },
+                    Message = {
+                        'Subject': {
+                            'Charset': CHARSET,
+                            'Data': SUBJECT,
+                        },
+                        'Body': {
+                            'Text': {
+                                'Charset': CHARSET,
+                                'Data': edited_body,
+                            }
+                        }
+                    }
+                )
+
+            except ClientError as e:
+                print(e.response['Error']['Message'])
+            else:
+                print("Email sent! Message ID:"),
+                print(response['MessageId'])
+
+            return redirect('/account/' + str(applicant.id) )
+    # GET or form failed
+    form = EmailForm(initial={'body': BODY_TEXT})
+    return render(request, 'accounts/email.html', {
+        'form': form,
+    })
 
 def widgets(request):
     form = WidgetsForm()

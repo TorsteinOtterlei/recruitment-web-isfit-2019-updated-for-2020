@@ -362,6 +362,7 @@
 
                                         </form>
                                         {% if application.applicant.status in application.applicant.get_rep_list and interview.applicant != None%}
+                                        <a class="btn btn-dark" href="{% url 'accounts:email' application.applicant.id %}">Notify interview to {{ application.applicant }}</a>
                                         <form method="post"> {% csrf_token %}
                                             <button type="submit" id="btn-mail"  name="send_email">Notify interview to {{ application.applicant }}</button>
                                         </form>
