@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 # local
 from jobs.models import Section, Gang, Position, Project, Calendar
 # other apps
-from applications.models import Application
+from applications.models import Application, CloseTime
 from accounts.models import *
 
 def home(request):
@@ -21,7 +21,9 @@ def home(request):
             'close_time': CloseTime.objects.all().first(),
         })
     except Exception as e: # if user not signed in
-       return render(request, 'jobs/home.html')
+       return render(request, 'jobs/home.html', {
+            'close_time': CloseTime.objects.all().first(),
+        })
 
 def information(request):
     return render(request, 'jobs/information.html', {
