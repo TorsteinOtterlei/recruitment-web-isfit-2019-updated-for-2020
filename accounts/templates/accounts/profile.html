@@ -34,7 +34,7 @@
         }
 
         #user-logo {
-            height: 120px;
+            height: 60px;
             margin-bottom: 10px;
         }
 
@@ -49,7 +49,7 @@
 {% endblock head %}
 
 {% block body %}
-    <img id="user-logo" src="{% static 'accounts/user.png' %}" alt="User logo">
+    <img id="user-logo" src="{% static 'accounts/user2.png' %}" alt="User logo">
     <p><span id=status>&emsp;<b>Status:</b> {{ user.get_status_display }} </span></p>
     <div id="title">
         <h1>{{ user.get_full_name }}</h1>
@@ -67,7 +67,7 @@
         </div>
         <br>
         {% if interview != None and user.get_status in rep_list %}
-            You have been put up for an interview!
+            You have been signed up for an interview!
             <div class="interview-div">
                 <h5>Interview information</h5>
                 <b style="color: orangered">Room: </b> {{ interview.room }}<br>
@@ -101,10 +101,14 @@
         </form>
         {% endif %}
     {% else %}
+      {% if not close_time.deadline %}
         <h2>You have not yet applied for any positions.</h2>
         <form action="{% url 'applications:apply' %}" method="get">
             <button class="btn btn-success" type="submit">Apply for a position now!</button>
         </form>
+        {% else %}
+        <h2>The application period has unfortunately closed.</h2>
+        {% endif %}
     {% endif %}
 
     <form action="{% url 'accounts:edit_profile' %}" method="get">
@@ -114,7 +118,7 @@
         <button class="btn btn-primary" type="submit">Change password</button>
     </form>
     <form action="{% url 'accounts:logout' %}" method="get">
-        <button type="submit" class="btn btn-outline-danger">Logout</button>
+        <button type="submit" class="btn btn-danger">Logout</button>
     </form>
 
 {% endblock %}

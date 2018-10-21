@@ -1,6 +1,6 @@
 from django.contrib import admin
 # local:
-from applications.models import Application
+from applications.models import Application, CloseTime
 
 from datetime import date
 from django.utils.translation import gettext_lazy as _
@@ -52,4 +52,5 @@ class ApplicationAdmin(admin.ModelAdmin):
     ordering = ['interview_time']
     readonly_fields = ['interview_time']
 
+admin.site.register(CloseTime)
 admin.site.register(Application, ApplicationAdmin)

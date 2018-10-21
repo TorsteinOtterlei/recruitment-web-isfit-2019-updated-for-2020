@@ -15,7 +15,7 @@ from accounts.forms import * # EmailForm, SignUpForm, StatusForm, RestrictedStat
 from accounts.models import User
 from utils.emails import views
 # other apps:
-from applications.models import Application
+from applications.models import Application, CloseTime
 from jobs.models import Section, Gang, Position, Date, Interview
 from allauth.exceptions import ImmediateHttpResponse
 
@@ -70,6 +70,7 @@ def profile(request):
     else:
         interview = None
 
+
     positions = []
     if application != None:
         positions = application.get_positions()
@@ -77,7 +78,8 @@ def profile(request):
     return render(request, 'accounts/profile.html', {
         'positions': positions,
         'interview': interview,
-        'rep_list': rep_list
+        'rep_list': rep_list,
+        'close_time': CloseTime.objects.all().first(),
     })
 
 @login_required

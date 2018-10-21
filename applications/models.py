@@ -3,6 +3,7 @@ from django.utils import timezone
 from jobs.models import Position
 from accounts.models import User
 import math
+from datetime import timedelta
 
 # Create your models here.
 class Application(models.Model):
@@ -90,3 +91,15 @@ class Application(models.Model):
             return "error"
         interview_date = self.pretty_interview_time()
         return "{}, Interview: {}".format(self.applicant.get_full_name(), interview_date)
+
+
+    # This is the time when the applications should close.
+class CloseTime(models.Model):
+    time = models.DateTimeField(default=timezone.now)
+    show_countdown = models.BooleanField(default=False)
+
+    def time_format(self):
+        return self.time.strftime("%Y-%m-%d %H:%M:%S")
+
+    def deadline(self):
+        return self.time < timezone.now() + timedelta(hours=2)
