@@ -166,6 +166,7 @@ if 'DJANGO_SECRET_KEY' in os.environ:
 
     STATICFILES_DIRS = [
         os.path.join(BASE_DIR, 'jobs/static'),
+        os.path.join(BASE_DIR, 'static')
     ]
 
     STATIC_ROOT = os.path.join(BASE_DIR, "..", "static")
@@ -178,8 +179,15 @@ if 'DJANGO_SECRET_KEY' in os.environ:
 
     STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 else:
+    STATIC_ROOT = os.path.join(BASE_DIR, "..", "static")
     STATIC_URL = '/static/'
     MEDIA_URL = '/media/'
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, 'jobs/static'),
+        os.path.join(BASE_DIR, 'static'),
+        os.path.join(BASE_DIR, 'static/style.css'),
+
+    ]
 LOGIN_REDIRECT_URL = '/account/'
 
 LOGOUT_REDIRECT_URL = '/'
