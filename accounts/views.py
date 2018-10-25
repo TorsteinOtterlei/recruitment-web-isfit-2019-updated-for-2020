@@ -151,7 +151,6 @@ def export_users_xls(request):
 
     users = User.objects.all()
     for user in users:
-        print(user)
         if Application.objects.filter(applicant=user).exists():
             row = [user.email, user.first_name, user.last_name, user.phone_number]
             positions = [user.application.first, user.application.second, user.application.third]
@@ -159,14 +158,8 @@ def export_users_xls(request):
             row.extend(positions)
             rows.append(row)
 
-    #rows = users.values_list('email', 'first_name', 'last_name', 'phone_number')
-
     for row in rows:
         row_num += 1
-        # if Application.objects.filter(applicant=user).exists():
-        #     row.extend([user.application.first, user.application.second, user.application.third])
-        # else:
-        #     row.extend(['None', 'None', 'None'])
         for col_num in range(len(row)):
             ws.write(row_num, col_num, row[col_num], font_style)
 
