@@ -1,5 +1,7 @@
 import boto3
 import os
+import csv
+import xlwt
 from botocore.exceptions import ClientError
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
@@ -122,6 +124,47 @@ def logout_view(request):
     logout(request)
     # Redirect to a success page.
     render(request, 'accounts/logout.html')
+
+def export_users_xls(request):
+    # https://simpleisbetterthancomplex.com/tutorial/2016/07/29/how-to-export-to-excel.html
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="users.xls"'
+
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Users')
+
+    # Sheet header, first row
+    row_num = 0
+
+    font_style = xlwt.XFStyle()
+    font_style.font.bold = True
+
+    columns = ['Email', 'First name', 'Last name', 'Phone number', 'First', 'Second', 'Third']
+
+    for col_num in range(len(columns)):
+        ws.write(row_num, col_num, columns[col_num], font_style)
+
+    # Sheet body, remaining rows
+    font_style = xlwt.XFStyle()
+
+    rows = []
+
+    users = User.objects.all()
+    for user in users:
+        if Application.objects.filter(applicant=user).exists():
+            row = [user.email, user.first_name, user.last_name, user.phone_number]
+            positions = [user.application.first, user.application.second, user.application.third]
+            positions = [pos.title if pos != None else '' for pos in positions]
+            row.extend(positions)
+            rows.append(row)
+
+    for row in rows:
+        row_num += 1
+        for col_num in range(len(row)):
+            ws.write(row_num, col_num, row[col_num], font_style)
+
+    wb.save(response)
+    return response
 
 @staff_member_required
 def manage_profile(request, userID):
