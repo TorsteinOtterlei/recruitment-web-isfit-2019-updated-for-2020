@@ -149,14 +149,17 @@ def export_users_xls(request):
 
     rows = []
 
+    # Add row to .xls for each user that has a valid application
     users = User.objects.all()
     for user in users:
-        if Application.objects.filter(applicant=user).exists():
-            row = [user.email, user.first_name, user.last_name, user.phone_number]
-            positions = [user.application.first, user.application.second, user.application.third]
-            positions = [pos.title if pos != None else '' for pos in positions]
-            row.extend(positions)
-            rows.append(row)
+        application = Application.objects.filter(applicant=user).first()
+        if application != None:
+            if len(application.get_positions()) > 0:
+                row = [user.email, user.first_name, user.last_name, user.phone_number]
+                positions = [application.first, application.second, application.third]
+                positions = [pos.title if pos != None else '' for pos in positions]
+                row.extend(positions)
+                rows.append(row)
 
     for row in rows:
         row_num += 1
