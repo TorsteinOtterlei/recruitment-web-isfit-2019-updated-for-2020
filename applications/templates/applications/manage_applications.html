@@ -45,6 +45,7 @@
 {% block body %}
 {% if user.is_staff %}
 <h3>Manage applications</h3>
+<a href="{% url 'accounts:export_users_xls' %}"> << Export users .xls >> </a>
 <div class="container">
     <div class="row">
         <div class="col-sm selector-div">
@@ -97,9 +98,9 @@
            {% endfor %}
         </div>
     </div>
-{% else %}
-    You have no power here
-{% endif %}
+    {% else %}
+        You have no power here
+    {% endif %}
 {% endblock %}
 
 {% block scriptblock %}

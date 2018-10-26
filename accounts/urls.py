@@ -15,9 +15,10 @@ urlpatterns = [
     path('logout/', logout, {'template_name':'jobs/home.html'}, name='logout'),
     path('<int:userID>', views.manage_profile, name='manage_profile'),
     path('widgets/', views.widgets, name='widgets'),
-    path('edit', views.edit_profile, name='edit_profile'),
-    path('change_password', views.change_password, name='change_password'),
+    path('edit/', views.edit_profile, name='edit_profile'),
+    path('change_password/', views.change_password, name='change_password'),
     path('email/<int:userID>', views.email, name='email'),
+    path('export_users/xls', views.export_users_xls, name='export_users_xls'),
 
     # Front-end requests:
     path('delete_user/', frontend.delete_user, name="delete_user"),
