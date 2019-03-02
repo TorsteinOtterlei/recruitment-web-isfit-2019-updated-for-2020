@@ -13,12 +13,12 @@ from django.db.models import Q
 from django.urls import reverse
 import json
 # local:
-from accounts.forms import * # EmailForm, SignUpForm, StatusForm, RestrictedStatusForm, WidgetsForm, CustomAuthenticationForm, EditUserForm, CustomPasswordChangeForm
-from accounts.models import User
+from apps.accounts.forms import * # EmailForm, SignUpForm, StatusForm, RestrictedStatusForm, WidgetsForm, CustomAuthenticationForm, EditUserForm, CustomPasswordChangeForm
+from apps.accounts.models import User
 from utils.emails import views
 # other apps:
-from applications.models import Application, CloseTime
-from jobs.models import Section, Gang, Position, Date, Interview
+from apps.applications.models import Application, CloseTime
+from apps.jobs.models import Section, Gang, Position, Date, Interview
 from allauth.exceptions import ImmediateHttpResponse
 
 @login_required

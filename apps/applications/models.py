@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils import timezone
-from jobs.models import Position
-from accounts.models import User
+from apps.jobs.models import Position
+from apps.accounts.models import User
 import math
 from datetime import timedelta
 

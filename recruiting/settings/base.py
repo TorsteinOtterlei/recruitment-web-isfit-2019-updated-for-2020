@@ -28,9 +28,9 @@ ALLOWED_HOSTS = ['localhost','127.0.0.1']
 INSTALLED_APPS = [
     'import_export',
     'django_extensions',
-    'accounts.apps.AccountsConfig',
-    'applications.apps.ApplicationsConfig',
-    'jobs.apps.JobsConfig',
+    'apps.accounts',
+    'apps.applications',
+    'apps.jobs',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

@@ -2,10 +2,10 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
 from django.contrib.auth.decorators import login_required
 # local
-from jobs.models import Section, Gang, Position, Project, Calendar
+from apps.jobs.models import Section, Gang, Position, Project, Calendar
 # other apps
-from applications.models import Application, CloseTime
-from accounts.models import *
+from apps.applications.models import Application, CloseTime
+from apps.accounts.models import *
 
 def home(request):
     try:

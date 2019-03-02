@@ -2,8 +2,8 @@ import boto3
 import random
 import os
 from botocore.exceptions import ClientError
-from jobs.models import Interview
-from accounts.models import *
+from apps.jobs.models import Interview
+from apps.accounts.models import *
 
 def send_email(user):
     # Hent ut autentiseringsnøkler

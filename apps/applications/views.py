@@ -5,11 +5,11 @@ from django.contrib.admin.views.decorators import staff_member_required
 import json
 from django.http import JsonResponse
 # local
-from applications.forms import ApplicationForm
-from applications.models import Application, CloseTime
+from apps.applications.forms import ApplicationForm
+from apps.applications.models import Application, CloseTime
 # other apps
-from jobs.models import Section, Gang, Position, Date, Interview, Availability
-from accounts.models import User
+from apps.jobs.models import Section, Gang, Position, Date, Interview, Availability
+from apps.accounts.models import User
 from datetime import datetime, timedelta
 
 @login_required

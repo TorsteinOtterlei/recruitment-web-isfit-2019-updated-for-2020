@@ -1,5 +1,5 @@
 from django import forms
-from applications.models import Application
+from apps.applications.models import Application
 
 class ApplicationForm(forms.ModelForm):
     text = forms.CharField(label="Why do you want to volunteer with ISFiT? Write a brief text and then choose the positions you want to apply for.", max_length=2000, required=True, widget=forms.Textarea())

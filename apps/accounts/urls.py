@@ -1,7 +1,7 @@
 from django.urls import path
 from django.contrib.auth.views import login, logout
 # local:
-from accounts import views, frontend
+from apps.accounts import views, frontend
 # other apps:
 
 

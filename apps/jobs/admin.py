@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib import admin
 # local
-from jobs.models import Section, Gang, Position, Project, Calendar, Date, Interview, Availability
+from apps.jobs.models import Section, Gang, Position, Project, Calendar, Date, Interview, Availability
 
 admin.site.register(Section)
 admin.site.register(Gang)

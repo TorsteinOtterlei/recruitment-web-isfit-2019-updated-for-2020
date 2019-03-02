@@ -2,8 +2,8 @@ from django.contrib import admin
 from django.contrib.auth import admin as auth_admin
 from import_export.admin import ImportExportModelAdmin
 # local:
-from accounts.models import User
-from accounts.forms import SignUpForm, EditUserForm
+from apps.accounts.models import User
+from apps.accounts.forms import SignUpForm, EditUserForm
 
 # Actions for Admin-site:
 def make_staff(modeladmin, request, queryset):

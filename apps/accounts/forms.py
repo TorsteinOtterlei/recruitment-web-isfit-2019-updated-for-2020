@@ -2,9 +2,9 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, User
 from django import forms
 from django.utils.translation import ugettext, ugettext_lazy as _
 # local:
-from accounts.models import User
+from apps.accounts.models import User
 # other apps:
-from jobs.models import Section
+from apps.jobs.models import Section
 
 class SignUpForm(UserCreationForm):
     trondheim = forms.BooleanField(required=True, help_text='Yes I live in Trondheim, and know that this page is for volunteering and NOT participating', error_messages={'required': 'You have to live in Trondheim to volunteer'})

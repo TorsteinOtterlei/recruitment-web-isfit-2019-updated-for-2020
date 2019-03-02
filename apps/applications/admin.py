@@ -1,12 +1,12 @@
 from django.contrib import admin
 # local:
-from applications.models import Application, CloseTime
+from apps.applications.models import Application, CloseTime
 
 from datetime import date
 from django.utils.translation import gettext_lazy as _
 from django.db.models import Q
 
-from jobs.models import Section, Gang
+from apps.jobs.models import Section, Gang
 
 class ApplicationSectionFilter(admin.SimpleListFilter):
     title = _('section')

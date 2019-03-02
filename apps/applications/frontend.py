@@ -2,9 +2,9 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 #from django.contrib.admin.views.decorators import staff_member_required
 from django.http import JsonResponse
 
-from jobs.models import Position
-from accounts.models import User
-from applications.models import Application
+from apps.jobs.models import Position
+from apps.accounts.models import User
+from apps.applications.models import Application
 from random import randint
 
 def create_dummy_user():

@@ -1,7 +1,7 @@
 from django.db.models.signals import post_save, pre_save
 from django.db import models
 # local
-from jobs.models import Date
+from apps.jobs.models import Date
 # other apps
 from accounts.models import User
 
