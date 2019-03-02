@@ -15,16 +15,16 @@ Including another URLconf
 """
 from django.urls import include, path
 from django.contrib import admin
-from jobs import views as jobs_views
+from apps.jobs import views as jobs_views
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', jobs_views.home, name='home'),
-    path('position/', include('jobs.urls')),
-    path('account/', include('accounts.urls')),
-    path('application/', include('applications.urls')),
+    path('position/', include('apps.jobs.urls')),
+    path('account/', include('apps.accounts.urls')),
+    path('application/', include('apps.applications.urls')),
     path('volunteerLogin/', include('allauth.urls'), name='volunteerLogin'),
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
