@@ -17,6 +17,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
 
 # SECURITY WARNING: keep the secret key used in production secret!
 if 'DJANGO_SECRET_KEY' in os.environ:
@@ -28,7 +32,7 @@ else:
     SECRET_KEY = '*o#&hk_xb@tga0cvru5ny&#djv5)8spo6)_s^=8vkphb345&gf'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['localhost','127.0.0.1', '.isfit.org', '.eu-west-1.elasticbeanstalk.com']
 
@@ -72,7 +76,7 @@ ROOT_URLCONF = 'recruiting.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -84,6 +88,8 @@ TEMPLATES = [
         },
     },
 ]
+
+
 
 WSGI_APPLICATION = 'recruiting.wsgi.application'
 
@@ -164,30 +170,17 @@ if 'DJANGO_SECRET_KEY' in os.environ:
     }
     AWS_LOCATION = 'static'
 
-    STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, 'jobs/static'),
-        os.path.join(BASE_DIR, 'static')
-    ]
+    STATIC_ROOT = os.path.join(BASE_DIR, 'var/www/static')
 
-    STATIC_ROOT = os.path.join(BASE_DIR, "..", "static")
-
-    STATIC_URL = '/static/'
     STATIC_URL = 'https://%s/%s%s' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION, STATIC_URL)
-
-    MEDIA_URL = '/media/'
-    STATIC_URL = 'https://%s/%s%s' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION, MEDIA_URL)
+    MEDIA_URL = 'https://%s/%s%s' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION, MEDIA_URL)
 
     STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 else:
-    STATIC_ROOT = os.path.join(BASE_DIR, "..", "static")
     STATIC_URL = '/static/'
     MEDIA_URL = '/media/'
-    STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, 'jobs/static'),
-        os.path.join(BASE_DIR, 'static'),
-        os.path.join(BASE_DIR, 'static/style.css'),
 
-    ]
+
 LOGIN_REDIRECT_URL = '/account/'
 
 LOGOUT_REDIRECT_URL = '/'
