@@ -30,7 +30,7 @@ django-extensions = "==2.1.0"
 django-import-export = "==1.0.1"
 django-allauth = "==0.37.1"
 Django = "==2.0.2"
-PyYAML = "==3.12"
+PyYAML = "==5.1"
 semantic_version = "==2.5.0"
 
 [dev-packages]
